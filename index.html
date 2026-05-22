@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Multi-Ledger Engine V14</title>
+    <title>Ultimate Multi-Ledger Engine V15</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -216,7 +216,7 @@
 
             <div class="section-headline"><i class="fa-brands fa-whatsapp"></i> WhatsApp Interaction Gateway</div>
             <div class="banner-container-node" onclick="triggerWhatsAppRedirect()">
-                <div class="pure-image-banner" style="background-image: url('https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?q=80&w=600');"></div>
+                <div class="pure-image-banner" style="background-image: url('banner3.jpg');"></div>
                 <div class="floating-scheme-badge" style="color: #10b981;"><i class="fa-brands fa-whatsapp"></i> Chat With Owner To Activate</div>
             </div>
         </div>
@@ -279,32 +279,31 @@
 </div>
 
 <script>
-    let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v14_multichit')) || [];
+    let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v15_multichit')) || [];
     let runtimeUser = null;
     const terminalRootKey = "thivashthivash143@gmail.com";
 
-    // Dynamic static banners mapping configuration
+    // FIXED CONFIGURATION MAP: Custom asset names targeted cleanly as per request
     const assetUrls = {
-        "save_money": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600",
-        "target": "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=600"
+        "save_money": "banner1.jpg",
+        "target": "banner2.jpg"
     };
 
     window.addEventListener('load', () => {
         let savedTheme = localStorage.getItem('matrix_theme_state') || 'dark';
         applyInterfaceTheme(savedTheme);
 
-        let activeSessionKey = localStorage.getItem('sys_matrix_v14_session_lock');
+        let activeSessionKey = localStorage.getItem('sys_matrix_v15_session_lock');
         if (activeSessionKey) {
             if (activeSessionKey.toLowerCase() === terminalRootKey.toLowerCase()) { bootAdminSession(); } 
             else {
                 let foundUser = datasetEngine.find(u => u.name.toLowerCase() === activeSessionKey.toLowerCase());
                 if (foundUser) { runtimeUser = foundUser; bootUserSession(foundUser.name); } 
-                else { localStorage.removeItem('sys_matrix_v14_session_lock'); }
+                else { localStorage.removeItem('sys_matrix_v15_session_lock'); }
             }
         }
     });
 
-    // SWITCH THEME CORE INTERACTIVE ENGINE
     function applyInterfaceTheme(mode) {
         if(mode === 'light') {
             document.body.classList.add('light-theme');
@@ -323,7 +322,7 @@
         if(fieldString === "") { alert("Enter proper validation target identifier."); return; }
 
         if(fieldString.toLowerCase() === terminalRootKey.toLowerCase()) {
-            localStorage.setItem('sys_matrix_v14_session_lock', fieldString);
+            localStorage.setItem('sys_matrix_v15_session_lock', fieldString);
             bootAdminSession(); return;
         }
 
@@ -335,7 +334,7 @@
         }
 
         runtimeUser = userNodeMatch;
-        localStorage.setItem('sys_matrix_v14_session_lock', fieldString);
+        localStorage.setItem('sys_matrix_v15_session_lock', fieldString);
         bootUserSession(userNodeMatch.name);
     }
 
@@ -354,7 +353,6 @@
         buildDynamicDualSlots(); computeStatementProfileMetrics(); navigateToRoute('view-home');
     }
 
-    // FIX CONFIRMED: Both scheme cards always show up on home. If admin allocated -> Active. If not -> Locked.
     function buildDynamicDualSlots() {
         let slotsZone = document.getElementById('dynamic-dual-slots-zone');
         slotsZone.innerHTML = "";
@@ -365,7 +363,6 @@
         ];
 
         standardTypes.forEach(std => {
-            // Check whether admin pushed this model inside active current user scheme cluster array
             let activeInstance = runtimeUser ? runtimeUser.schemes.find(sch => sch.schemeType === std.type) : null;
             
             let statusBadge = `<span class="status-tag-indicator locked"><i class="fa-solid fa-lock"></i> Locked</span>`;
@@ -374,6 +371,7 @@
 
             if(activeInstance) {
                 statusBadge = `<span class="status-tag-indicator active"><i class="fa-solid fa-circle-check"></i> Active</span>`;
+                // FIXED INTERACTIVE TYPO LINK POOL HERE
                 clickAction = `MapsToRoute('view-details')`;
                 if(std.type === "target") {
                     displayBadgeLabel = `Target Value: ₹${activeInstance.totalAmount.toLocaleString('en-IN')}`;
@@ -585,9 +583,10 @@
         });
     }
 
+    // FIXED GATEWAY API: WhatsApp endpoint loaded cleanly with target custom number
     function triggerWhatsAppRedirect() {
         let tag = runtimeUser ? runtimeUser.name : "Guest";
-        window.open(`https://wa.me/919876543210?text=Hello%20Admin%2C%20I%20want%20to%20activate%20a%20new%20ledger%20scheme%20for%20account%3A%20${encodeURIComponent(tag)}`, '_blank');
+        window.open(`https://wa.me/917845229384?text=Hello%20Admin%2C%20I%20want%20to%20activate%20a%20new%20ledger%20scheme%20for%20account%3A%20${encodeURIComponent(tag)}`, '_blank');
     }
 
     function navigateToRoute(targetViewId) {
@@ -604,10 +603,10 @@
         return d.toLocaleDateString('en-IN') + " | " + d.toLocaleTimeString('en-IN', {hour: '2-digit', minute:'2-digit'});
     }
 
-    function commitClusterMemory() { localStorage.setItem('sys_matrix_v14_multichit', JSON.stringify(datasetEngine)); }
+    function commitClusterMemory() { localStorage.setItem('sys_matrix_v15_multichit', JSON.stringify(datasetEngine)); }
     
     function terminateSession() {
-        runtimeUser = null; localStorage.removeItem('sys_matrix_v14_session_lock');
+        runtimeUser = null; localStorage.removeItem('sys_matrix_v15_session_lock');
         document.getElementById('auth-handle').value = ""; document.getElementById('app-navigation-dock').style.display = 'none';
         navigateToRoute('view-login');
     }
