@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Multi-Ledger Engine V12</title>
+    <title>Ultimate Multi-Ledger Engine V13</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -75,12 +75,35 @@
             transition: all 0.2s ease;
         }
 
-        .pure-image-banner {
-            width: 100%; height: 180px; border-radius: 24px;
-            background-size: cover; background-position: center;
-            margin-bottom: 20px; box-shadow: 0 12px 32px rgba(0,0,0,0.55);
-            border: 1px solid rgba(255,255,255,0.07); cursor: pointer;
+        /* FLOATING BADGE CONTAINER STYLE FOR VISUAL SCHEMES */
+        .banner-container-node {
+            position: relative;
+            width: 100%; height: 180px;
+            margin-bottom: 20px;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.07);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.55);
+            cursor: pointer;
             transition: transform 0.2s ease;
+        }
+        .banner-container-node:active { transform: scale(0.98); }
+
+        .pure-image-banner {
+            width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+        }
+
+        .floating-scheme-badge {
+            position: absolute; bottom: 16px; left: 16px;
+            background: rgba(8, 14, 27, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 16px; border-radius: 14px;
+            color: #ffffff; font-size: 13px; font-weight: 800;
+            display: flex; align-items: center; gap: 8px;
+            letter-spacing: 0.5px;
         }
 
         .section-headline {
@@ -89,12 +112,6 @@
             display: flex; align-items: center; gap: 6px;
         }
         .section-headline:first-of-type { margin-top: 5px; }
-
-        .plan-row-card {
-            background: linear-gradient(135deg, #16153b 0%, #0e1629 100%);
-            border: 1px solid rgba(99, 102, 241, 0.22); border-radius: 20px;
-            padding: 20px; margin-bottom: 15px; cursor: pointer;
-        }
 
         .statement-card {
             background: var(--card-bg); border-radius: 24px;
@@ -141,11 +158,6 @@
             background: var(--card-bg); border-radius: 22px;
             padding: 18px; margin-bottom: 18px; border: 1px solid var(--border);
         }
-
-        .mini-badge {
-            background: rgba(16, 185, 129, 0.14); color: var(--success);
-            padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700;
-        }
     </style>
 </head>
 <body>
@@ -160,20 +172,24 @@
         
         <div id="view-login">
             <h2 style="font-size: 26px; margin-bottom: 6px; font-weight: 800;">Identity Terminal</h2>
-            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 35px;">Enter identity node string to check or create ledger status tables.</p>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 35px;">Enter configuration identity handles to check active workspace ledgers.</p>
             
             <div class="form-group">
-                <input type="text" id="auth-handle" placeholder="Enter Account Name...">
+                <input type="text" id="auth-handle" placeholder="Enter Your Account Name...">
             </div>
             <button onclick="executeAuthentication()">Establish Identity Instantly</button>
         </div>
 
         <div id="view-home" style="display: none;">
-            <div class="section-headline"><i class="fa-solid fa-images"></i> Active Dynamic Schemes (Click Image)</div>
+            <div class="section-headline"><i class="fa-solid fa-layer-group"></i> My Active Assigned Schemes</div>
             
             <div id="dynamic-banner-allocation-zone"></div>
 
-            <div id="active-user-scheme-zone"></div>
+            <div class="section-headline"><i class="fa-brands fa-whatsapp"></i> WhatsApp Helpdesk Support</div>
+            <div class="banner-container-node" onclick="triggerWhatsAppRedirect()">
+                <div class="pure-image-banner" style="background-image: url('https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?q=80&w=600&auto=format&fit=crop');"></div>
+                <div class="floating-scheme-badge" style="color: #10b981;"><i class="fa-brands fa-whatsapp"></i> Support Desk Chat</div>
+            </div>
         </div>
 
         <div id="view-details" style="display: none;">
@@ -196,7 +212,7 @@
             <h3 style="margin-top:0; font-size: 20px; color:#fbbf24;"><i class="fa-solid fa-terminal"></i> Controller Terminal</h3>
             
             <div class="admin-card" style="background: rgba(0,0,0,0.25);">
-                <h4 style="font-size:13px; margin-top:0; margin-bottom:15px; color:#a5b4fc; text-transform:uppercase;">Deploy New User Profile</h4>
+                <h4 style="font-size:13px; margin-top:0; margin-bottom:15px; color:#a5b4fc; text-transform:uppercase;">Deploy Empty Profile Frame</h4>
                 <div class="form-group"><input type="text" id="adm-user-name" placeholder="Enter Member Account Name"></div>
                 <button style="background:var(--success);" onclick="adminProvisionNewUserOnly()">Register New Empty User</button>
             </div>
@@ -229,7 +245,7 @@
     let runtimeUser = null;
     const terminalRootKey = "thivashthivash143@gmail.com";
 
-    // Standard high quality asset urls mapped behind backend labels
+    // Asset tracking addresses mapped perfectly to labels
     const schemeAssetBanners = {
         "save_money": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600",
         "target": "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=600"
@@ -249,7 +265,7 @@
 
     function executeAuthentication() {
         let fieldString = document.getElementById('auth-handle').value.trim();
-        if(fieldString === "") { alert("Enter valid account identity name."); return; }
+        if(fieldString === "") { alert("Provide a proper validation identifier."); return; }
 
         if(fieldString.toLowerCase() === terminalRootKey.toLowerCase()) {
             localStorage.setItem('sys_matrix_v12_session_lock', fieldString);
@@ -259,7 +275,6 @@
         let userNodeMatch = datasetEngine.find(u => u.name.toLowerCase() === fieldString.toLowerCase());
         
         if(!userNodeMatch) {
-            // Rule 1 Fixed: Auto creates account, BUT leaves scheme array completely EMPTY! No auto schemes!
             userNodeMatch = { name: fieldString, schemes: [] };
             datasetEngine.push(userNodeMatch);
             commitClusterMemory();
@@ -280,28 +295,35 @@
         document.getElementById('app-navigation-dock').style.display = 'flex';
         document.getElementById('dock-admin').style.display = 'none';
         document.getElementById('profile-user-title').innerText = nameString;
-        document.getElementById('profile-schemes-count').innerText = runtimeUser ? `Active Allocated Systems: ${runtimeUser.schemes.length}` : "No Schemes Mapped";
+        document.getElementById('profile-schemes-count').innerText = runtimeUser ? `Total Sub-Schemes Loaded: ${runtimeUser.schemes.length}` : "No Active Schemes Found";
         
         buildUserSchemeCards(); computeStatementProfileMetrics(); navigateToRoute('view-home');
     }
 
     function buildUserSchemeCards() {
         let bannerZone = document.getElementById('dynamic-banner-allocation-zone');
-        let cardZone = document.getElementById('active-user-scheme-zone');
-        bannerZone.innerHTML = ""; cardZone.innerHTML = "";
+        bannerZone.innerHTML = ""; 
 
         if(runtimeUser && runtimeUser.schemes.length > 0) {
-            // Rule 3 Fixed: Only display pure layout image banners on home. Scheme names are hidden!
+            // FIX CONFIRMED: Banners display with dynamic glassmorphic overlay indicators!
             runtimeUser.schemes.forEach((sch, sIdx) => {
+                let floatingLabelText = sch.schemeType === "save_money" ? "Save Money Portfolio" : `Target Scheme (₹${sch.totalAmount.toLocaleString('en-IN')})`;
+                let iconTag = sch.schemeType === "save_money" ? "fa-piggy-bank" : "fa-bullseye";
+
                 bannerZone.innerHTML += `
-                    <div class="pure-image-banner" style="background-image: url('${sch.bannerImg}');" onclick="navigateToRoute('view-details')"></div>
+                    <div class="banner-container-node" onclick="navigateToRoute('view-details')">
+                        <div class="pure-image-banner" style="background-image: url('${sch.bannerImg}');"></div>
+                        <div class="floating-scheme-badge">
+                            <i class="fa-solid ${iconTag}" style="color:var(--primary);"></i> ${floatingLabelText}
+                        </div>
+                    </div>
                 `;
             });
         } else {
             bannerZone.innerHTML = `
-                <div style="text-align:center; padding:40px 20px; color:var(--text-muted); border:1px dashed var(--border); border-radius:24px;">
-                    <i class="fa-solid fa-folder-open" style="font-size:32px; margin-bottom:12px; color:var(--primary);"></i>
-                    <p style="margin:0; font-size:13px;">No scheme configurations initialized onto this workspace profile. Contact admin.</p>
+                <div style="text-align:center; padding:45px 20px; color:var(--text-muted); border:1px dashed var(--border); border-radius:24px;">
+                    <i class="fa-solid fa-folder-closed" style="font-size:32px; margin-bottom:12px; color:var(--warning);"></i>
+                    <p style="margin:0; font-size:13px;">No scheme portfolios allocated to your account yet. Contact owner via support link.</p>
                 </div>
             `;
         }
@@ -312,32 +334,31 @@
         container.innerHTML = "";
 
         if(!runtimeUser || runtimeUser.schemes.length === 0) {
-            container.innerHTML = `<div class="section-headline">Ledger Details</div><div class="statement-card"><p style="color:var(--text-muted); margin:0; font-size:13px;">No transaction files initialized inside database track nodes.</p></div>`;
+            container.innerHTML = `<div class="section-headline">Ledger Engine Sheet</div><div class="statement-card"><p style="color:var(--text-muted); margin:0; font-size:13px;">No transaction files initialized inside database track nodes.</p></div>`;
             return;
         }
 
         runtimeUser.schemes.forEach((sch, sIdx) => {
-            // Internal label translation purely for detailed statement clear understanding
-            let displayLabel = sch.schemeType === "save_money" ? "Save Money Ledger" : "Target Matrix Balance";
+            let displayLabel = sch.schemeType === "save_money" ? "Save Money Ledger" : "Target Balance Matrix";
             let targetRowHTML = "";
             
             if(sch.schemeType === "target") {
                 let pendingCash = sch.totalAmount - sch.totalPaid;
                 targetRowHTML = `
-                    <div class="metric-row"><span>Scheme Setup Target Value</span><strong>₹${sch.totalAmount.toLocaleString('en-IN')}</strong></div>
-                    <div class="metric-row" style="background:rgba(239,68,68,0.02)"><span>Outstanding Pending Gap</span><strong style="color:var(--danger);">₹${pendingCash.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row"><span>Target Frame Core Cap</span><strong>₹${sch.totalAmount.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row" style="background:rgba(239,68,68,0.02)"><span>Outstanding Debt Gap</span><strong style="color:var(--danger);">₹${pendingCash.toLocaleString('en-IN')}</strong></div>
                 `;
             }
 
             let section = document.createElement('div');
             section.innerHTML = `
-                <div class="section-headline"><i class="fa-solid fa-receipt"></i> Details: ${displayLabel} (#${sIdx + 1})</div>
+                <div class="section-headline"><i class="fa-solid fa-receipt"></i> Profile: ${displayLabel} (#${sIdx + 1})</div>
                 <div class="statement-card">
                     ${targetRowHTML}
-                    <div class="metric-row" style="background:rgba(16,185,129,0.02)"><span>Net Remitted Capital Balance</span><strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>
-                    <div class="metric-row" style="border-top:1px solid var(--border); margin-top:10px; padding-top:12px;"><span>Today Ledger Input</span><strong style="color:#a5b4fc;">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row" style="background:rgba(16,185,129,0.02)"><span>Net Remitted Paid</span><strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row" style="border-top:1px solid var(--border); margin-top:10px; padding-top:12px;"><span>Today Cash Input</span><strong style="color:#a5b4fc;">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
                     
-                    <div style="font-size:11px; color:var(--text-muted); margin-top:15px; font-weight:700; text-transform:uppercase;">Time Entry Records</div>
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:15px; font-weight:700; text-transform:uppercase;">Time Log Updates</div>
                     <div class="timeline-stream" id="logs-stream-sch-${sIdx}"></div>
                 </div>
             `;
@@ -358,21 +379,20 @@
 
     function adminProvisionNewUserOnly() {
         let name = document.getElementById('adm-user-name').value.trim();
-        if(name === "") { alert("Enter unique identity handle name."); return; }
+        if(name === "") { alert("Enter proper member account string layout."); return; }
 
         let userMatch = datasetEngine.find(u => u.name.toLowerCase() === name.toLowerCase());
-        if(userMatch) { alert("User identity string node already initialized in cluster memory."); return; }
+        if(userMatch) { alert("User profile instance already online inside cluster storage."); return; }
 
         datasetEngine.push({ name: name, schemes: [] });
         commitClusterMemory(); renderAdminDirectoryStack();
         document.getElementById('adm-user-name').value = "";
-        alert(`Account configured successfully: "${name}" initialized with empty maps.`);
+        alert(`Empty structural node customized for "${name}" successfully.`);
     }
 
     function toggleAdminAmountField(uIdx) {
         let selectionType = document.getElementById(`adm-type-select-${uIdx}`).value;
         let containerBlock = document.getElementById(`adm-target-amt-wrapper-${uIdx}`);
-        // Rule 4 Fixed: Target select panna mattum set amount input box visible aagum
         containerBlock.style.display = (selectionType === "target") ? "block" : "none";
     }
 
@@ -383,12 +403,12 @@
 
         if(typeSelected === "target") {
             calculatedTargetValue = parseFloat(document.getElementById(`adm-new-sch-amt-${uIdx}`).value);
-            if(isNaN(calculatedTargetValue) || calculatedTargetValue <= 0) { alert("Set target system amount frame value accurately."); return; }
+            if(isNaN(calculatedTargetValue) || calculatedTargetValue <= 0) { alert("Set correct target parameters amount."); return; }
         }
 
         let initializedLogMessage = typeSelected === "target" ? 
-            `Target scheme mapped structure deployed. Operational target framework: ₹${calculatedTargetValue.toLocaleString('en-IN')}.` :
-            "Save Money scheme portfolio map initialized securely into profile terminal storage.";
+            `Target scheme initialization initialized. Configuration benchmark cap set to ₹${calculatedTargetValue.toLocaleString('en-IN')}.` :
+            "Save Money portfolio tracking matrix deployed cleanly onto account node storage.";
 
         datasetEngine[uIdx].schemes.push({
             schemeType: typeSelected,
@@ -403,14 +423,14 @@
 
     function adminUpdateCashFlow(uIdx, sIdx) {
         let cash = parseFloat(document.getElementById(`adm-cash-${uIdx}-${sIdx}`).value);
-        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Regular System Flow Variable Injection";
-        if(isNaN(cash) || cash <= 0) { alert("Configure true cash matrix digits."); return; }
+        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Standard Admin Registry Log Update";
+        if(isNaN(cash) || cash <= 0) { alert("Configure positive balance numbers."); return; }
 
         let targetSch = datasetEngine[uIdx].schemes[sIdx];
         targetSch.todayPaid = cash; targetSch.totalPaid += cash;
         targetSch.logs.push({
             timestamp: captureTimestamp(), type: 'add',
-            message: `Remittance logged: Varavu Entry ₹${cash.toLocaleString('en-IN')}. [Ref: ${reason}].`
+            message: `Kaasu Varavu Added: ₹${cash.toLocaleString('en-IN')}. [Reason Update: ${reason}].`
         });
 
         commitClusterMemory(); renderAdminDirectoryStack();
@@ -418,11 +438,11 @@
 
     function adminDeductCashFlow(uIdx, sIdx) {
         let cash = parseFloat(document.getElementById(`adm-cash-${uIdx}-${sIdx}`).value);
-        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Operational Data Entry Correction";
-        if(isNaN(cash) || cash <= 0) { alert("Input exact evaluation reduction parameters."); return; }
+        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Operational Adjustment Correction Log";
+        if(isNaN(cash) || cash <= 0) { alert("Configure exact variables metrics digits."); return; }
 
         let targetSch = datasetEngine[uIdx].schemes[sIdx];
-        if(targetSch.totalPaid < cash) { alert("Deduction overflow bounds error."); return; }
+        if(targetSch.totalPaid < cash) { alert("Deduction overflow execution constraint out of bounds."); return; }
 
         targetSch.totalPaid -= cash; targetSch.todayPaid = 0;
         targetSch.logs.push({
@@ -434,8 +454,7 @@
     }
 
     function adminDeleteSpecificScheme(uIdx, sIdx) {
-        if(confirm("Intha specific scheme data-vai mattum thookalama? (Account delete aagadhu)")) {
-            // Rule 2 Fixed: Splices ONLY the scheme block node. The root user database is untouched.
+        if(confirm("Intha specific user sub scheme-ai mattum ledger-la irunthu thookalama? Account safe-ah irukkum.")) {
             datasetEngine[uIdx].schemes.splice(sIdx, 1);
             commitClusterMemory(); renderAdminDirectoryStack();
         }
@@ -469,7 +488,7 @@
                         </div>
                         <div style="font-size:12px; color:var(--text-muted); line-height:1.6; margin-bottom:10px;">
                             ${descriptiveStats}
-                            <div>Innaikku Update Value: <strong style="color:#a5b4fc;">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
+                            <div>Innaikku Input Value: <strong style="color:#a5b4fc;">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
                         </div>
                         <div style="display:flex; gap:6px; margin-bottom:8px;">
                             <input type="number" id="adm-cash-${uIdx}-${sIdx}" placeholder="Amount (₹)" style="padding:8px; font-size:12px; flex:1;">
@@ -505,7 +524,10 @@
         });
     }
 
-    document.addEventListener('visibilitychange', () => { if(!document.hidden) { renderAdminDirectoryStack(); } });
+    function triggerWhatsAppRedirect() {
+        let tag = runtimeUser ? runtimeUser.name : "Guest Connection Segment Link";
+        window.open(`https://wa.me/919876543210?text=Hello%20Admin%2C%20I%20want%20to%20activate%20a%20new%20ledger%20scheme%20for%20account%3A%20${encodeURIComponent(tag)}`, '_blank');
+    }
 
     function navigateToRoute(targetViewId) {
         const screens = ['view-login', 'view-home', 'view-details', 'view-profile', 'view-admin'];
