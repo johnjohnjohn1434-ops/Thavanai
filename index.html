@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Multi-Ledger Engine V10</title>
+    <title>Ultimate Multi-Ledger Engine V11</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -54,7 +54,6 @@
 
         .app-content { padding: 20px; flex: 1; }
         .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; text-transform: uppercase; }
         
         input, select {
             width: 100%; padding: 14px 16px;
@@ -147,10 +146,6 @@
             background: rgba(16, 185, 129, 0.14); color: var(--success);
             padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700;
         }
-        .warning-badge {
-            background: rgba(245, 158, 11, 0.12); color: var(--warning);
-            padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700;
-        }
     </style>
 </head>
 <body>
@@ -159,19 +154,18 @@
     
     <div class="header-bar">
         <div class="logo"><i class="fa-solid fa-layer-group"></i> MATRIX MULTI-HUB</div>
-        <div id="quick-avatar-node"></div>
     </div>
 
     <div class="app-content">
         
         <div id="view-login">
             <h2 style="font-size: 26px; margin-bottom: 6px; font-weight: 800;">Identity Terminal</h2>
-            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 35px;">Enter configuration identity handles to synchronize profile maps.</p>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 35px;">Enter your name to instantly create or fetch your matrix profiles ledger sheets.</p>
             
             <div class="form-group">
-                <input type="text" id="auth-handle" placeholder="Enter Registration Account Name...">
+                <input type="text" id="auth-handle" placeholder="Enter Your Name...">
             </div>
-            <button onclick="executeAuthentication()">Establish Identity Securely</button>
+            <button onclick="executeAuthentication()">Establish Identity Instantly</button>
         </div>
 
         <div id="view-home" style="display: none;">
@@ -203,9 +197,6 @@
         <div id="view-admin" style="display: none;">
             <h3 style="margin-top:0; font-size: 20px; color:#fbbf24;"><i class="fa-solid fa-terminal"></i> Controller Terminal</h3>
             
-            <div class="section-headline" style="color: var(--warning);"><i class="fa-solid fa-user-plus"></i> Incoming Registration Requests</div>
-            <div id="admin-request-stack" style="margin-bottom: 25px;"></div>
-
             <div class="admin-card" style="background: rgba(0,0,0,0.25);">
                 <h4 style="font-size:13px; margin-top:0; margin-bottom:15px; color:#a5b4fc; text-transform:uppercase;">Manual Account Provision</h4>
                 <div class="form-group"><input type="text" id="adm-user-name" placeholder="Enter Member Account Name"></div>
@@ -245,9 +236,8 @@
 
 <script>
     let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v10_multichit')) || [];
-    let dynamicRequests = JSON.parse(localStorage.getItem('sys_matrix_v10_reqs')) || [];
     let runtimeUser = null;
-    const terminalRootKey = "thivashthivash143@gmail.com";
+    const terminalRootKey = "thivashthivash143@gmail.com"; // Admin Login Credentials
 
     window.addEventListener('load', () => {
         let activeSessionKey = localStorage.getItem('sys_matrix_v10_session_lock');
@@ -263,38 +253,48 @@
 
     function executeAuthentication() {
         let fieldString = document.getElementById('auth-handle').value.trim();
-        if(fieldString === "") { alert("Enter proper validation handle."); return; }
+        if(fieldString === "") { alert("Valid name enter pannunga boss."); return; }
 
+        // ADMIN LOG IN CONTROL CHECK
         if(fieldString.toLowerCase() === terminalRootKey.toLowerCase()) {
             localStorage.setItem('sys_matrix_v10_session_lock', fieldString);
             bootAdminSession(); return;
         }
 
+        // USER LOG IN - INSTANT PASS MAP SYSTEM
         let userNodeMatch = datasetEngine.find(u => u.name.toLowerCase() === fieldString.toLowerCase());
-        if(userNodeMatch) {
-            runtimeUser = userNodeMatch;
-            localStorage.setItem('sys_matrix_v10_session_lock', fieldString);
-            bootUserSession(userNodeMatch.name);
-        } else {
-            if(!dynamicRequests.includes(fieldString)) {
-                dynamicRequests.push(fieldString);
-                localStorage.setItem('sys_matrix_v10_reqs', JSON.stringify(dynamicRequests));
-            }
-            alert("உங்க பெயர் கணினியில் இல்லை! லாகின் கோரிக்கை அட்மினுக்கு அனுப்பப்பட்டுள்ளது.");
+        
+        if(!userNodeMatch) {
+            // User unique name database-la illana, system instantly auto-creates account right here!
+            userNodeMatch = {
+                name: fieldString,
+                schemes: [{
+                    totalAmount: 100000, // Default Initial Demo Scheme Amount
+                    totalPaid: 0, todayPaid: 0,
+                    bannerImg: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600',
+                    logs: [{ timestamp: captureTimestamp(), type: 'add', message: 'Welcome! Auto Setup complete. Account Node generated instantly.' }]
+                }]
+            };
+            datasetEngine.push(userNodeMatch);
+            commitClusterMemory();
         }
+
+        runtimeUser = userNodeMatch;
+        localStorage.setItem('sys_matrix_v10_session_lock', fieldString);
+        bootUserSession(userNodeMatch.name);
     }
 
     function bootAdminSession() {
         document.getElementById('app-navigation-dock').style.display = 'flex';
         document.getElementById('dock-admin').style.display = 'flex';
-        navigateToRoute('view-admin'); renderAdminDirectoryStack(); renderAdminRequestsStack();
+        navigateToRoute('view-admin'); renderAdminDirectoryStack();
     }
 
     function bootUserSession(nameString) {
         document.getElementById('app-navigation-dock').style.display = 'flex';
         document.getElementById('dock-admin').style.display = 'none';
         document.getElementById('profile-user-title').innerText = nameString;
-        document.getElementById('profile-schemes-count').innerText = runtimeUser ? `Total Sub-Schemes Loaded: ${runtimeUser.schemes.length}` : "No Schemes Mapping";
+        document.getElementById('profile-schemes-count').innerText = runtimeUser ? `Total Schemes Connected: ${runtimeUser.schemes.length}` : "No Schemes Mapping";
         
         buildUserSchemeCards(); computeStatementProfileMetrics(); navigateToRoute('view-home');
     }
@@ -305,26 +305,21 @@
         bannerZone.innerHTML = ""; cardZone.innerHTML = "";
 
         if(runtimeUser && runtimeUser.schemes.length > 0) {
-            // Rule 1: Display the first scheme banner dynamic image on Top Header space
             let primaryScheme = runtimeUser.schemes[0];
             bannerZone.innerHTML = `<div class="pure-image-banner" style="background-image: url('${primaryScheme.bannerImg}');" onclick="navigateToRoute('view-details')"></div>`;
 
-            // Rule 2: Render all individual assigned sub-schemes lists cards block
-            cardZone.innerHTML = `<div class="section-headline"><i class="fa-solid fa-layer-group"></i> My Assigned Matrix Profiles</div>`;
+            cardZone.innerHTML = `<div class="section-headline"><i class="fa-solid fa-layer-group"></i> My Active Scheme Registry Profiles</div>`;
             runtimeUser.schemes.forEach((sch, sIdx) => {
                 cardZone.innerHTML += `
                     <div class="plan-row-card" onclick="navigateToRoute('view-details')">
-                        <div style="display:flex; justify-content:between; align-items:center; margin-bottom:6px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                             <strong style="font-size:16px; color:#fff;">Target: ₹${sch.totalAmount.toLocaleString('en-IN')}</strong>
                             <span class="mini-badge">Scheme #${sIdx + 1}</span>
                         </div>
-                        <div style="font-size:12px; color:var(--text-muted);">Today Paid Value: <strong style="color:var(--success);">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
+                        <div style="font-size:12px; color:var(--text-muted);">Today Remitted: <strong style="color:var(--success);">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
                     </div>
                 `;
             });
-        } else {
-            bannerZone.innerHTML = `<div class="pure-image-banner" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600');"></div>`;
-            cardZone.innerHTML = `<div class="plan-row-card" style="border-color:var(--danger); cursor:default;"><h4 style="margin:0; color:var(--danger);">No System Schemes Allocated Yet.</h4></div>`;
         }
     }
 
@@ -332,23 +327,20 @@
         let container = document.getElementById('multi-ledger-render-container');
         container.innerHTML = "";
 
-        if(!runtimeUser || runtimeUser.schemes.length === 0) {
-            container.innerHTML = `<div class="section-headline">Ledger</div><div class="statement-card"><p style="color:var(--text-muted); margin:0;">No balance sheet records found.</p></div>`;
-            return;
-        }
+        if(!runtimeUser || runtimeUser.schemes.length === 0) return;
 
         runtimeUser.schemes.forEach((sch, sIdx) => {
             let pendingCash = sch.totalAmount - sch.totalPaid;
             let section = document.createElement('div');
             section.innerHTML = `
-                <div class="section-headline"><i class="fa-solid fa-receipt"></i> Balance Sheet: Scheme #${sIdx + 1} (Target: ₹${sch.totalAmount.toLocaleString('en-IN')})</div>
+                <div class="section-headline"><i class="fa-solid fa-receipt"></i> Sheet Status: Scheme #${sIdx + 1}</div>
                 <div class="statement-card">
-                    <div class="metric-row"><span>Total Target Structure</span><strong>₹${sch.totalAmount.toLocaleString('en-IN')}</strong></div>
-                    <div class="metric-row" style="background:rgba(16,185,129,0.02)"><span>Net Remitted Paid</span><strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>
-                    <div class="metric-row" style="background:rgba(239,68,68,0.02)"><span>Outstanding Debt Balance</span><strong style="color:var(--danger);">₹${pendingCash.toLocaleString('en-IN')}</strong></div>
-                    <div class="metric-row" style="border-top:1px solid var(--border); margin-top:10px; padding-top:12px;"><span>Innaikku Kattuna Kaasu</span><strong style="color:#a5b4fc;">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row"><span>Scheme Total Target Value</span><strong>₹${sch.totalAmount.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row" style="background:rgba(16,185,129,0.02)"><span>Net Balance Paid</span><strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row" style="background:rgba(239,68,68,0.02)"><span>Outstanding Debt Pending</span><strong style="color:var(--danger);">₹${pendingCash.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row" style="border-top:1px solid var(--border); margin-top:10px; padding-top:12px;"><span>Today Capital Input</span><strong style="color:#a5b4fc;">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
                     
-                    <div style="font-size:11px; color:var(--text-muted); margin-top:15px; font-weight:700; text-transform:uppercase;">Scheme Time Logs</div>
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:15px; font-weight:700; text-transform:uppercase;">Time Ledger Updates</div>
                     <div class="timeline-stream" id="logs-stream-sch-${sIdx}"></div>
                 </div>
             `;
@@ -372,7 +364,7 @@
         let totalChitVal = parseFloat(document.getElementById('adm-total-chit').value);
         let banner = document.getElementById('adm-banner-select').value;
 
-        if(name === "" || isNaN(totalChitVal) || totalChitVal <= 0) { alert("Enter correct input params."); return; }
+        if(name === "" || isNaN(totalChitVal) || totalChitVal <= 0) { alert("Enter correct configurations."); return; }
 
         let userMatch = datasetEngine.find(u => u.name.toLowerCase() === name.toLowerCase());
         let newSchemeObj = {
@@ -384,43 +376,20 @@
             userMatch.schemes.push(newSchemeObj);
         } else {
             datasetEngine.push({ name: name, schemes: [newSchemeObj] });
-            dynamicRequests = dynamicRequests.filter(r => r.toLowerCase() !== name.toLowerCase());
-            localStorage.setItem('sys_matrix_v10_reqs', JSON.stringify(dynamicRequests));
         }
 
-        commitClusterMemory(); renderAdminDirectoryStack(); renderAdminRequestsStack();
+        commitClusterMemory(); renderAdminDirectoryStack();
         document.getElementById('adm-user-name').value = ""; document.getElementById('adm-total-chit').value = "";
-    }
-
-    function adminApproveRequestInline(reqName, index) {
-        let targetAmt = parseFloat(document.getElementById(`adm-req-amt-${index}`).value);
-        if(isNaN(targetAmt) || targetAmt <= 0) { alert("Set correct scheme target amount frame value."); return; }
-        
-        let newSchemeObj = {
-            totalAmount: targetAmt, totalPaid: 0, todayPaid: 0, bannerImg: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600',
-            logs: [{ timestamp: captureTimestamp(), type: 'add', message: `Scheme Initialized via Inline Approval. Target value set to ₹${targetAmt.toLocaleString('en-IN')}.` }]
-        };
-
-        datasetEngine.push({ name: reqName, schemes: [newSchemeObj] });
-        dynamicRequests.splice(index, 1);
-        localStorage.setItem('sys_matrix_v10_reqs', JSON.stringify(dynamicRequests));
-        commitClusterMemory(); renderAdminDirectoryStack(); renderAdminRequestsStack();
-    }
-
-    function adminRejectRequestInline(index) {
-        dynamicRequests.splice(index, 1);
-        localStorage.setItem('sys_matrix_v10_reqs', JSON.stringify(dynamicRequests));
-        renderAdminRequestsStack();
     }
 
     function adminAddSchemeToExisting(index) {
         let targetAmt = parseFloat(document.getElementById(`adm-new-sch-amt-${index}`).value);
         let banner = document.getElementById(`adm-new-sch-banner-${index}`).value;
-        if(isNaN(targetAmt) || targetAmt <= 0) { alert("Enter positive target amount setup values."); return; }
+        if(isNaN(targetAmt) || targetAmt <= 0) { alert("Amount parameter positive-ah podunga."); return; }
 
         datasetEngine[index].schemes.push({
             totalAmount: targetAmt, totalPaid: 0, todayPaid: 0, bannerImg: banner,
-            logs: [{ timestamp: captureTimestamp(), type: 'add', message: `Additional sub-scheme mapped parameter deployed into registry matrix. Value: ₹${targetAmt.toLocaleString('en-IN')}.` }]
+            logs: [{ timestamp: captureTimestamp(), type: 'add', message: `Additional extra sub-scheme setup initialized: ₹${targetAmt.toLocaleString('en-IN')}.` }]
         });
         
         document.getElementById(`adm-new-sch-amt-${index}`).value = "";
@@ -429,14 +398,14 @@
 
     function adminUpdateCashFlow(uIdx, sIdx) {
         let cash = parseFloat(document.getElementById(`adm-cash-${uIdx}-${sIdx}`).value);
-        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Standard Data Entry Update";
-        if(isNaN(cash) || cash <= 0) { alert("Enter valid positive cash amount."); return; }
+        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Standard Admin Data Log Update";
+        if(isNaN(cash) || cash <= 0) { alert("Valid entry value required."); return; }
 
         let targetSch = datasetEngine[uIdx].schemes[sIdx];
         targetSch.todayPaid = cash; targetSch.totalPaid += cash;
         targetSch.logs.push({
             timestamp: captureTimestamp(), type: 'add',
-            message: `Kaasu Varavu Added: Innaikku Kattunathu ₹${cash.toLocaleString('en-IN')}. [Reason: ${reason}]. Net Balance Remitted: ₹${targetSch.totalPaid.toLocaleString('en-IN')}.`
+            message: `Cash Added: ₹${cash.toLocaleString('en-IN')}. [Reason: ${reason}]. Net Paid: ₹${targetSch.totalPaid.toLocaleString('en-IN')}.`
         });
 
         commitClusterMemory(); renderAdminDirectoryStack();
@@ -444,49 +413,27 @@
 
     function adminDeductCashFlow(uIdx, sIdx) {
         let cash = parseFloat(document.getElementById(`adm-cash-${uIdx}-${sIdx}`).value);
-        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Correction Entry Log Adjustment";
-        if(isNaN(cash) || cash <= 0) { alert("Enter valid cash amount execution variables."); return; }
+        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Adjustment Rollback Action";
+        if(isNaN(cash) || cash <= 0) { alert("Valid amount handle needed."); return; }
 
         let targetSch = datasetEngine[uIdx].schemes[sIdx];
-        if(targetSch.totalPaid < cash) { alert("Deduction constraint limit out of range."); return; }
+        if(targetSch.totalPaid < cash) { alert("Deduction overflow bound limits."); return; }
 
         targetSch.totalPaid -= cash; targetSch.todayPaid = 0;
         targetSch.logs.push({
             timestamp: captureTimestamp(), type: 'sub',
-            message: `Kaasu Koraikkapattathu: Manual operational rollback executed. Deducted: ₹${cash.toLocaleString('en-IN')}. [Reason: ${reason}]. Net Balance Remitted: ₹${targetSch.totalPaid.toLocaleString('en-IN')}.`
+            message: `Rollback Deducted: ₹${cash.toLocaleString('en-IN')}. [Reason: ${reason}]. Net Paid: ₹${targetSch.totalPaid.toLocaleString('en-IN')}.`
         });
 
         commitClusterMemory(); renderAdminDirectoryStack();
     }
 
     function adminDeleteSpecificScheme(uIdx, sIdx) {
-        if(confirm("Delete intha scheme parameters-ah database la irunthu morthama thookalama?")) {
+        if(confirm("Intha specific user scheme data table-ai morthama wipe out pannelama?")) {
             datasetEngine[uIdx].schemes.splice(sIdx, 1);
             if(datasetEngine[uIdx].schemes.length === 0) { datasetEngine.splice(uIdx, 1); }
             commitClusterMemory(); renderAdminDirectoryStack();
         }
-    }
-
-    function renderAdminRequestsStack() {
-        let area = document.getElementById('admin-request-stack'); area.innerHTML = "";
-        if(dynamicRequests.length === 0) {
-            area.innerHTML = `<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px; border:1px dashed var(--border); border-radius:12px;">No incoming connection registration logs hanging in buffer stack.</div>`;
-            return;
-        }
-        dynamicRequests.forEach((reqName, idx) => {
-            area.innerHTML += `
-                <div class="admin-card" style="border-color: var(--warning);">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                        <strong>${reqName}</strong><span class="warning-badge">Login Trigger Request</span>
-                    </div>
-                    <div style="display:flex; gap:8px;">
-                        <input type="number" id="adm-req-amt-${idx}" placeholder="Set Scheme Amount (₹)" style="padding:8px; font-size:13px; flex:1;">
-                        <button style="padding:8px 14px; font-size:12px; background:var(--success); width:auto;" onclick="adminApproveRequestInline('${reqName}', ${idx})">Approve & Deploy</button>
-                        <button style="padding:8px 12px; font-size:12px; background:var(--danger); width:auto;" onclick="adminRejectRequestInline(${idx})"><i class="fa-solid fa-user-xmark"></i></button>
-                    </div>
-                </div>
-            `;
-        });
     }
 
     function renderAdminDirectoryStack() {
@@ -500,18 +447,18 @@
                 schemesHTML += `
                     <div style="background:rgba(0,0,0,0.2); padding:12px; border-radius:14px; margin-top:12px; border:1px solid rgba(255,255,255,0.03);">
                         <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:#fff; margin-bottom:8px;">
-                            <span>Scheme #${sIdx + 1} System Profile</span>
+                            <span>Scheme #${sIdx + 1} Core Metrics</span>
                             <button style="background:none; color:var(--danger); font-size:12px; padding:0; width:auto; box-shadow:none;" onclick="adminDeleteSpecificScheme(${uIdx}, ${sIdx})"><i class="fa-solid fa-trash-can"></i> Delete Scheme</button>
                         </div>
                         <div style="font-size:12px; color:var(--text-muted); line-height:1.6; margin-bottom:10px;">
-                            <div>Total Scheme Allocation: <strong style="color:var(--primary);">₹${sch.totalAmount.toLocaleString('en-IN')}</strong></div>
-                            <div>Total Remitted Capital: <strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>
-                            <div>Outstanding Remaining: <strong style="color:var(--danger);">₹${pend.toLocaleString('en-IN')}</strong></div>
-                            <div>Today Input Parameter: <strong style="color:#a5b4fc;">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
+                            <div>Total Target: <strong>₹${sch.totalAmount.toLocaleString('en-IN')}</strong></div>
+                            <div>Net Remitted Paid: <strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>
+                            <div>Outstanding Debt: <strong style="color:var(--danger);">₹${pend.toLocaleString('en-IN')}</strong></div>
+                            <div>Today Updated Paid: <strong style="color:#a5b4fc;">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
                         </div>
                         <div style="display:flex; gap:6px; margin-bottom:8px;">
                             <input type="number" id="adm-cash-${uIdx}-${sIdx}" placeholder="Amount (₹)" style="padding:8px; font-size:12px; flex:1;">
-                            <input type="text" id="adm-reason-${uIdx}-${sIdx}" placeholder="Reason Update" style="padding:8px; font-size:12px; flex:1.2;">
+                            <input type="text" id="adm-reason-${uIdx}-${sIdx}" placeholder="Entry Remarks" style="padding:8px; font-size:12px; flex:1.2;">
                         </div>
                         <div style="display:flex; gap:6px;">
                             <button style="padding:8px; font-size:11px; background:var(--success);" onclick="adminUpdateCashFlow(${uIdx}, ${sIdx})">+ Add Cash</button>
@@ -526,7 +473,7 @@
                 ${schemesHTML}
                 
                 <div style="margin-top:15px; border-top:1px dashed rgba(255,255,255,0.08); padding-top:12px;">
-                    <div style="font-size:11px; color:var(--text-muted); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Add New Scheme To This User</div>
+                    <div style="font-size:11px; color:var(--text-muted); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Add New Extra Scheme To This User</div>
                     <div style="display:flex; gap:6px;">
                         <input type="number" id="adm-new-sch-amt-${uIdx}" placeholder="Target Amount (₹)" style="padding:8px; font-size:12px; flex:1;">
                         <select id="adm-new-sch-banner-${uIdx}" style="padding:8px; font-size:12px; flex:1;">
