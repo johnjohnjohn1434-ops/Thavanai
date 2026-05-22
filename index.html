@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Seetu Ledger</title>
+    <title>Premium Ledger Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-main: #090d16;
-            --panel-bg: #111625;
-            --card-bg: #1a2035;
-            --primary: #4f46e5;
+            --bg-main: #050811;
+            --panel-bg: #0b1120;
+            --card-bg: #131c33;
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.3);
             --success: #10b981;
-            --danger: #f43f5e;
-            --text-main: #ffffff;
+            --danger: #ef4444;
+            --text-main: #f3f4f6;
             --text-muted: #9ca3af;
-            --border: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.07);
         }
 
         body {
@@ -31,14 +32,15 @@
 
         .app-shell {
             width: 100%;
-            max-width: 480px;
+            max-width: 460px;
             background: var(--panel-bg);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             position: relative;
-            padding-bottom: 80px;
+            padding-bottom: 85px;
             box-sizing: border-box;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
         .header-bar {
@@ -47,12 +49,18 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border);
+            background: rgba(11, 17, 32, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
-            font-size: 18px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #818cf8, #c084fc);
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #a5b4fc, #6366f1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -62,110 +70,134 @@
             flex: 1;
         }
 
-        .form-group { margin-bottom: 25px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
         
         input, select {
             width: 100%;
             padding: 15px 18px;
-            background: #090c16;
+            background: #03060f;
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 16px;
             color: #fff;
             font-size: 15px;
             box-sizing: border-box;
             outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
         }
 
         button {
             width: 100%;
             padding: 15px;
-            background: var(--primary);
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
             border: none;
-            border-radius: 14px;
+            border-radius: 16px;
             color: white;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s ease;
         }
 
-        /* Pure Image Banner (No Text Inside) */
+        button:active { transform: scale(0.98); }
+
+        /* Pure Image Banner Component */
         .pure-image-banner {
             width: 100%;
-            height: 170px;
-            border-radius: 20px;
+            height: 180px;
+            border-radius: 24px;
             background-size: cover;
             background-position: center;
             margin-bottom: 25px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.08);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s ease;
         }
 
         .pure-image-banner:active { transform: scale(0.98); }
 
         .section-headline {
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             color: var(--text-muted);
-            margin-bottom: 12px;
-            font-weight: 600;
+            margin: 25px 0 12px 0;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* Active Plan Cards Layout */
+        .section-headline:first-of-type { margin-top: 5px; }
+
+        /* Premium Matrix Grid Cards */
         .plan-row-card {
-            background: linear-gradient(135deg, #231f6d 0%, #1a2035 100%);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 16px;
-            padding: 18px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #131c33 100%);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 20px;
+            padding: 22px;
             margin-bottom: 20px;
             cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
         .statement-card {
             background: var(--card-bg);
-            border-radius: 18px;
-            padding: 20px;
+            border-radius: 24px;
+            padding: 22px;
             border: 1px solid var(--border);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         }
 
         .metric-row {
             display: flex;
             justify-content: space-between;
-            padding: 14px 0;
+            align-items: center;
+            padding: 15px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             font-size: 14px;
         }
         .metric-row:last-child { border: none; }
-        .metric-row span { color: var(--text-muted); }
+        .metric-row span { color: var(--text-muted); font-weight: 500; }
+        .metric-row strong { font-size: 16px; }
 
-        /* Timeline Updates */
-        .timeline-stream { margin-top: 20px; }
+        /* Modernized Timeline */
+        .timeline-stream { margin-top: 15px; }
         .log-node {
-            border-left: 2px solid var(--border);
-            padding-left: 18px;
+            border-left: 2px solid rgba(99, 102, 241, 0.2);
+            padding-left: 20px;
             position: relative;
-            padding-bottom: 18px;
+            padding-bottom: 22px;
         }
         .log-node::before {
             content: ''; position: absolute; left: -6px; top: 4px;
             width: 10px; height: 10px; background: var(--primary); border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
         }
-        .log-node.add::before { background: var(--success); }
-        .log-node.sub::before { background: var(--danger); }
+        .log-node.add::before { background: var(--success); box-shadow: 0 0 10px var(--success); }
+        .log-node.sub::before { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+        .log-time { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 3px; }
+        .log-msg { font-size: 14px; color: #ffffff; line-height: 1.4; }
 
-        /* Bottom Profile / Navigation Dock */
+        /* Fixed Bottom Dock Navigation Frame */
         .bottom-dock {
             position: absolute;
             bottom: 0; left: 0; width: 100%;
-            height: 75px; background: #090c16;
+            height: 75px; background: rgba(5, 8, 17, 0.92);
             border-top: 1px solid var(--border);
+            backdrop-filter: blur(12px);
             display: flex;
             justify-content: space-around;
             align-items: center;
             box-sizing: border-box;
-            z-index: 99;
+            z-index: 100;
         }
 
         .dock-item {
@@ -174,19 +206,32 @@
             align-items: center;
             color: var(--text-muted);
             font-size: 11px;
+            font-weight: 600;
             cursor: pointer;
             text-decoration: none;
+            transition: all 0.2s ease;
         }
 
-        .dock-item i { font-size: 22px; margin-bottom: 5px; }
+        .dock-item i { font-size: 20px; margin-bottom: 5px; transition: transform 0.2s; }
         .dock-item.active { color: var(--primary); }
+        .dock-item.active i { transform: translateY(-2px); }
 
+        /* Admin Action Area Components */
         .admin-card {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 15px;
+            border-radius: 22px;
+            padding: 20px;
+            margin-bottom: 20px;
             border: 1px solid var(--border);
+        }
+
+        .mini-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -195,54 +240,67 @@
 <div class="app-shell">
     
     <div class="header-bar">
-        <div class="logo"><i class="fa-solid fa-wallet"></i> SEETU MATRIX</div>
-        <div id="user-avatar-zone"></div>
+        <div class="logo"><i class="fa-solid fa-shield-halved"></i> SEETU LEDGER Pro</div>
+        <div id="quick-profile-node"></div>
     </div>
 
     <div class="app-content">
         
         <div id="view-login">
-            <h2 style="font-size: 24px; margin-bottom: 6px;">Sign In</h2>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">Enter account name to sync database terminal.</p>
+            <h2 style="font-size: 26px; margin-bottom: 6px; font-weight: 800;">Sign In</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 35px;">Enter identity core parameters to unlock financial nodes.</p>
             
             <div class="form-group">
-                <input type="text" id="auth-handle" placeholder="Enter Registration Name...">
+                <input type="text" id="auth-handle" placeholder="Enter Registration Account Name...">
             </div>
-            <button onclick="executeAuthentication()">Login Account</button>
+            <button onclick="executeAuthentication()">Open Secure Node</button>
         </div>
 
         <div id="view-home" style="display: none;">
-            
-            <div class="section-headline">Featured Insight</div>
+            <div class="section-headline"><i class="fa-solid fa-circle-nodes"></i> Premium Global Space</div>
             <div class="pure-image-banner" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop');" onclick="navigateToRoute('view-details')"></div>
 
             <div id="active-user-scheme-zone"></div>
 
-            <div class="section-headline">WhatsApp Service Desk</div>
+            <div class="section-headline"><i class="fa-brands fa-whatsapp"></i> Instant Matrix Network</div>
             <div class="pure-image-banner" style="background-image: url('https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?q=80&w=600&auto=format&fit=crop');" onclick="triggerWhatsAppRedirect()"></div>
         </div>
 
         <div id="view-details" style="display: none;">
-            <div class="section-headline">Ledger Metrics Overview</div>
+            <div class="section-headline"><i class="fa-solid fa-receipt"></i> Premium Balance Sheets</div>
             <div class="statement-card" id="metrics-sheet-render"></div>
 
-            <div class="section-headline" style="margin-top: 25px;">Live Statement Timestamps</div>
+            <div class="section-headline" style="margin-top: 30px;"><i class="fa-solid fa-timeline"></i> Ledger Time Registry</div>
             <div class="timeline-stream" id="logs-timeline-render"></div>
         </div>
 
+        <div id="view-profile" style="display: none;">
+            <div class="section-headline"><i class="fa-solid fa-user-gear"></i> Member Settings Node</div>
+            <div class="statement-card" style="text-align: center; padding: 40px 20px;">
+                <div style="width: 80px; height: 80px; background: var(--primary); border-radius: 50%; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px var(--primary-glow);">
+                    <i class="fa-solid fa-user-astronaut" style="font-size: 35px; color: #fff;"></i>
+                </div>
+                <h2 id="profile-user-title" style="margin: 0 0 5px 0; font-size: 22px; font-weight: 800;">Member Account</h2>
+                <p style="color: var(--text-muted); font-size: 13px; margin: 0 0 30px 0;">Status: Verified Security Network</p>
+                <button style="background: var(--danger); box-shadow: 0 4px 15px rgba(244,63,94,0.2);" onclick="terminateSession()">Terminate Session & Logout</button>
+            </div>
+        </div>
+
         <div id="view-admin" style="display: none;">
-            <h3 style="margin-top:0; color:#fbbf24;">Terminal Root Admin</h3>
+            <h3 style="margin-top:0; font-size: 20px; color:#fbbf24;"><i class="fa-solid fa-terminal"></i> Terminal Admin Node</h3>
             
-            <div class="admin-card" style="background: rgba(0,0,0,0.2);">
-                <h4 style="font-size:14px; margin-top:0; margin-bottom:12px;">Map User Profile Node</h4>
-                <input type="text" id="adm-user-name" placeholder="Account Name" style="margin-bottom:12px;">
-                <select id="adm-user-strategy" style="margin-bottom:15px;">
-                    <option value="500-105">₹500 Plan Scheme (105 Weeks)</option>
-                    <option value="1000-110">₹1000 Plan Scheme (110 Weeks)</option>
-                </select>
-                <button style="background:var(--success);" onclick="adminProvisionNode()">Deploy Node</button>
+            <div class="admin-card" style="background: rgba(0,0,0,0.25);">
+                <h4 style="font-size:14px; margin-top:0; margin-bottom:15px; color:#a5b4fc;">Provision Account Parameters</h4>
+                <div class="form-group">
+                    <input type="text" id="adm-user-name" placeholder="Enter Member Account Name" style="margin-bottom:12px;">
+                </div>
+                <div class="form-group">
+                    <input type="number" id="adm-total-chit" placeholder="Motha Seetu Kaasu (Total Target Amount)" style="margin-bottom:15px;">
+                </div>
+                <button style="background:var(--success); box-shadow: 0 4px 12px rgba(16,185,129,0.2);" onclick="adminProvisionNode()">Initialize System Mapping</button>
             </div>
 
+            <div class="section-headline"><i class="fa-solid fa-folder-tree"></i> Live Directory Registries</div>
             <div id="admin-directory-stack"></div>
         </div>
 
@@ -250,29 +308,29 @@
 
     <div class="bottom-dock" id="app-navigation-dock" style="display: none;">
         <div class="dock-item active" id="dock-home" onclick="navigateToRoute('view-home')">
-            <i class="fa-solid fa-house-chimney"></i><span>Home</span>
+            <i class="fa-solid fa-wallet"></i><span>Home</span>
         </div>
         <div class="dock-item" id="dock-details" onclick="navigateToRoute('view-details')">
-            <i class="fa-solid fa-chart-column"></i><span>Statements</span>
+            <i class="fa-solid fa-chart-pie"></i><span>Ledger</span>
+        </div>
+        <div class="dock-item" id="dock-profile" onclick="navigateToRoute('view-profile')">
+            <i class="fa-solid fa-fingerprint"></i><span>Profile</span>
         </div>
         <div class="dock-item" id="dock-admin" style="display:none;" onclick="navigateToRoute('view-admin')">
-            <i class="fa-solid fa-user-gear"></i><span>Admin</span>
-        </div>
-        <div class="dock-item" onclick="terminateSession()">
-            <i class="fa-solid fa-circle-user" style="color: var(--danger);"></i><span>SignOut</span>
+            <i class="fa-solid fa-unlock-keyhole"></i><span>Admin</span>
         </div>
     </div>
 
 </div>
 
 <script>
-    let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v7')) || [];
+    let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v8_cash')) || [];
     let runtimeUser = null;
     const terminalRootKey = "thivashthivash143@gmail.com";
 
     function executeAuthentication() {
         let fieldString = document.getElementById('auth-handle').value.trim();
-        if(fieldString === "") { alert("Enter proper name handle."); return; }
+        if(fieldString === "") { alert("Enter identity key string."); return; }
 
         if(fieldString.toLowerCase() === terminalRootKey.toLowerCase()) {
             document.getElementById('app-navigation-dock').style.display = 'flex';
@@ -286,6 +344,8 @@
         document.getElementById('app-navigation-dock').style.display = 'flex';
         document.getElementById('dock-admin').style.display = 'none';
         
+        document.getElementById('profile-user-title').innerText = fieldString;
+        
         buildUserSchemeCards();
         computeStatementProfileMetrics();
         navigateToRoute('view-home');
@@ -297,17 +357,20 @@
 
         if(runtimeUser) {
             zone.innerHTML = `
-                <div class="section-headline">My Active Allocation</div>
+                <div class="section-headline"><i class="fa-solid fa-layer-group"></i> My Live Strategy</div>
                 <div class="plan-row-card" onclick="navigateToRoute('view-details')">
-                    <h3 style="margin:0 0 5px 0; font-size:17px; color:#fff;">₹${runtimeUser.allocation} Standard Plan</h3>
-                    <p style="margin:0; font-size:13px; color:var(--text-muted);">Running active status account node track.</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <h3 style="margin:0; font-size:18px; color:#fff;">Target: ₹${runtimeUser.totalAmount.toLocaleString('en-IN')}</h3>
+                        <span class="mini-badge">Live System</span>
+                    </div>
+                    <p style="margin:0; font-size:13px; color:var(--text-muted);">Innaikku Kattuna Kaasu: <strong style="color:var(--success);">₹${runtimeUser.todayPaid.toLocaleString('en-IN')}</strong></p>
                 </div>
             `;
         } else {
             zone.innerHTML = `
-                <div class="plan-row-card" style="background:#14121a; border-color:var(--danger); cursor:default;">
-                    <h3 style="margin:0 0 5px 0; font-size:16px; color:var(--danger);">No System Mapping Identified</h3>
-                    <p style="margin:0; font-size:12px; color:var(--text-muted);">Please contact project ledger root to create account parameters.</p>
+                <div class="plan-row-card" style="background:#170b11; border-color:var(--danger); cursor:default;">
+                    <h3 style="margin:0 0 5px 0; font-size:16px; color:var(--danger);">No System Profile Found</h3>
+                    <p style="margin:0; font-size:12px; color:var(--text-muted);">Please contact node admin cluster to provision a profile registry.</p>
                 </div>
             `;
         }
@@ -318,22 +381,18 @@
         let chronologyPanel = document.getElementById('logs-timeline-render');
 
         if(!runtimeUser) {
-            contentPanel.innerHTML = `<p style="font-size:13px; color:var(--text-muted); margin:0;">No tracking references loaded.</p>`;
-            chronologyPanel.innerHTML = `<p style="font-size:13px; color:var(--text-muted);">Timeline clean.</p>`;
+            contentPanel.innerHTML = `<p style="font-size:13px; color:var(--text-muted); margin:0;">No tracking fields available.</p>`;
+            chronologyPanel.innerHTML = `<p style="font-size:13px; color:var(--text-muted);">History block empty.</p>`;
             return;
         }
 
-        let installmentCost = runtimeUser.allocation / runtimeUser.totalWeeks;
-        let runningPaidSum = runtimeUser.settledWeeks * installmentCost;
-        let netLiability = runtimeUser.allocation - runningPaidSum;
+        let pendingCash = runtimeUser.totalAmount - runtimeUser.totalPaid;
 
         contentPanel.innerHTML = `
-            <div class="metric-row"><span>Scheme Target</span><strong>₹${runtimeUser.allocation}</strong></div>
-            <div class="metric-row"><span>Total Prescribed Frame</span><strong>${runtimeUser.totalWeeks} Weeks</strong></div>
-            <div class="metric-row"><span>Completed Intervals</span><strong style="color:var(--success);">${runtimeUser.settledWeeks} Weeks</strong></div>
-            <div class="metric-row"><span>Pending Target Intervals</span><strong>${runtimeUser.totalWeeks - runtimeUser.settledWeeks} Weeks</strong></div>
-            <div class="metric-row" style="background:rgba(16,185,129,0.04)"><span>Total Remitted Capital</span><strong style="color:var(--success);">₹${runningPaidSum.toFixed(2)}</strong></div>
-            <div class="metric-row" style="background:rgba(244,63,94,0.04)"><span>Net Outstanding Debt</span><strong style="color:var(--danger);">₹${netLiability.toFixed(2)}</strong></div>
+            <div class="metric-row"><span>Motha Seetu Kaasu</span><strong>₹${runtimeUser.totalAmount.toLocaleString('en-IN')}</strong></div>
+            <div class="metric-row" style="background:rgba(16,185,129,0.03)"><span>Ippo Vara Kattuna Kaasu</span><strong style="color:var(--success);">₹${runtimeUser.totalPaid.toLocaleString('en-IN')}</strong></div>
+            <div class="metric-row" style="background:rgba(239,68,68,0.03)"><span>Meedham Pending Balance</span><strong style="color:var(--danger);">₹${pendingCash.toLocaleString('en-IN')}</strong></div>
+            <div class="metric-row" style="border-top:1px solid var(--border); margin-top:10px; padding-top:15px;"><span>Innaikku Kattuna Kaasu</span><strong style="color:#a5b4fc; font-size:18px;">₹${runtimeUser.todayPaid.toLocaleString('en-IN')}</strong></div>
         `;
 
         chronologyPanel.innerHTML = "";
@@ -342,8 +401,8 @@
             let div = document.createElement('div');
             div.className = `log-node ${log.type}`;
             div.innerHTML = `
-                <div style="font-size:11px; color:var(--text-muted);">${log.timestamp}</div>
-                <div style="font-size:13px; color:#fff; margin-top:3px;">${log.message}</div>
+                <div class="log-time"><i class="fa-regular fa-clock"></i> ${log.timestamp}</div>
+                <div class="log-msg">${log.message}</div>
             `;
             chronologyPanel.appendChild(div);
         });
@@ -351,51 +410,77 @@
 
     function adminProvisionNode() {
         let name = document.getElementById('adm-user-name').value.trim();
-        let planSplits = document.getElementById('adm-user-strategy').value.split('-');
+        let totalChitVal = parseFloat(document.getElementById('adm-total-chit').value);
 
-        if(name === "") return;
-        if(datasetEngine.some(u => u.name.toLowerCase() === name.toLowerCase())) { alert("Conflict logic duplicate locked."); return; }
+        if(name === "" || isNaN(totalChitVal) || totalChitVal <= 0) { alert("Enter correct configuration inputs."); return; }
+        if(datasetEngine.some(u => u.name.toLowerCase() === name.toLowerCase())) { alert("Duplicate tag configuration protected."); return; }
 
         datasetEngine.push({
             name: name,
-            allocation: parseFloat(planSplits[0]),
-            totalWeeks: parseInt(planSplits[1]),
-            settledWeeks: 0,
+            totalAmount: totalChitVal,
+            totalPaid: 0,
+            todayPaid: 0,
             logs: [{
                 timestamp: captureTimestamp(),
                 type: 'add',
-                message: `Profile array initialized into data matrix under standard setup rules.`
+                message: `Account mapped. System registered with Total Target Matrix: ₹${totalChitVal.toLocaleString('en-IN')}.`
             }]
         });
 
         commitClusterMemory();
         renderAdminDirectoryStack();
         document.getElementById('adm-user-name').value = "";
+        document.getElementById('adm-total-chit').value = "";
     }
 
-    function adminAdjustWeights(index, scaleValue) {
-        let trackingNode = datasetEngine[index];
-        let calculatedSum = trackingNode.settledWeeks + scaleValue;
+    function adminUpdateCashFlow(index) {
+        let amtInput = document.getElementById(`adm-cash-val-${index}`);
+        let cashValue = parseFloat(amtInput.value);
 
-        if(calculatedSum < 0 || calculatedSum > trackingNode.totalWeeks) return;
+        if(isNaN(cashValue) || cashValue <= 0) { alert("Please input a valid positive cash value."); return; }
 
-        trackingNode.settledWeeks = calculatedSum;
-        let codeType = scaleValue > 0 ? 'add' : 'sub';
-        let actionTxt = scaleValue > 0 ? "Incremented" : "Decremented";
+        let targetNode = datasetEngine[index];
+        
+        // Add operation updates
+        targetNode.todayPaid = cashValue; 
+        targetNode.totalPaid += cashValue;
 
-        trackingNode.logs.push({
+        targetNode.logs.push({
             timestamp: captureTimestamp(),
-            type: codeType,
-            message: `Admin Action executed: Data array parameter value changed to (${trackingNode.settledWeeks}/${trackingNode.totalWeeks} Weeks).`
+            type: 'add',
+            message: `Kaasu Varavu Added: Innaikku Kattuna Kaasu ₹${cashValue.toLocaleString('en-IN')} added to database. Mapped Net Balance Paid: ₹${targetNode.totalPaid.toLocaleString('en-IN')}.`
         });
 
-        datasetEngine[index] = trackingNode;
+        datasetEngine[index] = targetNode;
+        commitClusterMemory();
+        renderAdminDirectoryStack();
+    }
+
+    function adminDeductCashFlow(index) {
+        let amtInput = document.getElementById(`adm-cash-val-${index}`);
+        let cashValue = parseFloat(amtInput.value);
+
+        if(isNaN(cashValue) || cashValue <= 0) { alert("Please input a valid positive cash value."); return; }
+
+        let targetNode = datasetEngine[index];
+        if(targetNode.totalPaid < cashValue) { alert("Deduction value exceeds database remitted balance parameters."); return; }
+
+        targetNode.totalPaid -= cashValue;
+        targetNode.todayPaid = 0; // Clear or reset today indicator on manual correction rollback
+
+        targetNode.logs.push({
+            timestamp: captureTimestamp(),
+            type: 'sub',
+            message: `Kaasu Koraikkapattathu: Manual operational rollback executed. Deducted amount ₹${cashValue.toLocaleString('en-IN')}. Current Net Balance Paid: ₹${targetNode.totalPaid.toLocaleString('en-IN')}.`
+        });
+
+        datasetEngine[index] = targetNode;
         commitClusterMemory();
         renderAdminDirectoryStack();
     }
 
     function adminPurgeRegistry(index) {
-        if(confirm("Purge tracking record node parameters completely?")) {
+        if(confirm("Purge tracking record node parameters completely from execution matrices?")) {
             datasetEngine.splice(index,1);
             commitClusterMemory();
             renderAdminDirectoryStack();
@@ -407,20 +492,28 @@
         targetArea.innerHTML = "";
 
         datasetEngine.forEach((user, index) => {
+            let pending = user.totalAmount - user.totalPaid;
             let item = document.createElement('div');
             item.className = 'admin-card';
             item.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <strong>${user.name}</strong>
-                    <span style="font-size:12px; color:var(--primary); font-weight:600;">₹${user.allocation}</span>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <strong style="font-size:16px; color:#fff;">${user.name}</strong>
+                    <span style="font-size:12px; color:var(--primary); font-weight:700;">Target: ₹${user.totalAmount.toLocaleString('en-IN')}</span>
                 </div>
-                <div style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
-                    Counter Tracking: <strong>${user.settledWeeks} / ${user.totalWeeks} Weeks Active</strong>
+                <div style="font-size:13px; color:var(--text-muted); margin-bottom:15px; background:rgba(0,0,0,0.15); padding:10px; border-radius:10px;">
+                    <div>Kattuna Kaasu: <strong style="color:var(--success);">₹${user.totalPaid.toLocaleString('en-IN')}</strong></div>
+                    <div style="margin-top:4px;">Pending Balance: <strong style="color:var(--danger);">₹${pending.toLocaleString('en-IN')}</strong></div>
+                    <div style="margin-top:4px; border-top:1px solid rgba(255,255,255,0.05); padding-top:4px;">Innaikku Kattunathu: <strong style="color:#a5b4fc;">₹${user.todayPaid.toLocaleString('en-IN')}</strong></div>
                 </div>
+                
+                <div class="form-group" style="margin-bottom:10px;">
+                    <input type="number" id="adm-cash-val-${index}" placeholder="Enter Kaasu Amount (₹)" style="padding:10px 14px; font-size:14px;">
+                </div>
+                
                 <div style="display:flex; gap:8px;">
-                    <button style="padding:6px 12px; font-size:12px; background:var(--success);" onclick="adminAdjustWeights(${index}, 1)">+ Add Week</button>
-                    <button style="padding:6px 12px; font-size:12px; background:#d97706;" onclick="adminAdjustWeights(${index}, -1)">- Sub Week</button>
-                    <button style="padding:6px 12px; font-size:12px; background:var(--danger); width:auto;" onclick="adminPurgeRegistry(${index})"><i class="fa-solid fa-trash-can"></i></button>
+                    <button style="padding:10px 14px; font-size:13px; background:var(--success); font-weight:700;" onclick="adminUpdateCashFlow(${index})">+ Add Kaasu</button>
+                    <button style="padding:10px 14px; font-size:13px; background:#d97706; font-weight:700;" onclick="adminDeductCashFlow(${index})">- Koraikka</button>
+                    <button style="padding:10px; font-size:13px; background:var(--danger); width:auto;" onclick="adminPurgeRegistry(${index})"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             `;
             targetArea.appendChild(item);
@@ -428,17 +521,17 @@
     }
 
     function triggerWhatsAppRedirect() {
-        let tag = runtimeUser ? runtimeUser.name : "Guest Log";
-        window.open(`https://wa.me/919876543210?text=Registry%20Update%20Request%20From%3A%20${encodeURIComponent(tag)}`, '_blank');
+        let tag = runtimeUser ? runtimeUser.name : "Guest Log Node";
+        window.open(`https://wa.me/919876543210?text=Ledger%20Matrix%20Update%20Request%20From%20Channel%3A%20${encodeURIComponent(tag)}`, '_blank');
     }
 
     function navigateToRoute(targetViewId) {
-        const screens = ['view-login', 'view-home', 'view-details', 'view-admin'];
+        const screens = ['view-login', 'view-home', 'view-details', 'view-profile', 'view-admin'];
         screens.forEach(s => {
             document.getElementById(s).style.display = (s === targetViewId) ? 'block' : 'none';
         });
 
-        const dockMappings = { 'view-home': 'dock-home', 'view-details': 'dock-details', 'view-admin': 'dock-admin' };
+        const dockMappings = { 'view-home': 'dock-home', 'view-details': 'dock-details', 'view-profile': 'dock-profile', 'view-admin': 'dock-admin' };
         Object.values(dockMappings).forEach(id => {
             let el = document.getElementById(id);
             if(el) el.classList.remove('active');
@@ -448,10 +541,10 @@
 
     function captureTimestamp() {
         let d = new Date();
-        return d.toLocaleDateString() + " | " + d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+        return d.toLocaleDateString('en-IN') + " | " + d.toLocaleTimeString('en-IN', {hour: '2-digit', minute:'2-digit', second:'2-digit'});
     }
 
-    function commitClusterMemory() { localStorage.setItem('sys_matrix_v7', JSON.stringify(datasetEngine)); }
+    function commitClusterMemory() { localStorage.setItem('sys_matrix_v8_cash', JSON.stringify(datasetEngine)); }
     
     function terminateSession() {
         runtimeUser = null;
