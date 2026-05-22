@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Premium Ledger</title>
+    <title>Premium Seetu Ledger</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-main: #070a13;
-            --panel-bg: #0e1322;
-            --card-bg: #161f36;
+            --bg-main: #090d16;
+            --panel-bg: #111625;
+            --card-bg: #1a2035;
             --primary: #4f46e5;
             --success: #10b981;
             --danger: #f43f5e;
@@ -29,7 +29,6 @@
             justify-content: center;
         }
 
-        /* Phone App Frame Chassis */
         .app-shell {
             width: 100%;
             max-width: 480px;
@@ -38,8 +37,8 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            padding-bottom: 80px;
             box-sizing: border-box;
-            padding-bottom: 75px; /* Space for Bottom Navigation Dock */
         }
 
         .header-bar {
@@ -53,7 +52,6 @@
         .logo {
             font-size: 18px;
             font-weight: 700;
-            letter-spacing: -0.5px;
             background: linear-gradient(90deg, #818cf8, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -64,15 +62,8 @@
             flex: 1;
         }
 
-        /* Premium Form Controls */
         .form-group { margin-bottom: 25px; }
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
+        
         input, select {
             width: 100%;
             padding: 15px 18px;
@@ -83,10 +74,7 @@
             font-size: 15px;
             box-sizing: border-box;
             outline: none;
-            transition: all 0.2s;
         }
-
-        input:focus { border-color: var(--primary); }
 
         button {
             width: 100%;
@@ -100,44 +88,22 @@
             cursor: pointer;
         }
 
-        /* Mega Image Banner Components */
-        .mega-banner {
+        /* Pure Image Banner (No Text Inside) */
+        .pure-image-banner {
             width: 100%;
-            height: 180px;
+            height: 170px;
             border-radius: 20px;
             background-size: cover;
             background-position: center;
-            position: relative;
-            overflow: hidden;
             margin-bottom: 25px;
-            cursor: pointer;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
             transition: transform 0.2s;
         }
 
-        .mega-banner:active { transform: scale(0.98); }
+        .pure-image-banner:active { transform: scale(0.98); }
 
-        .banner-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(0deg, rgba(14,19,34,0.95) 0%, rgba(14,19,34,0.3) 100%);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            box-sizing: border-box;
-        }
-
-        .banner-badge {
-            position: absolute;
-            top: 15px; right: 15px;
-            background: var(--success);
-            color: #000; font-size: 11px; font-weight: 700;
-            padding: 4px 10px; border-radius: 30px;
-        }
-
-        /* Category Section Header */
         .section-headline {
             font-size: 13px;
             text-transform: uppercase;
@@ -145,12 +111,18 @@
             color: var(--text-muted);
             margin-bottom: 12px;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        /* Detail Statement Sheet */
+        /* Active Plan Cards Layout */
+        .plan-row-card {
+            background: linear-gradient(135deg, #231f6d 0%, #1a2035 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
         .statement-card {
             background: var(--card-bg);
             border-radius: 18px;
@@ -168,7 +140,7 @@
         .metric-row:last-child { border: none; }
         .metric-row span { color: var(--text-muted); }
 
-        /* Timeline Logging Design */
+        /* Timeline Updates */
         .timeline-stream { margin-top: 20px; }
         .log-node {
             border-left: 2px solid var(--border);
@@ -183,11 +155,11 @@
         .log-node.add::before { background: var(--success); }
         .log-node.sub::before { background: var(--danger); }
 
-        /* Navigation Dock Design */
+        /* Bottom Profile / Navigation Dock */
         .bottom-dock {
             position: absolute;
             bottom: 0; left: 0; width: 100%;
-            height: 70px; background: #0b0e1a;
+            height: 75px; background: #090c16;
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-around;
@@ -204,13 +176,11 @@
             font-size: 11px;
             cursor: pointer;
             text-decoration: none;
-            transition: color 0.2s;
         }
 
-        .dock-item i { font-size: 20px; margin-bottom: 4px; }
+        .dock-item i { font-size: 22px; margin-bottom: 5px; }
         .dock-item.active { color: var(--primary); }
 
-        /* Admin Layout Structs */
         .admin-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -225,73 +195,54 @@
 <div class="app-shell">
     
     <div class="header-bar">
-        <div class="logo"><i class="fa-solid fa-layer-group"></i> PLATFORM NODE</div>
-        <div id="runtime-status"></div>
+        <div class="logo"><i class="fa-solid fa-wallet"></i> SEETU MATRIX</div>
+        <div id="user-avatar-zone"></div>
     </div>
 
     <div class="app-content">
         
         <div id="view-login">
-            <h2 style="font-size: 24px; margin-bottom: 6px;">Sign In Protocol</h2>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">Enter verification handle to compute ledger interface.</p>
+            <h2 style="font-size: 24px; margin-bottom: 6px;">Sign In</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">Enter account name to sync database terminal.</p>
             
             <div class="form-group">
-                <label>User Identity Core Handle</label>
-                <input type="text" id="auth-handle" placeholder="Enter name or admin key allocation...">
+                <input type="text" id="auth-handle" placeholder="Enter Registration Name...">
             </div>
-            <button onclick="executeAuthentication()">Verify Credentials Node</button>
+            <button onclick="executeAuthentication()">Login Account</button>
         </div>
 
         <div id="view-home" style="display: none;">
             
-            <div id="user-banner-placement"></div>
+            <div class="section-headline">Featured Insight</div>
+            <div class="pure-image-banner" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop');" onclick="navigateToRoute('view-details')"></div>
 
-            <div class="section-headline"><i class="fa-solid fa-cubes"></i> Core Operational Segments</div>
-            <div class="mega-banner" style="background-image: url('https://images.unsplash.com/photo-1616077168712-fc6c788bc4ee?q=80&w=600&auto=format&fit=crop');" onclick="triggerWhatsAppRedirect()">
-                <div class="banner-overlay">
-                    <h3 style="margin: 0 0 4px 0; font-size: 18px;">Global Category Index</h3>
-                    <p style="margin: 0; font-size: 12px; color: var(--text-muted);">Click to join WhatsApp channel for real-time manual updates.</p>
-                </div>
-            </div>
+            <div id="active-user-scheme-zone"></div>
 
-            <div class="section-headline"><i class="fa-regular fa-id-card"></i> Session Matrix Account</div>
-            <div class="statement-card" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;">
-                <div>
-                    <h4 id="user-display-tag" style="margin:0; font-size:15px;">Guest Interface</h4>
-                    <p style="margin:0; font-size:11px; color:var(--text-muted);">Secure Tunnel Running</p>
-                </div>
-                <button style="width: auto; padding: 8px 16px; font-size: 12px; background: var(--danger);" onclick="terminateSession()">Exit</button>
-            </div>
+            <div class="section-headline">WhatsApp Service Desk</div>
+            <div class="pure-image-banner" style="background-image: url('https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?q=80&w=600&auto=format&fit=crop');" onclick="triggerWhatsAppRedirect()"></div>
         </div>
 
         <div id="view-details" style="display: none;">
-            <div class="section-headline"><i class="fa-solid fa-chart-pie"></i> Ledger Audit Balance Sheets</div>
-            <div class="statement-card" id="metrics-drilldown-render">
-                </div>
+            <div class="section-headline">Ledger Metrics Overview</div>
+            <div class="statement-card" id="metrics-sheet-render"></div>
 
-            <div class="section-headline" style="margin-top: 25px;"><i class="fa-solid fa-clock-rotate-left"></i> Transaction Ledger Logs (Timestamps)</div>
-            <div class="timeline-stream" id="logs-timeline-render">
-                </div>
+            <div class="section-headline" style="margin-top: 25px;">Live Statement Timestamps</div>
+            <div class="timeline-stream" id="logs-timeline-render"></div>
         </div>
 
         <div id="view-admin" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin:0; font-size:18px; color:#fbbf24;"><i class="fa-solid fa-sliders"></i> Master Core Matrix</h3>
-                <button style="width:auto; padding:6px 12px; font-size:12px; background:var(--danger);" onclick="terminateSession()">Logout Admin</button>
-            </div>
-
+            <h3 style="margin-top:0; color:#fbbf24;">Terminal Root Admin</h3>
+            
             <div class="admin-card" style="background: rgba(0,0,0,0.2);">
                 <h4 style="font-size:14px; margin-top:0; margin-bottom:12px;">Map User Profile Node</h4>
-                <input type="text" id="adm-user-name" placeholder="Enter Registration Account Name" style="margin-bottom:12px;">
+                <input type="text" id="adm-user-name" placeholder="Account Name" style="margin-bottom:12px;">
                 <select id="adm-user-strategy" style="margin-bottom:15px;">
-                    <option value="500-105">₹500 Scheme Layout (105 Weeks)</option>
-                    <option value="1000-110">₹1000 Scheme Layout (110 Weeks)</option>
-                    <option value="2000-120">₹2000 Scheme Layout (120 Weeks)</option>
+                    <option value="500-105">₹500 Plan Scheme (105 Weeks)</option>
+                    <option value="1000-110">₹1000 Plan Scheme (110 Weeks)</option>
                 </select>
-                <button style="background:var(--success);" onclick="adminProvisionNode()">Deploy Profile Node</button>
+                <button style="background:var(--success);" onclick="adminProvisionNode()">Deploy Node</button>
             </div>
 
-            <div class="section-headline"><i class="fa-solid fa-folder-tree"></i> Directory Node Stack</div>
             <div id="admin-directory-stack"></div>
         </div>
 
@@ -299,32 +250,30 @@
 
     <div class="bottom-dock" id="app-navigation-dock" style="display: none;">
         <div class="dock-item active" id="dock-home" onclick="navigateToRoute('view-home')">
-            <i class="fa-solid fa-house"></i><span>Home</span>
+            <i class="fa-solid fa-house-chimney"></i><span>Home</span>
         </div>
         <div class="dock-item" id="dock-details" onclick="navigateToRoute('view-details')">
-            <i class="fa-solid fa-receipt"></i><span>Statements</span>
+            <i class="fa-solid fa-chart-column"></i><span>Statements</span>
         </div>
         <div class="dock-item" id="dock-admin" style="display:none;" onclick="navigateToRoute('view-admin')">
-            <i class="fa-solid fa-user-gear"></i><span>Admin Terminal</span>
+            <i class="fa-solid fa-user-gear"></i><span>Admin</span>
+        </div>
+        <div class="dock-item" onclick="terminateSession()">
+            <i class="fa-solid fa-circle-user" style="color: var(--danger);"></i><span>SignOut</span>
         </div>
     </div>
 
 </div>
 
 <script>
-    // Core Registry Cluster Memory Node
-    let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v6')) || [];
+    let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v7')) || [];
     let runtimeUser = null;
     const terminalRootKey = "thivashthivash143@gmail.com";
 
-    // Configuration Parameter Redirects
-    const targetWhatsAppNumber = "919876543210"; // UNGA NUMBER-AH INGA CHANGE PANNIKONGA PA
-
     function executeAuthentication() {
         let fieldString = document.getElementById('auth-handle').value.trim();
-        if(fieldString === "") { alert("Authentication string null."); return; }
+        if(fieldString === "") { alert("Enter proper name handle."); return; }
 
-        // Route Sequence 1: Admin Interface Launch
         if(fieldString.toLowerCase() === terminalRootKey.toLowerCase()) {
             document.getElementById('app-navigation-dock').style.display = 'flex';
             document.getElementById('dock-admin').style.display = 'flex';
@@ -333,53 +282,44 @@
             return;
         }
 
-        // Route Sequence 2: Member Standard Navigation Loading
         runtimeUser = datasetEngine.find(u => u.name.toLowerCase() === fieldString.toLowerCase());
-        
-        document.getElementById('user-display-tag').innerText = fieldString;
         document.getElementById('app-navigation-dock').style.display = 'flex';
-        document.getElementById('dock-admin').style.display = 'none'; // Lock admin interface
+        document.getElementById('dock-admin').style.display = 'none';
         
-        buildDynamicUserHeroBanner();
+        buildUserSchemeCards();
         computeStatementProfileMetrics();
         navigateToRoute('view-home');
     }
 
-    function buildDynamicUserHeroBanner() {
-        let layoutZone = document.getElementById('user-banner-placement');
-        layoutZone.innerHTML = "";
+    function buildUserSchemeCards() {
+        let zone = document.getElementById('active-user-scheme-zone');
+        zone.innerHTML = "";
 
         if(runtimeUser) {
-            layoutZone.innerHTML = `
-                <div class="section-headline"><i class="fa-solid fa-fire"></i> User Status Deck</div>
-                <div class="mega-banner" style="background-image: url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=600&auto=format&fit=crop');" onclick="navigateToRoute('view-details')">
-                    <span class="banner-badge">RUNNING NODE</span>
-                    <div class="banner-overlay">
-                        <h3 style="margin:0 0 4px 0; font-size:20px;">₹${runtimeUser.allocation} Plan Model</h3>
-                        <p style="margin:0; font-size:12px; color:var(--text-muted);">Active Registry Detected. Click to trace active ledger sheets.</p>
-                    </div>
+            zone.innerHTML = `
+                <div class="section-headline">My Active Allocation</div>
+                <div class="plan-row-card" onclick="navigateToRoute('view-details')">
+                    <h3 style="margin:0 0 5px 0; font-size:17px; color:#fff;">₹${runtimeUser.allocation} Standard Plan</h3>
+                    <p style="margin:0; font-size:13px; color:var(--text-muted);">Running active status account node track.</p>
                 </div>
             `;
         } else {
-            layoutZone.innerHTML = `
-                <div class="section-headline"><i class="fa-solid fa-triangle-exclamation"></i> Status Alert</div>
-                <div class="mega-banner" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop'); cursor:default;">
-                    <div class="banner-overlay">
-                        <h3 style="margin:0 0 4px 0; font-size:18px; color:var(--danger);">No Account Pipeline Registered</h3>
-                        <p style="margin:0; font-size:12px; color:var(--text-muted);">Unmapped environment detected. Request account allocation from terminal root.</p>
-                    </div>
+            zone.innerHTML = `
+                <div class="plan-row-card" style="background:#14121a; border-color:var(--danger); cursor:default;">
+                    <h3 style="margin:0 0 5px 0; font-size:16px; color:var(--danger);">No System Mapping Identified</h3>
+                    <p style="margin:0; font-size:12px; color:var(--text-muted);">Please contact project ledger root to create account parameters.</p>
                 </div>
             `;
         }
     }
 
     function computeStatementProfileMetrics() {
-        let contentPanel = document.getElementById('metrics-drilldown-render');
+        let contentPanel = document.getElementById('metrics-sheet-render');
         let chronologyPanel = document.getElementById('logs-timeline-render');
 
         if(!runtimeUser) {
-            contentPanel.innerHTML = `<p style="text-align:center; font-size:13px; color:var(--text-muted); margin:0;">No statement vectors mapped to this user channel.</p>`;
-            chronologyPanel.innerHTML = `<p style="text-align:center; font-size:13px; color:var(--text-muted);">History array empty.</p>`;
+            contentPanel.innerHTML = `<p style="font-size:13px; color:var(--text-muted); margin:0;">No tracking references loaded.</p>`;
+            chronologyPanel.innerHTML = `<p style="font-size:13px; color:var(--text-muted);">Timeline clean.</p>`;
             return;
         }
 
@@ -388,12 +328,12 @@
         let netLiability = runtimeUser.allocation - runningPaidSum;
 
         contentPanel.innerHTML = `
-            <div class="metric-row"><span>Scheme Allocation Unit</span><strong>₹${runtimeUser.allocation}</strong></div>
-            <div class="metric-row"><span>Allocated Execution Frame</span><strong>${runtimeUser.totalWeeks} Weeks</strong></div>
-            <div class="metric-row"><span>Settled Intervals Counter</span><strong style="color:var(--success);">${runtimeUser.settledWeeks} Weeks</strong></div>
-            <div class="metric-row"><span>Deficit Remaining Intervals</span><strong>${runtimeUser.totalWeeks - runtimeUser.settledWeeks} Weeks</strong></div>
-            <div class="metric-row" style="background:rgba(16,185,129,0.04)"><span>Total Remitted Funds</span><strong style="color:var(--success);">₹${runningPaidSum.toFixed(2)}</strong></div>
-            <div class="metric-row" style="background:rgba(244,63,94,0.04)"><span>Total Outstanding Unpaid Liabilities</span><strong style="color:var(--danger);">₹${netLiability.toFixed(2)}</strong></div>
+            <div class="metric-row"><span>Scheme Target</span><strong>₹${runtimeUser.allocation}</strong></div>
+            <div class="metric-row"><span>Total Prescribed Frame</span><strong>${runtimeUser.totalWeeks} Weeks</strong></div>
+            <div class="metric-row"><span>Completed Intervals</span><strong style="color:var(--success);">${runtimeUser.settledWeeks} Weeks</strong></div>
+            <div class="metric-row"><span>Pending Target Intervals</span><strong>${runtimeUser.totalWeeks - runtimeUser.settledWeeks} Weeks</strong></div>
+            <div class="metric-row" style="background:rgba(16,185,129,0.04)"><span>Total Remitted Capital</span><strong style="color:var(--success);">₹${runningPaidSum.toFixed(2)}</strong></div>
+            <div class="metric-row" style="background:rgba(244,63,94,0.04)"><span>Net Outstanding Debt</span><strong style="color:var(--danger);">₹${netLiability.toFixed(2)}</strong></div>
         `;
 
         chronologyPanel.innerHTML = "";
@@ -414,7 +354,7 @@
         let planSplits = document.getElementById('adm-user-strategy').value.split('-');
 
         if(name === "") return;
-        if(datasetEngine.some(u => u.name.toLowerCase() === name.toLowerCase())) { alert("Identifier conflict protected."); return; }
+        if(datasetEngine.some(u => u.name.toLowerCase() === name.toLowerCase())) { alert("Conflict logic duplicate locked."); return; }
 
         datasetEngine.push({
             name: name,
@@ -424,7 +364,7 @@
             logs: [{
                 timestamp: captureTimestamp(),
                 type: 'add',
-                message: `Account mapped dynamically into engine database registries under standard setup metrics.`
+                message: `Profile array initialized into data matrix under standard setup rules.`
             }]
         });
 
@@ -446,7 +386,7 @@
         trackingNode.logs.push({
             timestamp: captureTimestamp(),
             type: codeType,
-            message: `Terminal administrator executed ${actionTxt} action. System parameter reference modified to: ${trackingNode.settledWeeks}/${trackingNode.totalWeeks} Weeks.`
+            message: `Admin Action executed: Data array parameter value changed to (${trackingNode.settledWeeks}/${trackingNode.totalWeeks} Weeks).`
         });
 
         datasetEngine[index] = trackingNode;
@@ -455,7 +395,7 @@
     }
 
     function adminPurgeRegistry(index) {
-        if(confirm("Purge tracking record node parameters completely from execution tables?")) {
+        if(confirm("Purge tracking record node parameters completely?")) {
             datasetEngine.splice(index,1);
             commitClusterMemory();
             renderAdminDirectoryStack();
@@ -466,26 +406,21 @@
         let targetArea = document.getElementById('admin-directory-stack');
         targetArea.innerHTML = "";
 
-        if(datasetEngine.length === 0) {
-            targetArea.innerHTML = `<p style="color:var(--text-muted); font-size:13px; text-align:center;">Directory empty.</p>`;
-            return;
-        }
-
         datasetEngine.forEach((user, index) => {
             let item = document.createElement('div');
             item.className = 'admin-card';
             item.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                     <strong>${user.name}</strong>
-                    <span style="font-size:12px; color:var(--primary); font-weight:600;">₹${user.allocation} Scheme</span>
+                    <span style="font-size:12px; color:var(--primary); font-weight:600;">₹${user.allocation}</span>
                 </div>
-                <div style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">
-                    Verified Execution Counter: <strong>${user.settledWeeks} / ${user.totalWeeks} Weeks Active</strong>
+                <div style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
+                    Counter Tracking: <strong>${user.settledWeeks} / ${user.totalWeeks} Weeks Active</strong>
                 </div>
                 <div style="display:flex; gap:8px;">
-                    <button style="padding:8px 14px; font-size:12px; background:var(--success);" onclick="adminAdjustWeights(${index}, 1)">+ Add Week</button>
-                    <button style="padding:8px 14px; font-size:12px; background:#d97706;" onclick="adminAdjustWeights(${index}, -1)">- Sub Week</button>
-                    <button style="padding:8px 14px; font-size:12px; background:var(--danger); width:auto;" onclick="adminPurgeRegistry(${index})"><i class="fa-solid fa-trash-can"></i></button>
+                    <button style="padding:6px 12px; font-size:12px; background:var(--success);" onclick="adminAdjustWeights(${index}, 1)">+ Add Week</button>
+                    <button style="padding:6px 12px; font-size:12px; background:#d97706;" onclick="adminAdjustWeights(${index}, -1)">- Sub Week</button>
+                    <button style="padding:6px 12px; font-size:12px; background:var(--danger); width:auto;" onclick="adminPurgeRegistry(${index})"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             `;
             targetArea.appendChild(item);
@@ -493,9 +428,8 @@
     }
 
     function triggerWhatsAppRedirect() {
-        let clientTag = runtimeUser ? runtimeUser.name : "Guest User";
-        let textPayload = encodeURIComponent(`Hi Admin, Naan seetu system pathu pesren. My Registry Handle: ${clientTag}. Enaku details update pannanum.`);
-        window.open(`https://wa.me/${targetWhatsAppNumber}?text=${textPayload}`, '_blank');
+        let tag = runtimeUser ? runtimeUser.name : "Guest Log";
+        window.open(`https://wa.me/919876543210?text=Registry%20Update%20Request%20From%3A%20${encodeURIComponent(tag)}`, '_blank');
     }
 
     function navigateToRoute(targetViewId) {
@@ -504,15 +438,12 @@
             document.getElementById(s).style.display = (s === targetViewId) ? 'block' : 'none';
         });
 
-        // Set Navigation Icons Active Highlight Styling Logic
         const dockMappings = { 'view-home': 'dock-home', 'view-details': 'dock-details', 'view-admin': 'dock-admin' };
         Object.values(dockMappings).forEach(id => {
             let el = document.getElementById(id);
             if(el) el.classList.remove('active');
         });
-        if(dockMappings[targetViewId]) {
-            document.getElementById(dockMappings[targetViewId]).classList.add('active');
-        }
+        if(dockMappings[targetViewId]) document.getElementById(dockMappings[targetViewId]).classList.add('active');
     }
 
     function captureTimestamp() {
@@ -520,7 +451,7 @@
         return d.toLocaleDateString() + " | " + d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
     }
 
-    function commitClusterMemory() { localStorage.setItem('sys_matrix_v6', JSON.stringify(datasetEngine)); }
+    function commitClusterMemory() { localStorage.setItem('sys_matrix_v7', JSON.stringify(datasetEngine)); }
     
     function terminateSession() {
         runtimeUser = null;
@@ -529,6 +460,5 @@
         navigateToRoute('view-login');
     }
 </script>
-
 </body>
 </html>
