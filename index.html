@@ -3,451 +3,499 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chit Fund Smart Ledger</title>
+    <title>Enterprise Seetu Ledger</title>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --surface: #171e2e;
-            --surface-accent: #222f47;
-            --primary: #4f46e5;
-            --primary-light: #818cf8;
-            --success: #10b981;
-            --danger: #f43f5e;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --border: rgba(255, 255, 255, 0.05);
+            --bg-main: #090d16;
+            --panel-bg: #131926;
+            --panel-card: #1c2536;
+            --primary-glow: #4f46e5;
+            --text-title: #ffffff;
+            --text-body: #9ca3af;
+            --green-glow: #10b981;
+            --red-glow: #f43f5e;
+            --border-line: rgba(255, 255, 255, 0.06);
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-title);
             margin: 0;
-            padding: 15px;
+            padding: 0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
         }
 
-        .app-container {
+        /* Phone App Frame Simulation */
+        .app-shell {
             width: 100%;
-            max-width: 500px;
-            background: var(--surface);
-            border-radius: 28px;
-            padding: 25px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border);
-            margin-top: 20px;
+            max-width: 480px;
+            background: var(--panel-bg);
+            min-height: 100vh;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            position: relative;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
-        h2, h3, h4 {
-            margin-top: 0;
-            font-weight: 600;
+        .navbar {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-line);
         }
 
-        .header-title {
-            text-align: center;
-            font-size: 22px;
-            background: linear-gradient(to right, #a78bfa, #c084fc);
+        .brand-logo {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 25px;
         }
 
-        /* Category Cards Design */
-        .section-label {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .content-body {
+            padding: 20px;
+            flex: 1;
         }
 
-        .plans-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-
-        .plan-card {
-            background: var(--surface-accent);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 16px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .plan-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 4px; height: 100%;
-            background: var(--primary-light);
-        }
-
-        .plan-card.gold::before {
-            background: #fbbf24;
-        }
-
-        .plan-card h4 {
-            margin-bottom: 6px;
-            font-size: 18px;
-            color: var(--text-main);
-        }
-
-        .plan-card p {
-            margin: 0;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        /* Form Inputs */
-        .input-group {
+        /* High Quality Forms & Inputs */
+        .form-control {
             margin-bottom: 20px;
+        }
+
+        .form-control label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-body);
+            margin-bottom: 8px;
+            font-weight: 500;
         }
 
         input, select {
             width: 100%;
-            padding: 14px;
-            background: rgba(11, 15, 25, 0.6);
-            border: 1px solid var(--border);
+            padding: 14px 16px;
+            background: #0b0f17;
+            border: 1px solid var(--border-line);
             border-radius: 12px;
-            color: white;
+            color: #fff;
             font-size: 15px;
             box-sizing: border-box;
-            transition: all 0.2s;
+            outline: none;
+            transition: all 0.2s ease;
         }
 
         input:focus, select:focus {
-            border-color: var(--primary-light);
-            outline: none;
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 12px rgba(79, 70, 229, 0.2);
         }
 
         button {
             width: 100%;
             padding: 14px;
-            background: var(--primary);
-            color: white;
+            background: var(--primary-glow);
             border: none;
             border-radius: 12px;
+            color: white;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
 
-        button:hover {
-            background: #4338ca;
+        button:hover { background: #4338ca; }
+        .btn-link { background: transparent; color: var(--text-body); text-decoration: underline; margin-top: 10px; font-size: 13px;}
+        .btn-danger { background: var(--red-glow); }
+        .btn-success { background: var(--green-glow); }
+
+        /* Dynamic Active Banner (Top Priority) */
+        .active-scheme-banner {
+            background: linear-gradient(135deg, #1e1b4b 0%, #111827 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
         }
 
-        .btn-sub {
-            background: #2e3c54;
+        .active-scheme-banner:active { transform: scale(0.98); }
+        .active-scheme-banner .badge {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: var(--green-glow);
+            color: #000; font-size: 10px; font-weight: 700;
+            padding: 3px 8px; border-radius: 20px;
+        }
+
+        /* Grid Categories */
+        .grid-headline {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-body);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .category-item {
+            background: var(--panel-card);
+            border: 1px solid var(--border-line);
+            padding: 16px;
+            border-radius: 14px;
+        }
+
+        .category-item h4 { margin: 0 0 4px 0; font-size: 16px; color: #fff; }
+        .category-item p { margin: 0; font-size: 12px; color: var(--text-body); }
+
+        /* Detail Modal Sheet */
+        .detail-sheet {
+            background: var(--panel-card);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-line);
             margin-top: 15px;
         }
 
-        .btn-danger { background: var(--danger); }
-        .btn-success { background: var(--success); }
-
-        /* User Profile Dashboard */
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            background: var(--surface-accent);
-            padding: 15px;
-            border-radius: 16px;
-        }
-
-        .profile-avatar {
-            width: 45px;
-            height: 45px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .metric-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .metric-row {
+        .data-row {
             display: flex;
             justify-content: space-between;
-            background: rgba(255,255,255,0.02);
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .metric-row span {
-            color: var(--text-muted);
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
             font-size: 14px;
         }
+        .data-row:last-child { border: none; }
+        .data-row span { color: var(--text-body); }
 
-        .metric-row strong {
-            font-size: 15px;
+        /* Timeline History Logs */
+        .timeline-box {
+            margin-top: 20px;
         }
 
-        /* Admin Master Layout */
-        .admin-box {
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            margin-bottom: 20px;
+        .timeline-item {
+            border-left: 2px solid var(--border-line);
+            padding-left: 15px;
+            position: relative;
+            padding-bottom: 15px;
         }
 
-        .user-manage-card {
-            background: var(--surface-accent);
-            padding: 15px;
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px; top: 4px;
+            width: 10px; height: 10px;
+            background: var(--primary-glow);
+            border-radius: 50%;
+        }
+
+        .timeline-item.add::before { background: var(--green-glow); }
+        .timeline-item.sub::before { background: var(--red-glow); }
+        .timeline-timestamp { font-size: 11px; color: var(--text-body); }
+        .timeline-desc { font-size: 13px; color: #fff; margin-top: 2px; }
+
+        /* Admin Management List Layout */
+        .admin-member-card {
+            background: var(--panel-card);
             border-radius: 12px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .inline-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .inline-inputs input {
-            padding: 8px;
-            font-size: 13px;
-            margin-bottom: 0;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-line);
         }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <h2 class="header-title">🪙 Smart Ledger App</h2>
-
-    <div id="home-view">
-        <div class="section-label">Active Categories</div>
-        <div class="plans-grid">
-            <div class="plan-card">
-                <h4>₹500 Plan</h4>
-                <p>105 Thavanai</p>
-            </div>
-            <div class="plan-card gold">
-                <h4>₹1000 Plan</h4>
-                <p>110 Thavanai</p>
-            </div>
-        </div>
-
-        <div class="input-group">
-            <label for="login-username">Unga Name Enter Pannunga:</label>
-            <input type="text" id="login-username" placeholder="Enter Name to view profile...">
-        </div>
-        <button onclick="handleNavigation()">View My Profile ➡️</button>
+<div class="app-shell">
+    
+    <div class="navbar">
+        <div class="brand-logo">CORE LEDGER V5</div>
+        <div id="nav-action-zone"></div>
     </div>
 
-    <div id="user-view" style="display: none;">
-        <div class="profile-header">
-            <div class="profile-avatar" id="avatar-char">U</div>
-            <div>
-                <h4 style="margin:0;" id="user-profile-name">User Name</h4>
-                <p style="margin:0; font-size:12px; color:var(--text-muted);">Verified Seetu Account</p>
-            </div>
-        </div>
-
-        <div class="section-label">Seetu Status Details</div>
-        <div class="metric-list" id="user-metrics-container">
-            </div>
-
-        <button class="btn-sub" onclick="exitToHome()">Back to Home</button>
-    </div>
-
-    <div id="admin-view" style="display: none;">
-        <h3 style="color: #fbbf24; text-align:center; font-size:18px;">⚙️ Master Control Panel</h3>
+    <div class="content-body">
         
-        <div class="admin-box">
-            <h4 style="font-size:14px; margin-bottom:10px;">➕ Add Member Account</h4>
-            <input type="text" id="adm-name" placeholder="Member Name" style="margin-bottom: 10px; padding: 10px;">
+        <div id="screen-login">
+            <h2 style="font-size: 24px; margin-bottom: 8px;">Welcome Backend</h2>
+            <p style="color: var(--text-body); font-size: 14px; margin-bottom: 30px;">Enter credentials or member name to load node.</p>
             
-            <label style="font-size: 12px;">Plan Category Select Pannunga:</label>
-            <select id="adm-plan" style="margin-bottom: 15px; padding: 10px;">
-                <option value="500-105">₹500 Category (105 Weeks)</option>
-                <option value="1000-110">₹1000 Category (110 Weeks)</option>
-            </select>
-            <button class="btn-success" style="padding: 10px;" onclick="adminAddUser()">Create Account</button>
+            <div class="form-control">
+                <label>Identify Protocol (Name / Key)</label>
+                <input type="text" id="auth-username" placeholder="Enter registration tag...">
+            </div>
+            <button onclick="processAuth()">Verify Identity</button>
         </div>
 
-        <div class="section-label">All Active Members Management</div>
-        <div id="admin-users-list">
+        <div id="screen-home" style="display: none;">
+            <div id="dynamic-hero-placement"></div>
+
+            <div class="grid-headline">Available Core Categories</div>
+            <div class="categories-grid">
+                <div class="category-item"><h4>₹500 Scheme</h4><p>105 Installments</p></div>
+                <div class="category-item"><h4>₹1000 Scheme</h4><p>110 Installments</p></div>
+                <div class="category-item"><h4>₹2000 Scheme</h4><p>120 Installments</p></div>
+                <div class="category-item"><h4>₹5000 Scheme</h4><p>50 Installments</p></div>
             </div>
 
-        <button class="btn-sub" onclick="exitToHome()">Secure Admin Logout</button>
-    </div>
+            <div class="grid-headline">Profile Architecture</div>
+            <div class="category-item" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 id="home-profile-title" style="margin:0; font-size:16px;">Guest User</h3>
+                    <p style="margin:0; font-size:12px; color:var(--text-body);">System Access Verified</p>
+                </div>
+                <button style="width: auto; padding: 8px 14px; font-size: 12px;" class="btn-danger" onclick="exitSession()">Exit</button>
+            </div>
+        </div>
 
+        <div id="screen-details" style="display: none;">
+            <h3 id="details-panel-title" style="margin-bottom: 5px;">Scheme Architecture</h3>
+            <p style="color: var(--text-body); font-size: 12px; margin: 0 0 20px 0;">Live calculation matrices loaded via data nodes.</p>
+
+            <div class="detail-sheet" id="metrics-sheet-render">
+                </div>
+
+            <div class="grid-headline" style="margin-top: 25px;">Verified Ledger Logs (Time-Stamped)</div>
+            <div class="timeline-box" id="timeline-logs-render">
+                </div>
+
+            <button class="btn-sub" style="background:#262f41; margin-top:20px;" onclick="backToHome()">Return to Dashboard</button>
+        </div>
+
+        <div id="screen-admin" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin:0; font-size:18px; color:#fbbf24;">System Control Panel</h3>
+                <button style="width:auto; padding:6px 12px; font-size:12px;" class="btn-danger" onclick="exitSession()">Logout</button>
+            </div>
+
+            <div class="category-item" style="margin-bottom: 25px; background: rgba(0,0,0,0.15);">
+                <h4 style="font-size:14px; margin-bottom:12px;">Create Ledger Node</h4>
+                <input type="text" id="adm-new-user" placeholder="Member Account Name" style="margin-bottom:12px;">
+                <select id="adm-new-plan" style="margin-bottom:15px;">
+                    <option value="500-105">₹500 Scheme (105 Weeks)</option>
+                    <option value="1000-110">₹1000 Scheme (110 Weeks)</option>
+                    <option value="2000-120">₹2000 Scheme (120 Weeks)</option>
+                    <option value="5000-50">₹5000 Scheme (50 Weeks)</option>
+                </select>
+                <button class="btn-success" onclick="adminProvisionUser()">Provision Account</button>
+            </div>
+
+            <div class="grid-headline">Active Directory Database</div>
+            <div id="admin-directory-stream">
+                </div>
+        </div>
+
+    </div>
 </div>
 
 <script>
-    // Storage Engine Setup
-    let appData = JSON.parse(localStorage.getItem('seetu_v4_data')) || [];
-    const sysAdminKey = "thivashthivash143@gmail.com";
+    // System Core Database Matrix
+    let masterState = JSON.parse(localStorage.getItem('sys_ledger_v5')) || [];
+    let sessionUser = null;
+    const coreMasterKey = "thivashthivash143@gmail.com";
 
-    function handleNavigation() {
-        let inputVal = document.getElementById('login-username').value.trim();
+    function processAuth() {
+        let rawInput = document.getElementById('auth-username').value.trim();
+        if(rawInput === "") { alert("Enter identity code."); return; }
 
-        if (inputVal === "") {
-            alert("Name ethavathu type pannunga ba!");
+        // Route Admin Account
+        if(rawInput.toLowerCase() === coreMasterKey.toLowerCase()) {
+            transitionScreen('screen-admin');
+            renderAdminDirectory();
             return;
         }
 
-        // 1. Admin Gateway Route
-        if (inputVal.toLowerCase() === sysAdminKey.toLowerCase()) {
-            document.getElementById('home-view').style.display = 'none';
-            document.getElementById('admin-view').style.display = 'block';
-            document.getElementById('user-view').style.display = 'none';
-            renderAdminDashboard();
-        } 
-        // 2. User Route
-        else {
-            let userMatch = appData.find(u => u.name.toLowerCase() === inputVal.toLowerCase());
-            
-            document.getElementById('home-view').style.display = 'none';
-            document.getElementById('admin-view').style.display = 'none';
-            document.getElementById('user-view').style.display = 'block';
-
-            document.getElementById('user-profile-name').innerText = inputVal;
-            document.getElementById('avatar-char').innerText = inputVal.charAt(0).toUpperCase();
-
-            let metricsBox = document.getElementById('user-metrics-container');
-
-            if (userMatch) {
-                let installmentCost = userMatch.amount / userMatch.totalWeeks;
-                let calculatedPaid = userMatch.paid * installmentCost;
-                let calculatedBal = userMatch.amount - calculatedPaid;
-                let balanceWeeks = userMatch.totalWeeks - userMatch.paid;
-
-                metricsBox.innerHTML = `
-                    <div class="metric-row"><span>Selected Category</span><strong style="color:var(--primary-light)">₹${userMatch.amount} Plan</strong></div>
-                    <div class="metric-row"><span>Motha Thavanai</span><strong>${userMatch.totalWeeks} Weeks</strong></div>
-                    <div class="metric-row"><span>Neenga Katriya Weeks</span><strong style="color:var(--success)">${userMatch.paid} Weeks</strong></div>
-                    <div class="metric-row"><span>Meedham Irukkum Weeks</span><strong>${balanceWeeks} Weeks</strong></div>
-                    <div class="metric-row" style="background:rgba(16,185,129,0.05)"><span>Katriya Total Kaasu</span><strong style="color:var(--success)">₹${calculatedPaid.toFixed(1)}</strong></div>
-                    <div class="metric-row" style="background:rgba(244,63,94,0.05)"><span>Meedham Katta Vendiyathu</span><strong style="color:var(--danger)">₹${calculatedBal.toFixed(1)}</strong></div>
-                `;
-            } else {
-                metricsBox.innerHTML = `
-                    <div style="text-align:center; padding: 20px; color: var(--danger); font-size:14px;">
-                        ⚠️ Intha name-la entha data-vum illa ba.<br>Admin-ta solli account create panni vaanga!
-                    </div>
-                `;
-            }
-        }
+        // Route Member Account
+        sessionUser = masterState.find(u => u.name.toLowerCase() === rawInput.toLowerCase());
+        
+        // Handle Home Page Setup Regardless of account existence
+        document.getElementById('home-profile-title').innerText = rawInput;
+        setupHomeView(rawInput);
+        transitionScreen('screen-home');
     }
 
-    function adminAddUser() {
-        let name = document.getElementById('adm-name').value.trim();
-        let planConfig = document.getElementById('adm-plan').value; // format: "500-105"
+    function setupHomeView(username) {
+        let targetHero = document.getElementById('dynamic-hero-placement');
+        targetHero.innerHTML = "";
 
-        if (name === "") {
-            alert("Member Name ezhuthunga!");
-            return;
-        }
-
-        if (appData.some(u => u.name.toLowerCase() === name.toLowerCase())) {
-            alert("Intha name ready-ah account-la irukku.");
-            return;
-        }
-
-        let parts = planConfig.split('-');
-        let amt = parseFloat(parts[0]);
-        let weeks = parseInt(parts[1]);
-
-        appData.push({ name: name, amount: amt, totalWeeks: weeks, paid: 0 });
-        commitStorage();
-        renderAdminDashboard();
-        document.getElementById('adm-name').value = "";
-    }
-
-    function renderAdminDashboard() {
-        let listContainer = document.getElementById('admin-users-list');
-        listContainer.innerHTML = "";
-
-        if (appData.length === 0) {
-            listContainer.innerHTML = `<p style="text-align:center; font-size:13px; color:var(--text-muted);">No profiles active.</p>`;
-            return;
-        }
-
-        appData.forEach((user, index) => {
-            let div = document.createElement('div');
-            div.className = 'user-manage-card';
-
-            div.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <strong>${user.name}</strong>
-                    <span style="font-size:12px; color:var(--primary-light)">₹${user.amount} Plan</span>
-                </div>
-                <div class="inline-inputs">
-                    <div>
-                        <label style="font-size:11px;">Total Weeks:</label>
-                        <input type="number" id="inp-tot-${index}" value="${user.totalWeeks}">
-                    </div>
-                    <div>
-                        <label style="font-size:11px;">Paid Weeks:</label>
-                        <input type="number" id="inp-paid-${index}" value="${user.paid}">
-                    </div>
-                </div>
-                <div style="display:flex; gap:8px; margin-top:10px;">
-                    <button class="btn-success" style="padding:6px; font-size:12px;" onclick="adminSaveRow(${index})">Save Changes</button>
-                    <button class="btn-danger" style="padding:6px; font-size:12px;" onclick="adminDeleteRow(${index})">Cancel Seetu</button>
+        if(sessionUser) {
+            // User has active program
+            targetHero.innerHTML = `
+                <div class="grid-headline">My Active Seetu</div>
+                <div class="active-scheme-banner" onclick="loadDetailView()">
+                    <span class="badge">RUNNING</span>
+                    <h3 style="margin:0 0 6px 0; font-size:18px;">₹${sessionUser.amount} Plan Profile</h3>
+                    <p style="margin:0; font-size:13px; color:var(--text-body);">Click to inspect statements, intervals & timestamps.</p>
                 </div>
             `;
-            listContainer.appendChild(div);
+        } else {
+            // New user or guest log
+            targetHero.innerHTML = `
+                <div class="active-scheme-banner" style="background:#111; border-color:var(--border-line); cursor:default;">
+                    <h3 style="margin:0 0 6px 0; font-size:16px; color:var(--red-glow);">No Active Registry</h3>
+                    <p style="margin:0; font-size:12px; color:var(--text-body);">Contact terminal administrator to map category profile.</p>
+                </div>
+            `;
+        }
+    }
+
+    function loadDetailView() {
+        if(!sessionUser) return;
+        
+        document.getElementById('details-panel-title').innerText = `${sessionUser.name} - Ledger Profile`;
+        
+        let ratePerWeek = sessionUser.amount / sessionUser.totalWeeks;
+        let cumulativePaid = sessionUser.paidWeeks * ratePerWeek;
+        let cumulativeBal = sessionUser.amount - cumulativePaid;
+
+        let metricsPanel = document.getElementById('metrics-sheet-render');
+        metricsPanel.innerHTML = `
+            <div class="data-row"><span>Mapped Allocation</span><strong>₹${sessionUser.amount}</strong></div>
+            <div class="data-row"><span>Total Prescribed Weeks</span><strong>${sessionUser.totalWeeks} Weeks</strong></div>
+            <div class="data-row"><span>Settled Intervals</span><strong style="color:var(--green-glow);">${sessionUser.paidWeeks} Weeks</strong></div>
+            <div class="data-row"><span>Remaining Intervals</span><strong>${sessionUser.totalWeeks - sessionUser.paidWeeks} Weeks</strong></div>
+            <div class="data-row"><span>Net Remitted Capital</span><strong style="color:var(--green-glow);">₹${cumulativePaid.toFixed(2)}</strong></div>
+            <div class="data-row"><span>Net Outstanding Liability</span><strong style="color:var(--red-glow);">₹${cumulativeBal.toFixed(2)}</strong></div>
+        `;
+
+        // Render logs with timestamps
+        let timelinePanel = document.getElementById('timeline-logs-render');
+        timelinePanel.innerHTML = "";
+
+        if(!sessionUser.logs || sessionUser.logs.length === 0) {
+            timelinePanel.innerHTML = `<p style="font-size:12px; color:var(--text-body);">No ledger modifications logged yet.</p>`;
+        } else {
+            // Display latest updates on top
+            let orderedLogs = [...sessionUser.logs].reverse();
+            orderedLogs.forEach(log => {
+                let div = document.createElement('div');
+                div.className = `timeline-item ${log.type}`;
+                div.innerHTML = `
+                    <div class="timeline-timestamp">${log.timestamp}</div>
+                    <div class="timeline-desc">${log.message}</div>
+                `;
+                timelinePanel.appendChild(div);
+            });
+        }
+
+        transitionScreen('screen-details');
+    }
+
+    function adminProvisionUser() {
+        let name = document.getElementById('adm-new-user').value.trim();
+        let config = document.getElementById('adm-new-plan').value.split('-');
+
+        if(name === "") return;
+        if(masterState.some(u => u.name.toLowerCase() === name.toLowerCase())) { alert("Tag duplicate locked."); return; }
+
+        masterState.push({
+            name: name,
+            amount: parseFloat(config[0]),
+            totalWeeks: parseInt(config[1]),
+            paidWeeks: 0,
+            logs: [{
+                timestamp: getCurrentTimestamp(),
+                type: 'add',
+                message: `Account provisioned into system under ₹${config[0]} strategy allocation.`
+            }]
+        });
+
+        commitData();
+        renderAdminDirectory();
+        document.getElementById('adm-new-user').value = "";
+    }
+
+    function adminModifyWeeks(index, change) {
+        let record = masterState[index];
+        let targetVal = record.paidWeeks + change;
+
+        if(targetVal < 0 || targetVal > record.totalWeeks) return;
+
+        record.paidWeeks = targetVal;
+        
+        // Push secure logging sequence
+        let typeStr = change > 0 ? 'add' : 'sub';
+        let statusStr = change > 0 ? "Incremented" : "Decremented";
+        
+        record.logs.push({
+            timestamp: getCurrentTimestamp(),
+            type: typeStr,
+            message: `Ledger execution unit ${statusStr} by admin action. Current paid intervals: ${record.paidWeeks}/${record.totalWeeks}`
+        });
+
+        masterState[index] = record;
+        commitData();
+        renderAdminDirectory();
+    }
+
+    function adminTerminateUser(index) {
+        if(confirm("Purge tracking metrics for this element from active matrix?")) {
+            masterState.splice(index,1);
+            commitData();
+            renderAdminDirectory();
+        }
+    }
+
+    function renderAdminDirectory() {
+        let container = document.getElementById('admin-directory-stream');
+        container.innerHTML = "";
+
+        if(masterState.length === 0) {
+            container.innerHTML = `<p style="color:var(--text-body); font-size:13px; text-align:center;">Directory array clean.</p>`;
+            return;
+        }
+
+        masterState.forEach((user, index) => {
+            let card = document.createElement('div');
+            card.className = 'admin-member-card';
+            card.innerHTML = `
+                <div style="display:flex; justify-content:between; align-items:center; margin-bottom:10px;">
+                    <strong style="flex:1;">${user.name}</strong>
+                    <span style="font-size:12px; color:var(--primary-glow)">Plan: ₹${user.amount}</span>
+                </div>
+                <div style="font-size:13px; color:var(--text-body); margin-bottom:12px;">
+                    Interval Metrics Counter: <strong>${user.paidWeeks} / ${user.totalWeeks} Weeks</strong>
+                </div>
+                <div style="display:flex; gap:6px;">
+                    <button class="btn-success" style="padding:6px; font-size:12px;" onclick="adminModifyWeeks(${index}, 1)">+ Add Week</button>
+                    <button style="padding:6px; font-size:12px; background:#e67e22;" onclick="adminModifyWeeks(${index}, -1)">- Sub Week</button>
+                    <button class="btn-danger" style="padding:6px; font-size:12px; width:auto;" onclick="adminTerminateUser(${index})">Purge</button>
+                </div>
+            `;
+            container.appendChild(card);
         });
     }
 
-    function adminSaveRow(index) {
-        let updatedTotal = parseInt(document.getElementById(`inp-tot-${index}`).value);
-        let updatedPaid = parseInt(document.getElementById(`inp-paid-${index}`).value);
-
-        if (isNaN(updatedTotal) || isNaN(updatedPaid)) {
-            alert("Values numeric-ah correct-ah podunga.");
-            return;
-        }
-
-        appData[index].totalWeeks = updatedTotal;
-        appData[index].paid = updatedPaid;
-        
-        commitStorage();
-        renderAdminDashboard();
-        alert("Data successfully updated!");
+    function getCurrentTimestamp() {
+        let d = new Date();
+        return d.toLocaleDateString() + " | " + d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     }
 
-    function adminDeleteRow(index) {
-        if(confirm("Intha member-oda data-vai permanent-ah delete pannidalaama?")) {
-            appData.splice(index, 1);
-            commitStorage();
-            renderAdminDashboard();
-        }
+    function commitData() { localStorage.setItem('sys_ledger_v5', JSON.stringify(masterState)); }
+    function backToHome() { transitionScreen('screen-home'); }
+    
+    function exitSession() {
+        sessionUser = null;
+        document.getElementById('auth-username').value = "";
+        transitionScreen('screen-login');
     }
 
-    function commitStorage() {
-        localStorage.setItem('seetu_v4_data', JSON.stringify(appData));
-    }
-
-    function exitToHome() {
-        document.getElementById('login-username').value = "";
-        document.getElementById('home-view').style.display = 'block';
-        document.getElementById('admin-view').style.display = 'none';
-        document.getElementById('user-view').style.display = 'none';
+    function transitionScreen(targetId) {
+        const screens = ['screen-login', 'screen-home', 'screen-details', 'screen-admin'];
+        screens.forEach(s => {
+            document.getElementById(s).style.display = (s === targetId) ? 'block' : 'none';
+        });
     }
 </script>
 
