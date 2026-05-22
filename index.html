@@ -1,90 +1,129 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ta">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Seetu Ledger</title>
+    <title>Chit Fund Smart Ledger</title>
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --glass-bg: rgba(30, 41, 59, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
+            --bg-color: #0b0f19;
+            --surface: #171e2e;
+            --surface-accent: #222f47;
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
             --success: #10b981;
-            --danger: #ef4444;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --danger: #f43f5e;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: rgba(255, 255, 255, 0.05);
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg-gradient);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: flex-start;
         }
 
-        .container {
+        .app-container {
             width: 100%;
-            max-width: 850px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 35px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            border: 1px solid var(--glass-border);
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            max-width: 500px;
+            background: var(--surface);
+            border-radius: 28px;
+            padding: 25px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            margin-top: 20px;
+            box-sizing: border-box;
         }
 
         h2, h3, h4 {
-            text-align: center;
-            letter-spacing: 0.5px;
             margin-top: 0;
+            font-weight: 600;
         }
 
-        .main-title {
-            font-size: 28px;
-            background: linear-gradient(to right, #6366f1, #a855f7);
+        .header-title {
+            text-align: center;
+            font-size: 22px;
+            background: linear-gradient(to right, #a78bfa, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-muted);
+        /* Category Cards Design */
+        .section-label {
             font-size: 14px;
-            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        input {
+        .plans-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .plan-card {
+            background: var(--surface-accent);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--primary-light);
+        }
+
+        .plan-card.gold::before {
+            background: #fbbf24;
+        }
+
+        .plan-card h4 {
+            margin-bottom: 6px;
+            font-size: 18px;
+            color: var(--text-main);
+        }
+
+        .plan-card p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Form Inputs */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        input, select {
             width: 100%;
             padding: 14px;
-            margin-bottom: 20px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--glass-border);
+            background: rgba(11, 15, 25, 0.6);
+            border: 1px solid var(--border);
             border-radius: 12px;
             color: white;
-            font-size: 16px;
+            font-size: 15px;
             box-sizing: border-box;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
 
-        input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+        input:focus, select:focus {
+            border-color: var(--primary-light);
             outline: none;
         }
 
@@ -95,351 +134,322 @@
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+            transition: all 0.2s;
         }
 
         button:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
+            background: #4338ca;
         }
 
-        .btn-secondary {
-            background: rgba(71, 85, 105, 0.5);
-            border: 1px solid var(--glass-border);
+        .btn-sub {
+            background: #2e3c54;
             margin-top: 15px;
         }
-        .btn-secondary:hover { background: rgba(71, 85, 105, 0.8); }
-        .btn-danger { background: var(--danger); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
-        .btn-danger:hover { background: #dc2626; }
-        .btn-success { background: var(--success); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
-        .btn-success:hover { background: #059669; }
 
-        /* Home Page Dashboard Layout */
-        .dashboard-card {
-            background: rgba(15, 23, 42, 0.4);
-            padding: 25px;
-            border-radius: 18px;
-            border: 1px solid var(--glass-border);
-            margin-top: 20px;
-        }
+        .btn-danger { background: var(--danger); }
+        .btn-success { background: var(--success); }
 
-        .grid-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .stat-box {
-            background: rgba(30, 41, 59, 0.5);
-            padding: 16px;
-            border-radius: 14px;
-            border: 1px solid var(--glass-border);
-            text-align: center;
-        }
-
-        .stat-box span {
-            display: block;
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .stat-box strong {
-            font-size: 20px;
-        }
-
-        /* Admin Master View Design */
-        .table-wrapper {
-            overflow-x: auto;
-            margin-top: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--glass-border);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(15, 23, 42, 0.3);
-            font-size: 14px;
-        }
-
-        th, td {
-            padding: 14px 16px;
-            text-align: left;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        th {
-            background: rgba(15, 23, 42, 0.8);
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .table-input {
-            width: 85px;
-            padding: 8px;
-            margin: 0;
-            background: #0f172a;
-            border: 1px solid var(--glass-border);
-            border-radius: 6px;
-            color: white;
-            font-size: 14px;
-        }
-
-        .name-input { width: 110px; }
-
-        .action-btns {
+        /* User Profile Dashboard */
+        .profile-header {
             display: flex;
-            gap: 6px;
-        }
-
-        .action-btns button {
-            width: auto;
-            padding: 8px 12px;
-            font-size: 13px;
-        }
-
-        .admin-box {
-            background: rgba(15, 23, 42, 0.3);
-            padding: 20px;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: var(--surface-accent);
+            padding: 15px;
             border-radius: 16px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 25px;
+        }
+
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .metric-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.02);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .metric-row span {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .metric-row strong {
+            font-size: 15px;
+        }
+
+        /* Admin Master Layout */
+        .admin-box {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .user-manage-card {
+            background: var(--surface-accent);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .inline-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .inline-inputs input {
+            padding: 8px;
+            font-size: 13px;
+            margin-bottom: 0;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2 class="main-title">🪙 Smart Seetu Ledger</h2>
-    
-    <div id="login-section">
-        <label for="username">Unga Identity / Access Name podunga:</label>
-        <input type="text" id="username" placeholder="Enter Name or Access Key...">
-        <button onclick="checkUser()">Enter Dashboard ➡️</button>
-    </div>
+<div class="app-container">
+    <h2 class="header-title">🪙 Smart Ledger App</h2>
 
-    <div id="user-view" style="display:none;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h3 id="welcome-msg" style="margin: 0;"></h3>
-            <span style="background: var(--success); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">Active Account</span>
-        </div>
-        
-        <div id="seetu-details"></div>
-        <button class="btn-secondary" onclick="logout()">⬅️ Logout to Main Page</button>
-    </div>
-
-    <div id="admin-panel" style="display:none;">
-        <h3 style="color: #fbbf24; text-align: left; margin-bottom: 20px;">⚙️ Master Admin Control Panel</h3>
-        
-        <div class="admin-box">
-            <h4>➕ Add New Member Account</h4>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 15px;">
-                <div>
-                    <label>Member Name</label>
-                    <input type="text" id="new-name" placeholder="E.g., Rajesh">
-                </div>
-                <div>
-                    <label>Seetu Amount (₹)</label>
-                    <input type="number" id="seetu-amount" value="500">
-                </div>
-                <div>
-                    <label>Total Weeks</label>
-                    <input type="number" id="total-installments" value="105">
-                </div>
+    <div id="home-view">
+        <div class="section-label">Active Categories</div>
+        <div class="plans-grid">
+            <div class="plan-card">
+                <h4>₹500 Plan</h4>
+                <p>105 Thavanai</p>
             </div>
-            <button class="btn-success" onclick="addMember()">+ Create Seetu Account</button>
-        </div>
-
-        <div class="admin-box">
-            <h4>📊 Global Members Ledger Summary</h4>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Member</th>
-                            <th>Total (₹)</th>
-                            <th>Max Weeks</th>
-                            <th>Paid Weeks</th>
-                            <th>Paid (₹)</th>
-                            <th>Balance (₹)</th>
-                            <th>Control</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-table-body">
-                        </tbody>
-                </table>
+            <div class="plan-card gold">
+                <h4>₹1000 Plan</h4>
+                <p>110 Thavanai</p>
             </div>
         </div>
-        
-        <button class="btn-secondary" onclick="logout()">Secure Logout Admin</button>
+
+        <div class="input-group">
+            <label for="login-username">Unga Name Enter Pannunga:</label>
+            <input type="text" id="login-username" placeholder="Enter Name to view profile...">
+        </div>
+        <button onclick="handleNavigation()">View My Profile ➡️</button>
     </div>
+
+    <div id="user-view" style="display: none;">
+        <div class="profile-header">
+            <div class="profile-avatar" id="avatar-char">U</div>
+            <div>
+                <h4 style="margin:0;" id="user-profile-name">User Name</h4>
+                <p style="margin:0; font-size:12px; color:var(--text-muted);">Verified Seetu Account</p>
+            </div>
+        </div>
+
+        <div class="section-label">Seetu Status Details</div>
+        <div class="metric-list" id="user-metrics-container">
+            </div>
+
+        <button class="btn-sub" onclick="exitToHome()">Back to Home</button>
+    </div>
+
+    <div id="admin-view" style="display: none;">
+        <h3 style="color: #fbbf24; text-align:center; font-size:18px;">⚙️ Master Control Panel</h3>
+        
+        <div class="admin-box">
+            <h4 style="font-size:14px; margin-bottom:10px;">➕ Add Member Account</h4>
+            <input type="text" id="adm-name" placeholder="Member Name" style="margin-bottom: 10px; padding: 10px;">
+            
+            <label style="font-size: 12px;">Plan Category Select Pannunga:</label>
+            <select id="adm-plan" style="margin-bottom: 15px; padding: 10px;">
+                <option value="500-105">₹500 Category (105 Weeks)</option>
+                <option value="1000-110">₹1000 Category (110 Weeks)</option>
+            </select>
+            <button class="btn-success" style="padding: 10px;" onclick="adminAddUser()">Create Account</button>
+        </div>
+
+        <div class="section-label">All Active Members Management</div>
+        <div id="admin-users-list">
+            </div>
+
+        <button class="btn-sub" onclick="exitToHome()">Secure Admin Logout</button>
+    </div>
+
 </div>
 
 <script>
-    // Database Storage
-    let seetuData = JSON.parse(localStorage.getItem('seetuDB_v3')) || [];
-    
-    // Secret verification string (hidden from display ui)
-    const secureKey = "thivashthivash143@gmail.com";
+    // Storage Engine Setup
+    let appData = JSON.parse(localStorage.getItem('seetu_v4_data')) || [];
+    const sysAdminKey = "thivashthivash143@gmail.com";
 
-    function checkUser() {
-        let inputVal = document.getElementById('username').value.trim();
-        
+    function handleNavigation() {
+        let inputVal = document.getElementById('login-username').value.trim();
+
         if (inputVal === "") {
-            alert("Please input a valid user identity!");
+            alert("Name ethavathu type pannunga ba!");
             return;
         }
 
-        // 1. Admin Authentication Pathway
-        if (inputVal.toLowerCase() === secureKey.toLowerCase()) {
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'block';
+        // 1. Admin Gateway Route
+        if (inputVal.toLowerCase() === sysAdminKey.toLowerCase()) {
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('admin-view').style.display = 'block';
             document.getElementById('user-view').style.display = 'none';
-            renderAdminTable();
+            renderAdminDashboard();
         } 
-        // 2. Client Home Page Dashboard Pathway
+        // 2. User Route
         else {
-            let user = seetuData.find(u => u.name.toLowerCase() === inputVal.toLowerCase());
+            let userMatch = appData.find(u => u.name.toLowerCase() === inputVal.toLowerCase());
             
-            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('admin-view').style.display = 'none';
             document.getElementById('user-view').style.display = 'block';
-            document.getElementById('admin-panel').style.display = 'none';
-            
-            let welcome = document.getElementById('welcome-msg');
-            let detailsDiv = document.getElementById('seetu-details');
 
-            if (user) {
-                welcome.innerHTML = `Vanakkam, <strong>${user.name}</strong>`;
-                
-                let perWeekAmt = user.amount / user.totalWeeks;
-                let finalPaid = user.paid * perWeekAmt;
-                let finalBalance = user.amount - finalPaid;
-                let remWeeks = user.totalWeeks - user.paid;
-                
-                detailsDiv.innerHTML = `
-                    <div class="dashboard-card">
-                        <div class="grid-stats">
-                            <div class="stat-box"><span>Motha Seetu Thogai</span><strong style="color: #a855f7;">₹${user.amount}</strong></div>
-                            <div class="stat-box"><span>Motha Thavanai</span><strong>${user.totalWeeks} Weeks</strong></div>
-                            <div class="stat-box"><span>Katriya Weeks</span><strong style="color: var(--success);">${user.paid}</strong></div>
-                            <div class="stat-box"><span>Meedha Weeks</span><strong>${remWeeks}</strong></div>
-                            <div class="stat-box" style="background: rgba(16, 185, 129, 0.1);"><span>Katriya Total Kaasu</span><strong style="color: var(--success);">₹${finalPaid.toFixed(2)}</strong></div>
-                            <div class="stat-box" style="background: rgba(239, 68, 68, 0.1);"><span>Meedham Katta Vendiyathu</span><strong style="color: var(--danger);">₹${finalBalance.toFixed(2)}</strong></div>
-                        </div>
-                    </div>
+            document.getElementById('user-profile-name').innerText = inputVal;
+            document.getElementById('avatar-char').innerText = inputVal.charAt(0).toUpperCase();
+
+            let metricsBox = document.getElementById('user-metrics-container');
+
+            if (userMatch) {
+                let installmentCost = userMatch.amount / userMatch.totalWeeks;
+                let calculatedPaid = userMatch.paid * installmentCost;
+                let calculatedBal = userMatch.amount - calculatedPaid;
+                let balanceWeeks = userMatch.totalWeeks - userMatch.paid;
+
+                metricsBox.innerHTML = `
+                    <div class="metric-row"><span>Selected Category</span><strong style="color:var(--primary-light)">₹${userMatch.amount} Plan</strong></div>
+                    <div class="metric-row"><span>Motha Thavanai</span><strong>${userMatch.totalWeeks} Weeks</strong></div>
+                    <div class="metric-row"><span>Neenga Katriya Weeks</span><strong style="color:var(--success)">${userMatch.paid} Weeks</strong></div>
+                    <div class="metric-row"><span>Meedham Irukkum Weeks</span><strong>${balanceWeeks} Weeks</strong></div>
+                    <div class="metric-row" style="background:rgba(16,185,129,0.05)"><span>Katriya Total Kaasu</span><strong style="color:var(--success)">₹${calculatedPaid.toFixed(1)}</strong></div>
+                    <div class="metric-row" style="background:rgba(244,63,94,0.05)"><span>Meedham Katta Vendiyathu</span><strong style="color:var(--danger)">₹${calculatedBal.toFixed(1)}</strong></div>
                 `;
             } else {
-                welcome.innerHTML = `Welcome Guest!`;
-                detailsDiv.innerHTML = `
-                    <div class="dashboard-card" style="text-align:center;">
-                        <p style="color: var(--danger); font-weight:600;">⚠️ Intha Name-la account illa ba!</p>
-                        <p style="font-size:14px; color:var(--text-muted);">Intha user portal-la register panna unga local seetu admin-ah contact pannunga.</p>
-                    </div>`;
+                metricsBox.innerHTML = `
+                    <div style="text-align:center; padding: 20px; color: var(--danger); font-size:14px;">
+                        ⚠️ Intha name-la entha data-vum illa ba.<br>Admin-ta solli account create panni vaanga!
+                    </div>
+                `;
             }
         }
     }
 
-    function addMember() {
-        let name = document.getElementById('new-name').value.trim();
-        let amount = parseFloat(document.getElementById('seetu-amount').value);
-        let totalWeeks = parseInt(document.getElementById('total-installments').value);
+    function adminAddUser() {
+        let name = document.getElementById('adm-name').value.trim();
+        let planConfig = document.getElementById('adm-plan').value; // format: "500-105"
 
-        if (name === "" || isNaN(amount) || isNaN(totalWeeks)) {
-            alert("Please completely fill out all parameters.");
+        if (name === "") {
+            alert("Member Name ezhuthunga!");
             return;
         }
 
-        if (seetuData.some(u => u.name.toLowerCase() === name.toLowerCase())) {
-            alert("Member already registered in systemic database!");
+        if (appData.some(u => u.name.toLowerCase() === name.toLowerCase())) {
+            alert("Intha name ready-ah account-la irukku.");
             return;
         }
 
-        seetuData.push({ name: name, amount: amount, totalWeeks: totalWeeks, paid: 0 });
-        saveData();
-        renderAdminTable();
-        document.getElementById('new-name').value = "";
+        let parts = planConfig.split('-');
+        let amt = parseFloat(parts[0]);
+        let weeks = parseInt(parts[1]);
+
+        appData.push({ name: name, amount: amt, totalWeeks: weeks, paid: 0 });
+        commitStorage();
+        renderAdminDashboard();
+        document.getElementById('adm-name').value = "";
     }
 
-    function renderAdminTable() {
-        let tbody = document.getElementById('admin-table-body');
-        tbody.innerHTML = "";
+    function renderAdminDashboard() {
+        let listContainer = document.getElementById('admin-users-list');
+        listContainer.innerHTML = "";
 
-        if (seetuData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: var(--text-muted); padding:20px;">No database logs identified.</td></tr>`;
+        if (appData.length === 0) {
+            listContainer.innerHTML = `<p style="text-align:center; font-size:13px; color:var(--text-muted);">No profiles active.</p>`;
             return;
         }
 
-        seetuData.forEach((user, index) => {
-            let stepAmt = user.amount / user.totalWeeks;
-            let currentPaid = user.paid * stepAmt;
-            let currentBal = user.amount - currentPaid;
+        appData.forEach((user, index) => {
+            let div = document.createElement('div');
+            div.className = 'user-manage-card';
 
-            let tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><input type="text" class="table-input name-input" id="m-name-${index}" value="${user.name}"></td>
-                <td><input type="number" class="table-input" id="m-amt-${index}" value="${user.amount}"></td>
-                <td><input type="number" class="table-input" id="m-tot-${index}" value="${user.totalWeeks}"></td>
-                <td><input type="number" class="table-input" id="m-paid-${index}" value="${user.paid}"></td>
-                <td><span style="color: var(--success); font-weight:600;">₹${currentPaid.toFixed(1)}</span></td>
-                <td><span style="color: var(--danger); font-weight:600;">₹${currentBal.toFixed(1)}</span></td>
-                <td>
-                    <div class="action-btns">
-                        <button class="btn-success" onclick="executeInlineSave(${index})">Save</button>
-                        <button class="btn-danger" onclick="removeMember(${index})">Del</button>
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong>${user.name}</strong>
+                    <span style="font-size:12px; color:var(--primary-light)">₹${user.amount} Plan</span>
+                </div>
+                <div class="inline-inputs">
+                    <div>
+                        <label style="font-size:11px;">Total Weeks:</label>
+                        <input type="number" id="inp-tot-${index}" value="${user.totalWeeks}">
                     </div>
-                </td>
+                    <div>
+                        <label style="font-size:11px;">Paid Weeks:</label>
+                        <input type="number" id="inp-paid-${index}" value="${user.paid}">
+                    </div>
+                </div>
+                <div style="display:flex; gap:8px; margin-top:10px;">
+                    <button class="btn-success" style="padding:6px; font-size:12px;" onclick="adminSaveRow(${index})">Save Changes</button>
+                    <button class="btn-danger" style="padding:6px; font-size:12px;" onclick="adminDeleteRow(${index})">Cancel Seetu</button>
+                </div>
             `;
-            tbody.appendChild(tr);
+            listContainer.appendChild(div);
         });
     }
 
-    function executeInlineSave(index) {
-        let name = document.getElementById(`m-name-${index}`).value.trim();
-        let amt = parseFloat(document.getElementById(`m-amt-${index}`).value);
-        let tot = parseInt(document.getElementById(`m-tot-${index}`).value);
-        let paid = parseInt(document.getElementById(`m-paid-${index}`).value);
+    function adminSaveRow(index) {
+        let updatedTotal = parseInt(document.getElementById(`inp-tot-${index}`).value);
+        let updatedPaid = parseInt(document.getElementById(`inp-paid-${index}`).value);
 
-        if(name === "" || isNaN(amt) || isNaN(tot) || isNaN(paid)) {
-            alert("Empty structural values rejected.");
+        if (isNaN(updatedTotal) || isNaN(updatedPaid)) {
+            alert("Values numeric-ah correct-ah podunga.");
             return;
         }
 
-        if(paid > tot) {
-            alert("Paid intervals cannot exceed maximum allocation!");
-            return;
-        }
-
-        seetuData[index] = { name: name, amount: amt, totalWeeks: tot, paid: paid };
-        saveData();
-        renderAdminTable();
+        appData[index].totalWeeks = updatedTotal;
+        appData[index].paid = updatedPaid;
+        
+        commitStorage();
+        renderAdminDashboard();
+        alert("Data successfully updated!");
     }
 
-    function removeMember(index) {
-        if (confirm("Are you sure you want to completely drop this ledger dataset?")) {
-            seetuData.splice(index, 1);
-            saveData();
-            renderAdminTable();
+    function adminDeleteRow(index) {
+        if(confirm("Intha member-oda data-vai permanent-ah delete pannidalaama?")) {
+            appData.splice(index, 1);
+            commitStorage();
+            renderAdminDashboard();
         }
     }
 
-    function saveData() {
-        localStorage.setItem('seetuDB_v3', JSON.stringify(seetuData));
+    function commitStorage() {
+        localStorage.setItem('seetu_v4_data', JSON.stringify(appData));
     }
 
-    function logout() {
-        document.getElementById('username').value = "";
-        document.getElementById('login-section').style.display = 'block';
-        document.getElementById('admin-panel').style.display = 'none';
+    function exitToHome() {
+        document.getElementById('login-username').value = "";
+        document.getElementById('home-view').style.display = 'block';
+        document.getElementById('admin-view').style.display = 'none';
         document.getElementById('user-view').style.display = 'none';
     }
 </script>
 
 </body>
 </html>
-
