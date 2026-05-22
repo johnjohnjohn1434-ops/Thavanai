@@ -3,235 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Ledger Hub</title>
+    <title>Ultimate Multi-Ledger Engine V10</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-main: #050811;
-            --panel-bg: #0b1120;
-            --card-bg: #131c33;
+            --bg-main: #020613;
+            --panel-bg: #080e1b;
+            --card-bg: #10172a;
             --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.3);
+            --primary-glow: rgba(99, 102, 241, 0.25);
             --success: #10b981;
             --danger: #ef4444;
+            --warning: #f59e0b;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
-            --border: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.06);
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-main);
             color: var(--text-main);
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
+            display: flex; justify-content: center;
         }
 
         .app-shell {
-            width: 100%;
-            max-width: 460px;
-            background: var(--panel-bg);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            padding-bottom: 85px;
+            width: 100%; max-width: 460px;
+            background: var(--panel-bg); min-height: 100vh;
+            display: flex; flex-direction: column;
+            position: relative; padding-bottom: 90px;
             box-sizing: border-box;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            box-shadow: 0 0 60px rgba(0,0,0,0.85);
         }
 
         .header-bar {
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 20px; display: flex;
+            justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--border);
-            background: rgba(11, 17, 32, 0.8);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(8, 14, 27, 0.85); backdrop-filter: blur(12px);
+            position: sticky; top: 0; z-index: 100;
         }
 
         .logo {
-            font-size: 19px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
+            font-size: 19px; font-weight: 900; letter-spacing: 0.5px;
             background: linear-gradient(135deg, #a5b4fc, #6366f1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .app-content {
-            padding: 20px;
-            flex: 1;
-        }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+        .app-content { padding: 20px; flex: 1; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; text-transform: uppercase; }
         
         input, select {
-            width: 100%;
-            padding: 15px 18px;
-            background: #03060f;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            color: #fff;
-            font-size: 15px;
-            box-sizing: border-box;
-            outline: none;
-            transition: all 0.2s ease;
+            width: 100%; padding: 14px 16px;
+            background: #040812; border: 1px solid var(--border);
+            border-radius: 14px; color: #fff; font-size: 14px;
+            box-sizing: border-box; outline: none; transition: all 0.2s ease;
         }
 
         input:focus, select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
+            border-color: var(--primary); box-shadow: 0 0 14px var(--primary-glow);
         }
 
         button {
-            width: 100%;
-            padding: 15px;
+            width: 100%; padding: 14px;
             background: linear-gradient(135deg, #6366f1, #4f46e5);
-            border: none;
-            border-radius: 16px;
-            color: white;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            border: none; border-radius: 14px; color: white;
+            font-size: 14px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
             transition: all 0.2s ease;
         }
 
-        button:active { transform: scale(0.98); }
-
-        /* Pure Image Banner Component */
         .pure-image-banner {
-            width: 100%;
-            height: 180px;
-            border-radius: 24px;
-            background-size: cover;
-            background-position: center;
-            margin-bottom: 25px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.08);
-            cursor: pointer;
+            width: 100%; height: 180px; border-radius: 24px;
+            background-size: cover; background-position: center;
+            margin-bottom: 25px; box-shadow: 0 12px 32px rgba(0,0,0,0.55);
+            border: 1px solid rgba(255,255,255,0.07); cursor: pointer;
             transition: transform 0.2s ease;
         }
 
-        .pure-image-banner:active { transform: scale(0.98); }
-
         .section-headline {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-muted);
-            margin: 25px 0 12px 0;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--text-muted); margin: 28px 0 14px 0; font-weight: 800;
+            display: flex; align-items: center; gap: 6px;
         }
-
         .section-headline:first-of-type { margin-top: 5px; }
 
-        /* Premium Matrix Grid Cards */
         .plan-row-card {
-            background: linear-gradient(135deg, #1e1b4b 0%, #131c33 100%);
-            border: 1px solid rgba(99, 102, 241, 0.25);
-            border-radius: 20px;
-            padding: 22px;
-            margin-bottom: 20px;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #16153b 0%, #0e1629 100%);
+            border: 1px solid rgba(99, 102, 241, 0.22); border-radius: 20px;
+            padding: 20px; margin-bottom: 15px; cursor: pointer;
         }
 
         .statement-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 22px;
-            border: 1px solid var(--border);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            background: var(--card-bg); border-radius: 24px;
+            padding: 22px; border: 1px solid var(--border);
+            margin-bottom: 20px;
         }
 
         .metric-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            font-size: 14px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 13px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-size: 14px;
         }
         .metric-row:last-child { border: none; }
-        .metric-row span { color: var(--text-muted); font-weight: 500; }
-        .metric-row strong { font-size: 16px; }
+        .metric-row span { color: var(--text-muted); }
 
-        /* Modernized Timeline */
         .timeline-stream { margin-top: 15px; }
         .log-node {
-            border-left: 2px solid rgba(99, 102, 241, 0.2);
-            padding-left: 20px;
-            position: relative;
-            padding-bottom: 22px;
+            border-left: 2px solid rgba(99, 102, 241, 0.18); padding-left: 18px;
+            position: relative; padding-bottom: 20px;
         }
         .log-node::before {
             content: ''; position: absolute; left: -6px; top: 4px;
             width: 10px; height: 10px; background: var(--primary); border-radius: 50%;
-            box-shadow: 0 0 10px var(--primary);
         }
-        .log-node.add::before { background: var(--success); box-shadow: 0 0 10px var(--success); }
-        .log-node.sub::before { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
-        .log-time { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 3px; }
-        .log-msg { font-size: 14px; color: #ffffff; line-height: 1.4; }
+        .log-node.add::before { background: var(--success); }
+        .log-node.sub::before { background: var(--danger); }
+        .log-time { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .log-msg { font-size: 13px; color: #ffffff; margin-top: 2px; }
 
-        /* Fixed Bottom Dock Navigation Frame */
         .bottom-dock {
-            position: absolute;
-            bottom: 0; left: 0; width: 100%;
-            height: 75px; background: rgba(5, 8, 17, 0.92);
-            border-top: 1px solid var(--border);
-            backdrop-filter: blur(12px);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-sizing: border-box;
-            z-index: 100;
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            height: 78px; background: rgba(2, 6, 19, 0.93);
+            border-top: 1px solid var(--border); backdrop-filter: blur(14px);
+            display: flex; justify-content: space-around; align-items: center; z-index: 100;
         }
 
         .dock-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.2s ease;
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer;
         }
-
-        .dock-item i { font-size: 20px; margin-bottom: 5px; transition: transform 0.2s; }
+        .dock-item i { font-size: 19px; margin-bottom: 5px; }
         .dock-item.active { color: var(--primary); }
-        .dock-item.active i { transform: translateY(-2px); }
 
-        /* Admin Action Area Components */
         .admin-card {
-            background: var(--card-bg);
-            border-radius: 22px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
+            background: var(--card-bg); border-radius: 22px;
+            padding: 18px; margin-bottom: 18px; border: 1px solid var(--border);
         }
 
         .mini-badge {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 700;
+            background: rgba(16, 185, 129, 0.14); color: var(--success);
+            padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700;
+        }
+        .warning-badge {
+            background: rgba(245, 158, 11, 0.12); color: var(--warning);
+            padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700;
         }
     </style>
 </head>
@@ -240,67 +158,69 @@
 <div class="app-shell">
     
     <div class="header-bar">
-        <div class="logo"><i class="fa-solid fa-shield-halved"></i> SEETU LEDGER Pro</div>
-        <div id="quick-profile-node"></div>
+        <div class="logo"><i class="fa-solid fa-layer-group"></i> MATRIX MULTI-HUB</div>
+        <div id="quick-avatar-node"></div>
     </div>
 
     <div class="app-content">
         
         <div id="view-login">
-            <h2 style="font-size: 26px; margin-bottom: 6px; font-weight: 800;">Sign In</h2>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 35px;">Enter identity core parameters to unlock financial nodes.</p>
+            <h2 style="font-size: 26px; margin-bottom: 6px; font-weight: 800;">Identity Terminal</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 35px;">Enter configuration identity handles to synchronize profile maps.</p>
             
             <div class="form-group">
                 <input type="text" id="auth-handle" placeholder="Enter Registration Account Name...">
             </div>
-            <button onclick="executeAuthentication()">Open Secure Node</button>
+            <button onclick="executeAuthentication()">Establish Identity Securely</button>
         </div>
 
         <div id="view-home" style="display: none;">
-            <div class="section-headline"><i class="fa-solid fa-circle-nodes"></i> Premium Global Space</div>
-            <div class="pure-image-banner" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop');" onclick="navigateToRoute('view-details')"></div>
+            <div class="section-headline"><i class="fa-solid fa-images"></i> Dynamic Scheme Banner View</div>
+            <div id="dynamic-banner-allocation-zone"></div>
 
             <div id="active-user-scheme-zone"></div>
 
-            <div class="section-headline"><i class="fa-brands fa-whatsapp"></i> Instant Matrix Network</div>
+            <div class="section-headline"><i class="fa-brands fa-whatsapp"></i> Encrypted Desk Hub</div>
             <div class="pure-image-banner" style="background-image: url('https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?q=80&w=600&auto=format&fit=crop');" onclick="triggerWhatsAppRedirect()"></div>
         </div>
 
         <div id="view-details" style="display: none;">
-            <div class="section-headline"><i class="fa-solid fa-receipt"></i> Premium Balance Sheets</div>
-            <div class="statement-card" id="metrics-sheet-render"></div>
-
-            <div class="section-headline" style="margin-top: 30px;"><i class="fa-solid fa-timeline"></i> Ledger Time Registry</div>
-            <div class="timeline-stream" id="logs-timeline-render"></div>
+            <div id="multi-ledger-render-container"></div>
         </div>
 
         <div id="view-profile" style="display: none;">
-            <div class="section-headline"><i class="fa-solid fa-user-gear"></i> Member Settings Node</div>
-            <div class="statement-card" style="text-align: center; padding: 40px 20px;">
-                <div style="width: 80px; height: 80px; background: var(--primary); border-radius: 50%; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px var(--primary-glow);">
-                    <i class="fa-solid fa-user-astronaut" style="font-size: 35px; color: #fff;"></i>
+            <div class="section-headline"><i class="fa-solid fa-circle-user"></i> Certified User Profile</div>
+            <div class="statement-card" style="padding: 30px 20px; text-align: center;">
+                <div style="width:80px; height:80px; background:var(--primary); border-radius:50%; margin:0 auto 15px auto; display:flex; align-items:center; justify-content:center;">
+                    <i class="fa-solid fa-user-astronaut" style="font-size:32px; color:#fff;"></i>
                 </div>
-                <h2 id="profile-user-title" style="margin: 0 0 5px 0; font-size: 22px; font-weight: 800;">Member Account</h2>
-                <p style="color: var(--text-muted); font-size: 13px; margin: 0 0 30px 0;">Status: Verified Security Network</p>
-                <button style="background: var(--danger); box-shadow: 0 4px 15px rgba(244,63,94,0.2);" onclick="terminateSession()">Terminate Session & Logout</button>
+                <h2 id="profile-user-title" style="margin: 0 0 5px 0; font-size: 24px; font-weight: 800;">Account Node</h2>
+                <p id="profile-schemes-count" style="color: var(--primary); font-size: 13px; margin: 0 0 25px 0; font-weight:600;"></p>
+                <button style="background: var(--danger);" onclick="terminateSession()">Sign Out Account</button>
             </div>
         </div>
 
         <div id="view-admin" style="display: none;">
-            <h3 style="margin-top:0; font-size: 20px; color:#fbbf24;"><i class="fa-solid fa-terminal"></i> Terminal Admin Node</h3>
+            <h3 style="margin-top:0; font-size: 20px; color:#fbbf24;"><i class="fa-solid fa-terminal"></i> Controller Terminal</h3>
             
+            <div class="section-headline" style="color: var(--warning);"><i class="fa-solid fa-user-plus"></i> Incoming Registration Requests</div>
+            <div id="admin-request-stack" style="margin-bottom: 25px;"></div>
+
             <div class="admin-card" style="background: rgba(0,0,0,0.25);">
-                <h4 style="font-size:14px; margin-top:0; margin-bottom:15px; color:#a5b4fc;">Provision Account Parameters</h4>
+                <h4 style="font-size:13px; margin-top:0; margin-bottom:15px; color:#a5b4fc; text-transform:uppercase;">Manual Account Provision</h4>
+                <div class="form-group"><input type="text" id="adm-user-name" placeholder="Enter Member Account Name"></div>
+                <div class="form-group"><input type="number" id="adm-total-chit" placeholder="Motha Seetu Kaasu (Total Target Amount)"></div>
                 <div class="form-group">
-                    <input type="text" id="adm-user-name" placeholder="Enter Member Account Name" style="margin-bottom:12px;">
+                    <select id="adm-banner-select">
+                        <option value="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600">Premium Abstract Blue Banner</option>
+                        <option value="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=600">Neon Futuristic Gradient Banner</option>
+                        <option value="https://images.unsplash.com/photo-1618005198143-e52834644088?q=80&w=600">Deep Purple Velvet Banner</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <input type="number" id="adm-total-chit" placeholder="Motha Seetu Kaasu (Total Target Amount)" style="margin-bottom:15px;">
-                </div>
-                <button style="background:var(--success); box-shadow: 0 4px 12px rgba(16,185,129,0.2);" onclick="adminProvisionNode()">Initialize System Mapping</button>
+                <button style="background:var(--success);" onclick="adminProvisionNode()">Deploy Node Parameters</button>
             </div>
 
-            <div class="section-headline"><i class="fa-solid fa-folder-tree"></i> Live Directory Registries</div>
+            <div class="section-headline"><i class="fa-solid fa-folder-tree"></i> Active Directory Database</div>
             <div id="admin-directory-stack"></div>
         </div>
 
@@ -324,218 +244,315 @@
 </div>
 
 <script>
-    let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v8_cash')) || [];
+    let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v10_multichit')) || [];
+    let dynamicRequests = JSON.parse(localStorage.getItem('sys_matrix_v10_reqs')) || [];
     let runtimeUser = null;
     const terminalRootKey = "thivashthivash143@gmail.com";
 
+    window.addEventListener('load', () => {
+        let activeSessionKey = localStorage.getItem('sys_matrix_v10_session_lock');
+        if (activeSessionKey) {
+            if (activeSessionKey.toLowerCase() === terminalRootKey.toLowerCase()) { bootAdminSession(); } 
+            else {
+                let foundUser = datasetEngine.find(u => u.name.toLowerCase() === activeSessionKey.toLowerCase());
+                if (foundUser) { runtimeUser = foundUser; bootUserSession(foundUser.name); } 
+                else { localStorage.removeItem('sys_matrix_v10_session_lock'); }
+            }
+        }
+    });
+
     function executeAuthentication() {
         let fieldString = document.getElementById('auth-handle').value.trim();
-        if(fieldString === "") { alert("Enter identity key string."); return; }
+        if(fieldString === "") { alert("Enter proper validation handle."); return; }
 
         if(fieldString.toLowerCase() === terminalRootKey.toLowerCase()) {
-            document.getElementById('app-navigation-dock').style.display = 'flex';
-            document.getElementById('dock-admin').style.display = 'flex';
-            navigateToRoute('view-admin');
-            renderAdminDirectoryStack();
-            return;
+            localStorage.setItem('sys_matrix_v10_session_lock', fieldString);
+            bootAdminSession(); return;
         }
 
-        runtimeUser = datasetEngine.find(u => u.name.toLowerCase() === fieldString.toLowerCase());
+        let userNodeMatch = datasetEngine.find(u => u.name.toLowerCase() === fieldString.toLowerCase());
+        if(userNodeMatch) {
+            runtimeUser = userNodeMatch;
+            localStorage.setItem('sys_matrix_v10_session_lock', fieldString);
+            bootUserSession(userNodeMatch.name);
+        } else {
+            if(!dynamicRequests.includes(fieldString)) {
+                dynamicRequests.push(fieldString);
+                localStorage.setItem('sys_matrix_v10_reqs', JSON.stringify(dynamicRequests));
+            }
+            alert("உங்க பெயர் கணினியில் இல்லை! லாகின் கோரிக்கை அட்மினுக்கு அனுப்பப்பட்டுள்ளது.");
+        }
+    }
+
+    function bootAdminSession() {
+        document.getElementById('app-navigation-dock').style.display = 'flex';
+        document.getElementById('dock-admin').style.display = 'flex';
+        navigateToRoute('view-admin'); renderAdminDirectoryStack(); renderAdminRequestsStack();
+    }
+
+    function bootUserSession(nameString) {
         document.getElementById('app-navigation-dock').style.display = 'flex';
         document.getElementById('dock-admin').style.display = 'none';
+        document.getElementById('profile-user-title').innerText = nameString;
+        document.getElementById('profile-schemes-count').innerText = runtimeUser ? `Total Sub-Schemes Loaded: ${runtimeUser.schemes.length}` : "No Schemes Mapping";
         
-        document.getElementById('profile-user-title').innerText = fieldString;
-        
-        buildUserSchemeCards();
-        computeStatementProfileMetrics();
-        navigateToRoute('view-home');
+        buildUserSchemeCards(); computeStatementProfileMetrics(); navigateToRoute('view-home');
     }
 
     function buildUserSchemeCards() {
-        let zone = document.getElementById('active-user-scheme-zone');
-        zone.innerHTML = "";
+        let bannerZone = document.getElementById('dynamic-banner-allocation-zone');
+        let cardZone = document.getElementById('active-user-scheme-zone');
+        bannerZone.innerHTML = ""; cardZone.innerHTML = "";
 
-        if(runtimeUser) {
-            zone.innerHTML = `
-                <div class="section-headline"><i class="fa-solid fa-layer-group"></i> My Live Strategy</div>
-                <div class="plan-row-card" onclick="navigateToRoute('view-details')">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:18px; color:#fff;">Target: ₹${runtimeUser.totalAmount.toLocaleString('en-IN')}</h3>
-                        <span class="mini-badge">Live System</span>
+        if(runtimeUser && runtimeUser.schemes.length > 0) {
+            // Rule 1: Display the first scheme banner dynamic image on Top Header space
+            let primaryScheme = runtimeUser.schemes[0];
+            bannerZone.innerHTML = `<div class="pure-image-banner" style="background-image: url('${primaryScheme.bannerImg}');" onclick="navigateToRoute('view-details')"></div>`;
+
+            // Rule 2: Render all individual assigned sub-schemes lists cards block
+            cardZone.innerHTML = `<div class="section-headline"><i class="fa-solid fa-layer-group"></i> My Assigned Matrix Profiles</div>`;
+            runtimeUser.schemes.forEach((sch, sIdx) => {
+                cardZone.innerHTML += `
+                    <div class="plan-row-card" onclick="navigateToRoute('view-details')">
+                        <div style="display:flex; justify-content:between; align-items:center; margin-bottom:6px;">
+                            <strong style="font-size:16px; color:#fff;">Target: ₹${sch.totalAmount.toLocaleString('en-IN')}</strong>
+                            <span class="mini-badge">Scheme #${sIdx + 1}</span>
+                        </div>
+                        <div style="font-size:12px; color:var(--text-muted);">Today Paid Value: <strong style="color:var(--success);">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
                     </div>
-                    <p style="margin:0; font-size:13px; color:var(--text-muted);">Innaikku Kattuna Kaasu: <strong style="color:var(--success);">₹${runtimeUser.todayPaid.toLocaleString('en-IN')}</strong></p>
-                </div>
-            `;
+                `;
+            });
         } else {
-            zone.innerHTML = `
-                <div class="plan-row-card" style="background:#170b11; border-color:var(--danger); cursor:default;">
-                    <h3 style="margin:0 0 5px 0; font-size:16px; color:var(--danger);">No System Profile Found</h3>
-                    <p style="margin:0; font-size:12px; color:var(--text-muted);">Please contact node admin cluster to provision a profile registry.</p>
-                </div>
-            `;
+            bannerZone.innerHTML = `<div class="pure-image-banner" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600');"></div>`;
+            cardZone.innerHTML = `<div class="plan-row-card" style="border-color:var(--danger); cursor:default;"><h4 style="margin:0; color:var(--danger);">No System Schemes Allocated Yet.</h4></div>`;
         }
     }
 
     function computeStatementProfileMetrics() {
-        let contentPanel = document.getElementById('metrics-sheet-render');
-        let chronologyPanel = document.getElementById('logs-timeline-render');
+        let container = document.getElementById('multi-ledger-render-container');
+        container.innerHTML = "";
 
-        if(!runtimeUser) {
-            contentPanel.innerHTML = `<p style="font-size:13px; color:var(--text-muted); margin:0;">No tracking fields available.</p>`;
-            chronologyPanel.innerHTML = `<p style="font-size:13px; color:var(--text-muted);">History block empty.</p>`;
+        if(!runtimeUser || runtimeUser.schemes.length === 0) {
+            container.innerHTML = `<div class="section-headline">Ledger</div><div class="statement-card"><p style="color:var(--text-muted); margin:0;">No balance sheet records found.</p></div>`;
             return;
         }
 
-        let pendingCash = runtimeUser.totalAmount - runtimeUser.totalPaid;
-
-        contentPanel.innerHTML = `
-            <div class="metric-row"><span>Motha Seetu Kaasu</span><strong>₹${runtimeUser.totalAmount.toLocaleString('en-IN')}</strong></div>
-            <div class="metric-row" style="background:rgba(16,185,129,0.03)"><span>Ippo Vara Kattuna Kaasu</span><strong style="color:var(--success);">₹${runtimeUser.totalPaid.toLocaleString('en-IN')}</strong></div>
-            <div class="metric-row" style="background:rgba(239,68,68,0.03)"><span>Meedham Pending Balance</span><strong style="color:var(--danger);">₹${pendingCash.toLocaleString('en-IN')}</strong></div>
-            <div class="metric-row" style="border-top:1px solid var(--border); margin-top:10px; padding-top:15px;"><span>Innaikku Kattuna Kaasu</span><strong style="color:#a5b4fc; font-size:18px;">₹${runtimeUser.todayPaid.toLocaleString('en-IN')}</strong></div>
-        `;
-
-        chronologyPanel.innerHTML = "";
-        let logsReversedArray = [...runtimeUser.logs].reverse();
-        logsReversedArray.forEach(log => {
-            let div = document.createElement('div');
-            div.className = `log-node ${log.type}`;
-            div.innerHTML = `
-                <div class="log-time"><i class="fa-regular fa-clock"></i> ${log.timestamp}</div>
-                <div class="log-msg">${log.message}</div>
+        runtimeUser.schemes.forEach((sch, sIdx) => {
+            let pendingCash = sch.totalAmount - sch.totalPaid;
+            let section = document.createElement('div');
+            section.innerHTML = `
+                <div class="section-headline"><i class="fa-solid fa-receipt"></i> Balance Sheet: Scheme #${sIdx + 1} (Target: ₹${sch.totalAmount.toLocaleString('en-IN')})</div>
+                <div class="statement-card">
+                    <div class="metric-row"><span>Total Target Structure</span><strong>₹${sch.totalAmount.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row" style="background:rgba(16,185,129,0.02)"><span>Net Remitted Paid</span><strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row" style="background:rgba(239,68,68,0.02)"><span>Outstanding Debt Balance</span><strong style="color:var(--danger);">₹${pendingCash.toLocaleString('en-IN')}</strong></div>
+                    <div class="metric-row" style="border-top:1px solid var(--border); margin-top:10px; padding-top:12px;"><span>Innaikku Kattuna Kaasu</span><strong style="color:#a5b4fc;">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
+                    
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:15px; font-weight:700; text-transform:uppercase;">Scheme Time Logs</div>
+                    <div class="timeline-stream" id="logs-stream-sch-${sIdx}"></div>
+                </div>
             `;
-            chronologyPanel.appendChild(div);
+            container.appendChild(section);
+
+            let logsTimeline = document.getElementById(`logs-stream-sch-${sIdx}`);
+            let logsReversed = [...sch.logs].reverse();
+            logsReversed.forEach(log => {
+                logsTimeline.innerHTML += `
+                    <div class="log-node ${log.type}">
+                        <div class="log-time"><i class="fa-regular fa-clock"></i> ${log.timestamp}</div>
+                        <div class="log-msg">${log.message}</div>
+                    </div>
+                `;
+            });
         });
     }
 
     function adminProvisionNode() {
         let name = document.getElementById('adm-user-name').value.trim();
         let totalChitVal = parseFloat(document.getElementById('adm-total-chit').value);
+        let banner = document.getElementById('adm-banner-select').value;
 
-        if(name === "" || isNaN(totalChitVal) || totalChitVal <= 0) { alert("Enter correct configuration inputs."); return; }
-        if(datasetEngine.some(u => u.name.toLowerCase() === name.toLowerCase())) { alert("Duplicate tag configuration protected."); return; }
+        if(name === "" || isNaN(totalChitVal) || totalChitVal <= 0) { alert("Enter correct input params."); return; }
 
-        datasetEngine.push({
-            name: name,
-            totalAmount: totalChitVal,
-            totalPaid: 0,
-            todayPaid: 0,
-            logs: [{
-                timestamp: captureTimestamp(),
-                type: 'add',
-                message: `Account mapped. System registered with Total Target Matrix: ₹${totalChitVal.toLocaleString('en-IN')}.`
-            }]
-        });
+        let userMatch = datasetEngine.find(u => u.name.toLowerCase() === name.toLowerCase());
+        let newSchemeObj = {
+            totalAmount: totalChitVal, totalPaid: 0, todayPaid: 0, bannerImg: banner,
+            logs: [{ timestamp: captureTimestamp(), type: 'add', message: `Scheme Initialized. Target structure value set to ₹${totalChitVal.toLocaleString('en-IN')}.` }]
+        };
 
-        commitClusterMemory();
-        renderAdminDirectoryStack();
-        document.getElementById('adm-user-name').value = "";
-        document.getElementById('adm-total-chit').value = "";
+        if(userMatch) {
+            userMatch.schemes.push(newSchemeObj);
+        } else {
+            datasetEngine.push({ name: name, schemes: [newSchemeObj] });
+            dynamicRequests = dynamicRequests.filter(r => r.toLowerCase() !== name.toLowerCase());
+            localStorage.setItem('sys_matrix_v10_reqs', JSON.stringify(dynamicRequests));
+        }
+
+        commitClusterMemory(); renderAdminDirectoryStack(); renderAdminRequestsStack();
+        document.getElementById('adm-user-name').value = ""; document.getElementById('adm-total-chit').value = "";
     }
 
-    function adminUpdateCashFlow(index) {
-        let amtInput = document.getElementById(`adm-cash-val-${index}`);
-        let cashValue = parseFloat(amtInput.value);
-
-        if(isNaN(cashValue) || cashValue <= 0) { alert("Please input a valid positive cash value."); return; }
-
-        let targetNode = datasetEngine[index];
+    function adminApproveRequestInline(reqName, index) {
+        let targetAmt = parseFloat(document.getElementById(`adm-req-amt-${index}`).value);
+        if(isNaN(targetAmt) || targetAmt <= 0) { alert("Set correct scheme target amount frame value."); return; }
         
-        // Add operation updates
-        targetNode.todayPaid = cashValue; 
-        targetNode.totalPaid += cashValue;
+        let newSchemeObj = {
+            totalAmount: targetAmt, totalPaid: 0, todayPaid: 0, bannerImg: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600',
+            logs: [{ timestamp: captureTimestamp(), type: 'add', message: `Scheme Initialized via Inline Approval. Target value set to ₹${targetAmt.toLocaleString('en-IN')}.` }]
+        };
 
-        targetNode.logs.push({
-            timestamp: captureTimestamp(),
-            type: 'add',
-            message: `Kaasu Varavu Added: Innaikku Kattuna Kaasu ₹${cashValue.toLocaleString('en-IN')} added to database. Mapped Net Balance Paid: ₹${targetNode.totalPaid.toLocaleString('en-IN')}.`
-        });
-
-        datasetEngine[index] = targetNode;
-        commitClusterMemory();
-        renderAdminDirectoryStack();
+        datasetEngine.push({ name: reqName, schemes: [newSchemeObj] });
+        dynamicRequests.splice(index, 1);
+        localStorage.setItem('sys_matrix_v10_reqs', JSON.stringify(dynamicRequests));
+        commitClusterMemory(); renderAdminDirectoryStack(); renderAdminRequestsStack();
     }
 
-    function adminDeductCashFlow(index) {
-        let amtInput = document.getElementById(`adm-cash-val-${index}`);
-        let cashValue = parseFloat(amtInput.value);
-
-        if(isNaN(cashValue) || cashValue <= 0) { alert("Please input a valid positive cash value."); return; }
-
-        let targetNode = datasetEngine[index];
-        if(targetNode.totalPaid < cashValue) { alert("Deduction value exceeds database remitted balance parameters."); return; }
-
-        targetNode.totalPaid -= cashValue;
-        targetNode.todayPaid = 0; // Clear or reset today indicator on manual correction rollback
-
-        targetNode.logs.push({
-            timestamp: captureTimestamp(),
-            type: 'sub',
-            message: `Kaasu Koraikkapattathu: Manual operational rollback executed. Deducted amount ₹${cashValue.toLocaleString('en-IN')}. Current Net Balance Paid: ₹${targetNode.totalPaid.toLocaleString('en-IN')}.`
-        });
-
-        datasetEngine[index] = targetNode;
-        commitClusterMemory();
-        renderAdminDirectoryStack();
+    function adminRejectRequestInline(index) {
+        dynamicRequests.splice(index, 1);
+        localStorage.setItem('sys_matrix_v10_reqs', JSON.stringify(dynamicRequests));
+        renderAdminRequestsStack();
     }
 
-    function adminPurgeRegistry(index) {
-        if(confirm("Purge tracking record node parameters completely from execution matrices?")) {
-            datasetEngine.splice(index,1);
-            commitClusterMemory();
-            renderAdminDirectoryStack();
+    function adminAddSchemeToExisting(index) {
+        let targetAmt = parseFloat(document.getElementById(`adm-new-sch-amt-${index}`).value);
+        let banner = document.getElementById(`adm-new-sch-banner-${index}`).value;
+        if(isNaN(targetAmt) || targetAmt <= 0) { alert("Enter positive target amount setup values."); return; }
+
+        datasetEngine[index].schemes.push({
+            totalAmount: targetAmt, totalPaid: 0, todayPaid: 0, bannerImg: banner,
+            logs: [{ timestamp: captureTimestamp(), type: 'add', message: `Additional sub-scheme mapped parameter deployed into registry matrix. Value: ₹${targetAmt.toLocaleString('en-IN')}.` }]
+        });
+        
+        document.getElementById(`adm-new-sch-amt-${index}`).value = "";
+        commitClusterMemory(); renderAdminDirectoryStack();
+    }
+
+    function adminUpdateCashFlow(uIdx, sIdx) {
+        let cash = parseFloat(document.getElementById(`adm-cash-${uIdx}-${sIdx}`).value);
+        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Standard Data Entry Update";
+        if(isNaN(cash) || cash <= 0) { alert("Enter valid positive cash amount."); return; }
+
+        let targetSch = datasetEngine[uIdx].schemes[sIdx];
+        targetSch.todayPaid = cash; targetSch.totalPaid += cash;
+        targetSch.logs.push({
+            timestamp: captureTimestamp(), type: 'add',
+            message: `Kaasu Varavu Added: Innaikku Kattunathu ₹${cash.toLocaleString('en-IN')}. [Reason: ${reason}]. Net Balance Remitted: ₹${targetSch.totalPaid.toLocaleString('en-IN')}.`
+        });
+
+        commitClusterMemory(); renderAdminDirectoryStack();
+    }
+
+    function adminDeductCashFlow(uIdx, sIdx) {
+        let cash = parseFloat(document.getElementById(`adm-cash-${uIdx}-${sIdx}`).value);
+        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Correction Entry Log Adjustment";
+        if(isNaN(cash) || cash <= 0) { alert("Enter valid cash amount execution variables."); return; }
+
+        let targetSch = datasetEngine[uIdx].schemes[sIdx];
+        if(targetSch.totalPaid < cash) { alert("Deduction constraint limit out of range."); return; }
+
+        targetSch.totalPaid -= cash; targetSch.todayPaid = 0;
+        targetSch.logs.push({
+            timestamp: captureTimestamp(), type: 'sub',
+            message: `Kaasu Koraikkapattathu: Manual operational rollback executed. Deducted: ₹${cash.toLocaleString('en-IN')}. [Reason: ${reason}]. Net Balance Remitted: ₹${targetSch.totalPaid.toLocaleString('en-IN')}.`
+        });
+
+        commitClusterMemory(); renderAdminDirectoryStack();
+    }
+
+    function adminDeleteSpecificScheme(uIdx, sIdx) {
+        if(confirm("Delete intha scheme parameters-ah database la irunthu morthama thookalama?")) {
+            datasetEngine[uIdx].schemes.splice(sIdx, 1);
+            if(datasetEngine[uIdx].schemes.length === 0) { datasetEngine.splice(uIdx, 1); }
+            commitClusterMemory(); renderAdminDirectoryStack();
         }
     }
 
-    function renderAdminDirectoryStack() {
-        let targetArea = document.getElementById('admin-directory-stack');
-        targetArea.innerHTML = "";
-
-        datasetEngine.forEach((user, index) => {
-            let pending = user.totalAmount - user.totalPaid;
-            let item = document.createElement('div');
-            item.className = 'admin-card';
-            item.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <strong style="font-size:16px; color:#fff;">${user.name}</strong>
-                    <span style="font-size:12px; color:var(--primary); font-weight:700;">Target: ₹${user.totalAmount.toLocaleString('en-IN')}</span>
-                </div>
-                <div style="font-size:13px; color:var(--text-muted); margin-bottom:15px; background:rgba(0,0,0,0.15); padding:10px; border-radius:10px;">
-                    <div>Kattuna Kaasu: <strong style="color:var(--success);">₹${user.totalPaid.toLocaleString('en-IN')}</strong></div>
-                    <div style="margin-top:4px;">Pending Balance: <strong style="color:var(--danger);">₹${pending.toLocaleString('en-IN')}</strong></div>
-                    <div style="margin-top:4px; border-top:1px solid rgba(255,255,255,0.05); padding-top:4px;">Innaikku Kattunathu: <strong style="color:#a5b4fc;">₹${user.todayPaid.toLocaleString('en-IN')}</strong></div>
-                </div>
-                
-                <div class="form-group" style="margin-bottom:10px;">
-                    <input type="number" id="adm-cash-val-${index}" placeholder="Enter Kaasu Amount (₹)" style="padding:10px 14px; font-size:14px;">
-                </div>
-                
-                <div style="display:flex; gap:8px;">
-                    <button style="padding:10px 14px; font-size:13px; background:var(--success); font-weight:700;" onclick="adminUpdateCashFlow(${index})">+ Add Kaasu</button>
-                    <button style="padding:10px 14px; font-size:13px; background:#d97706; font-weight:700;" onclick="adminDeductCashFlow(${index})">- Koraikka</button>
-                    <button style="padding:10px; font-size:13px; background:var(--danger); width:auto;" onclick="adminPurgeRegistry(${index})"><i class="fa-solid fa-trash-can"></i></button>
+    function renderAdminRequestsStack() {
+        let area = document.getElementById('admin-request-stack'); area.innerHTML = "";
+        if(dynamicRequests.length === 0) {
+            area.innerHTML = `<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px; border:1px dashed var(--border); border-radius:12px;">No incoming connection registration logs hanging in buffer stack.</div>`;
+            return;
+        }
+        dynamicRequests.forEach((reqName, idx) => {
+            area.innerHTML += `
+                <div class="admin-card" style="border-color: var(--warning);">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <strong>${reqName}</strong><span class="warning-badge">Login Trigger Request</span>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <input type="number" id="adm-req-amt-${idx}" placeholder="Set Scheme Amount (₹)" style="padding:8px; font-size:13px; flex:1;">
+                        <button style="padding:8px 14px; font-size:12px; background:var(--success); width:auto;" onclick="adminApproveRequestInline('${reqName}', ${idx})">Approve & Deploy</button>
+                        <button style="padding:8px 12px; font-size:12px; background:var(--danger); width:auto;" onclick="adminRejectRequestInline(${idx})"><i class="fa-solid fa-user-xmark"></i></button>
+                    </div>
                 </div>
             `;
-            targetArea.appendChild(item);
+        });
+    }
+
+    function renderAdminDirectoryStack() {
+        let stackArea = document.getElementById('admin-directory-stack'); stackArea.innerHTML = "";
+        datasetEngine.forEach((user, uIdx) => {
+            let userCard = document.createElement('div'); userCard.className = 'admin-card';
+            let schemesHTML = "";
+
+            user.schemes.forEach((sch, sIdx) => {
+                let pend = sch.totalAmount - sch.totalPaid;
+                schemesHTML += `
+                    <div style="background:rgba(0,0,0,0.2); padding:12px; border-radius:14px; margin-top:12px; border:1px solid rgba(255,255,255,0.03);">
+                        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:#fff; margin-bottom:8px;">
+                            <span>Scheme #${sIdx + 1} System Profile</span>
+                            <button style="background:none; color:var(--danger); font-size:12px; padding:0; width:auto; box-shadow:none;" onclick="adminDeleteSpecificScheme(${uIdx}, ${sIdx})"><i class="fa-solid fa-trash-can"></i> Delete Scheme</button>
+                        </div>
+                        <div style="font-size:12px; color:var(--text-muted); line-height:1.6; margin-bottom:10px;">
+                            <div>Total Scheme Allocation: <strong style="color:var(--primary);">₹${sch.totalAmount.toLocaleString('en-IN')}</strong></div>
+                            <div>Total Remitted Capital: <strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>
+                            <div>Outstanding Remaining: <strong style="color:var(--danger);">₹${pend.toLocaleString('en-IN')}</strong></div>
+                            <div>Today Input Parameter: <strong style="color:#a5b4fc;">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
+                        </div>
+                        <div style="display:flex; gap:6px; margin-bottom:8px;">
+                            <input type="number" id="adm-cash-${uIdx}-${sIdx}" placeholder="Amount (₹)" style="padding:8px; font-size:12px; flex:1;">
+                            <input type="text" id="adm-reason-${uIdx}-${sIdx}" placeholder="Reason Update" style="padding:8px; font-size:12px; flex:1.2;">
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            <button style="padding:8px; font-size:11px; background:var(--success);" onclick="adminUpdateCashFlow(${uIdx}, ${sIdx})">+ Add Cash</button>
+                            <button style="padding:8px; font-size:11px; background:#d97706;" onclick="adminDeductCashFlow(${uIdx}, ${sIdx})">- Rollback</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            userCard.innerHTML = `
+                <div style="font-size:16px; font-weight:800; border-bottom:1px solid rgba(255,255,255,0.04); padding-bottom:6px; color:#a5b4fc;"><i class="fa-solid fa-id-badge"></i> User Root: ${user.name}</div>
+                ${schemesHTML}
+                
+                <div style="margin-top:15px; border-top:1px dashed rgba(255,255,255,0.08); padding-top:12px;">
+                    <div style="font-size:11px; color:var(--text-muted); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Add New Scheme To This User</div>
+                    <div style="display:flex; gap:6px;">
+                        <input type="number" id="adm-new-sch-amt-${uIdx}" placeholder="Target Amount (₹)" style="padding:8px; font-size:12px; flex:1;">
+                        <select id="adm-new-sch-banner-${uIdx}" style="padding:8px; font-size:12px; flex:1;">
+                            <option value="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600">Blue Banner</option>
+                            <option value="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=600">Neon Banner</option>
+                            <option value="https://images.unsplash.com/photo-1618005198143-e52834644088?q=80&w=600">Purple Banner</option>
+                        </select>
+                    </div>
+                    <button style="margin-top:8px; padding:8px; font-size:12px; background:linear-gradient(135deg, #818cf8, #4f46e5);" onclick="adminAddSchemeToExisting(${uIdx})">+ Provision Extra Scheme</button>
+                </div>
+            `;
+            stackArea.appendChild(userCard);
         });
     }
 
     function triggerWhatsAppRedirect() {
-        let tag = runtimeUser ? runtimeUser.name : "Guest Log Node";
+        let tag = runtimeUser ? runtimeUser.name : "Guest Connection Segment Link";
         window.open(`https://wa.me/919876543210?text=Ledger%20Matrix%20Update%20Request%20From%20Channel%3A%20${encodeURIComponent(tag)}`, '_blank');
     }
 
     function navigateToRoute(targetViewId) {
         const screens = ['view-login', 'view-home', 'view-details', 'view-profile', 'view-admin'];
-        screens.forEach(s => {
-            document.getElementById(s).style.display = (s === targetViewId) ? 'block' : 'none';
-        });
+        screens.forEach(s => { document.getElementById(s).style.display = (s === targetViewId) ? 'block' : 'none'; });
 
         const dockMappings = { 'view-home': 'dock-home', 'view-details': 'dock-details', 'view-profile': 'dock-profile', 'view-admin': 'dock-admin' };
-        Object.values(dockMappings).forEach(id => {
-            let el = document.getElementById(id);
-            if(el) el.classList.remove('active');
-        });
+        Object.values(dockMappings).forEach(id => { let el = document.getElementById(id); if(el) el.classList.remove('active'); });
         if(dockMappings[targetViewId]) document.getElementById(dockMappings[targetViewId]).classList.add('active');
     }
 
@@ -544,12 +561,11 @@
         return d.toLocaleDateString('en-IN') + " | " + d.toLocaleTimeString('en-IN', {hour: '2-digit', minute:'2-digit', second:'2-digit'});
     }
 
-    function commitClusterMemory() { localStorage.setItem('sys_matrix_v8_cash', JSON.stringify(datasetEngine)); }
+    function commitClusterMemory() { localStorage.setItem('sys_matrix_v10_multichit', JSON.stringify(datasetEngine)); }
     
     function terminateSession() {
-        runtimeUser = null;
-        document.getElementById('auth-handle').value = "";
-        document.getElementById('app-navigation-dock').style.display = 'none';
+        runtimeUser = null; localStorage.removeItem('sys_matrix_v10_session_lock');
+        document.getElementById('auth-handle').value = ""; document.getElementById('app-navigation-dock').style.display = 'none';
         navigateToRoute('view-login');
     }
 </script>
