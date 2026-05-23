@@ -326,7 +326,8 @@
 
 </div>
 
-<script>
+
+           <script>
     let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v15_multichit')) || [];
     let runtimeUser = null;
     const terminalRootKey = "thivashthivash143@gmail.com";
@@ -419,7 +420,6 @@
 
             if(activeInstance) {
                 statusBadge = `<span class="status-tag-indicator active"><i class="fa-solid fa-circle-check"></i> Active</span>`;
-                // FIXED INTERACTIVE TYPO LINK POOL HERE
                 clickAction = `MapsToRoute('view-details')`;
                 if(std.type === "target") {
                     displayBadgeLabel = `Target Value: ₹${activeInstance.totalAmount.toLocaleString('en-IN')}`;
@@ -631,7 +631,6 @@
         });
     }
 
-    // FIXED GATEWAY API: WhatsApp endpoint loaded cleanly with target custom number
     function triggerWhatsAppRedirect() {
         let tag = runtimeUser ? runtimeUser.name : "Guest";
         window.open(`https://wa.me/917845229384?text=Hello%20Admin%2C%20I%20want%20to%20activate%20a%20new%20ledger%20scheme%20for%20account%3A%20${encodeURIComponent(tag)}`, '_blank');
@@ -658,140 +657,173 @@
         document.getElementById('auth-handle').value = ""; document.getElementById('app-navigation-dock').style.display = 'none';
         navigateToRoute('view-login');
     }
-    // ==========================================
-// DAILY SPIN SYSTEM INTEGRATED TERMINAL ENGINE
-// ==========================================
 
-// Global State Trackers
-let totalSystemSpinsCount = parseInt(localStorage.getItem('sys_matrix_total_spins')) || 0;
-const wheelSectors = [
-    { label: "10 Cashback", type: "cash", value: 10 },
-    { label: "5 Cashback", type: "cash", value: 5 },
-    { label: "2 Cashback", type: "cash", value: 2 },
-    { label: "Child Dress", type: "dress", value: "Child Dress" },
-    { label: "Redeem 10", type: "redeem", value: 10 },
-    { label: "Better Next Time", type: "try_again", value: 0 },
-    { label: "Better Next Time", type: "try_again", value: 0 },
-    { label: "Better Next Time", type: "try_again", value: 0 }
-];
+    // ==============================================================
+    // DAILY SPIN SYSTEM INTEGRATED TERMINAL ENGINE (WITH 1-DAY LOCK)
+    // ==============================================================
 
-// Canvas Graphics Generator
-function drawMatrixVisualWheel() {
-    const canvas = document.getElementById('wheelCanvas'); 
-    if(!canvas) return;
-    const ctx = canvas.getContext('2d'); 
-    const numSectors = wheelSectors.length;
-    const arc = Math.PI * 2 / numSectors; 
-    const radius = 130;
-    
-    ctx.clearRect(0,0,260,260);
-    for(let i=0; i<numSectors; i++) {
-        ctx.beginPath();
-        ctx.fillStyle = (i % 2 === 0) ? '#1e1b4b' : '#0f172a';
-        ctx.strokeStyle = 'rgba(255,255,255,0.1)'; 
-        ctx.lineWidth = 2;
-        ctx.moveTo(130, 130);
-        ctx.arc(130, 130, radius, arc * i, arc * (i + 1));
-        ctx.fill(); 
-        ctx.stroke();
+    let totalSystemSpinsCount = parseInt(localStorage.getItem('sys_matrix_total_spins')) || 0;
+    const wheelSectors = [
+        { label: "10 Cashback", type: "cash", value: 10 },
+        { label: "5 Cashback", type: "cash", value: 5 },
+        { label: "2 Cashback", type: "cash", value: 2 },
+        { label: "Child Dress", type: "dress", value: "Child Dress" },
+        { label: "Redeem 10", type: "redeem", value: 10 },
+        { label: "Better Next Time", type: "try_again", value: 0 },
+        { label: "Better Next Time", type: "try_again", value: 0 },
+        { label: "Better Next Time", type: "try_again", value: 0 }
+    ];
+
+    function drawMatrixVisualWheel() {
+        const canvas = document.getElementById('wheelCanvas'); 
+        if(!canvas) return;
+        const ctx = canvas.getContext('2d'); 
+        const numSectors = wheelSectors.length;
+        const arc = Math.PI * 2 / numSectors; 
+        const radius = 130;
         
-        ctx.save(); 
-        ctx.fillStyle = "#fff"; 
-        ctx.font = "bold 10px sans-serif";
-        ctx.translate(130, 130); 
-        ctx.rotate(arc * i + arc / 2);
-        ctx.textAlign = "right";
-        ctx.fillText(wheelSectors[i].label, radius - 15, 4);
-        ctx.restore();
-    }
-}
-
-// UI Triggers
-function openSpinSystemModal() {
-    document.getElementById('lucky-spin-modal').style.display = 'flex';
-    setTimeout(drawMatrixVisualWheel, 100);
-}
-
-function closeSpinSystemModal() {
-    document.getElementById('lucky-spin-modal').style.display = 'none';
-}
-
-// Spin Physics and Drop Rate Engine
-function executeWheelRotation() {
-    if(!runtimeUser) { 
-        alert("Establish Identity terminal processing first thala!"); 
-        return; 
-    }
-    
-    totalSystemSpinsCount++;
-    localStorage.setItem('sys_matrix_total_spins', totalSystemSpinsCount);
-    
-    document.getElementById('spin-start-btn').disabled = true;
-    let targetSectorIndex = 5; // Default Safety Lock: Better Next Time
-    
-    // Strict Conditional Counter check
-    if(totalSystemSpinsCount === 50 || totalSystemSpinsCount === 70) {
-        targetSectorIndex = 3; // Direct Drop: Child Dress
-    } else {
-        let pool = [];
-        wheelSectors.forEach((sec, idx) => {
-            // Cashback matrum Dress normal common loops-la hit aaga koodathu
-            if(sec.type !== 'cash' && sec.type !== 'dress') {
-                pool.push(idx); 
-            }
-        });
-        targetSectorIndex = pool[Math.floor(Math.random() * pool.length)];
-    }
-    
-    const numSectors = wheelSectors.length;
-    const sectorDegrees = 360 / numSectors;
-    
-    let stopAngle = (numSectors - targetSectorIndex - 1) * sectorDegrees + (sectorDegrees / 2);
-    let totalDegreesRotation = 3600 + stopAngle; 
-    
-    const wheelElement = document.getElementById('wheelCanvas');
-    wheelElement.style.transform = `rotate(${totalDegreesRotation}deg)`;
-    
-    setTimeout(() => {
-        wheelElement.style.transition = 'none';
-        wheelElement.style.transform = `rotate(${stopAngle}deg)`;
-        setTimeout(() => { 
-            wheelElement.style.transition = 'transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)'; 
-        }, 50);
-        
-        processSpinResultReward(wheelSectors[targetSectorIndex]);
-        document.getElementById('spin-start-btn').disabled = false;
-    }, 4000);
-}
-
-// Reward Dispatch Logic Router
-function processSpinResultReward(sectorObj) {
-    if(sectorObj.type === "cash") {
-        if(runtimeUser.schemes && runtimeUser.schemes.length > 0) {
-            let primarySch = runtimeUser.schemes[0];
-            primarySch.totalPaid += sectorObj.value;
-            primarySch.logs.push({
-                timestamp: captureTimestamp(), 
-                type: 'add',
-                message: `Lucky Spin Wallet Cash Inflow: +₹${sectorObj.value}`
-            });
-            commitClusterMemory(); 
-            refreshLiveWalletMetrics();
-            alert(`Congratulations! ₹${sectorObj.value} Cashback unga node account-la direct-aa add aagidichu.`);
-        } else {
-            alert(`You won ${sectorObj.label}! But active scheme processing structure configuration missing.`);
+        ctx.clearRect(0,0,260,260);
+        for(let i=0; i<numSectors; i++) {
+            ctx.beginPath();
+            ctx.fillStyle = (i % 2 === 0) ? '#1e1b4b' : '#0f172a';
+            ctx.strokeStyle = 'rgba(255,255,255,0.1)'; 
+            ctx.lineWidth = 2;
+            ctx.moveTo(130, 130);
+            ctx.arc(130, 130, radius, arc * i, arc * (i + 1));
+            ctx.fill(); 
+            ctx.stroke();
+            
+            ctx.save(); 
+            ctx.fillStyle = "#fff"; 
+            ctx.font = "bold 10px sans-serif";
+            ctx.translate(130, 130); 
+            ctx.rotate(arc * i + arc / 2);
+            ctx.textAlign = "right";
+            ctx.fillText(wheelSectors[i].label, radius - 15, 4);
+            ctx.restore();
         }
-    } 
-    else if(sectorObj.type === "dress" || sectorObj.type === "redeem") {
-        alert(`Wow Super! Ungaluku "${sectorObj.label}" vilunthuruku. Live verification claim panna ippo WhatsApp messenger redirect open aagum.`);
-        let msg = `Hello Admin, I won *${sectorObj.label}* on the Daily Lucky Wheel!\nAccount Node User Key: ${encodeURIComponent(runtimeUser.name)}`;
-        window.open(`https://wa.me/917845229384?text=${encodeURIComponent(msg)}`, '_blank');
-    } 
-    else {
-        alert("Better Next Time thala! Next time dynamic spin loops-la try panni paarunga.");
     }
-}
 
+    function openSpinSystemModal() {
+        document.getElementById('lucky-spin-modal').style.display = 'flex';
+        setTimeout(drawMatrixVisualWheel, 100);
+    }
+
+    function closeSpinSystemModal() {
+        document.getElementById('lucky-spin-modal').style.display = 'none';
+    }
+
+    function executeWheelRotation() {
+        if(!runtimeUser) { 
+            alert("Establish Identity terminal processing first thala!"); 
+            return; 
+        }
+        
+        if(!runtimeUser.totalSpinsCount) runtimeUser.totalSpinsCount = 0;
+        if(!runtimeUser.lastTwoCashbackTimestamp) runtimeUser.lastTwoCashbackTimestamp = 0;
+        if(!runtimeUser.lastSpinDateString) runtimeUser.lastSpinDateString = "";
+
+        // ─── 1-DAY LOCK CHECK ───
+        let todayDateStr = new Date().toLocaleDateString('en-IN'); 
+        if (runtimeUser.lastSpinDateString === todayDateStr) {
+            alert("Limit Reached thala! Inniku unga Daily Lucky Spin mudinjathu. Naalaiku thirumba vandhu unga adhirshthatha sothichu paarunga! 👍");
+            return;
+        }
+        
+        runtimeUser.lastSpinDateString = todayDateStr;
+        runtimeUser.totalSpinsCount++;
+        totalSystemSpinsCount++;
+        
+        commitClusterMemory();
+        localStorage.setItem('sys_matrix_total_spins', totalSystemSpinsCount);
+        
+        document.getElementById('spin-start-btn').disabled = true;
+        let targetSectorIndex = 5; 
+        
+        let uCount = runtimeUser.totalSpinsCount;
+        let currentTimeMs = Date.now();
+        let fiveDaysInMs = 5 * 24 * 60 * 60 * 1000;
+        
+        // STRICT RULE DEPLOYMENT MATRIX ENGINE
+        if (uCount === 100) {
+            targetSectorIndex = 3; // Child Dress
+        }
+        else if (uCount === 50) {
+            targetSectorIndex = 4; // Redeem 10
+        }
+        else if (uCount === 20) {
+            targetSectorIndex = 0; // 10 Cashback
+        }
+        else if (uCount === 15) {
+            targetSectorIndex = 1; // 5 Cashback
+        }
+        else if (currentTimeMs - runtimeUser.lastTwoCashbackTimestamp >= fiveDaysInMs) {
+            let chanceRoll = Math.floor(Math.random() * 10);
+            if (chanceRoll < 3) { 
+                targetSectorIndex = 2; // 2 Cashback
+                runtimeUser.lastTwoCashbackTimestamp = currentTimeMs;
+                commitClusterMemory();
+            } else {
+                targetSectorIndex = (Math.random() < 0.2) ? 6 : 7;
+            }
+        }
+        else {
+            let structuralPool = [5, 6, 7];
+            targetSectorIndex = structuralPool[Math.floor(Math.random() * structuralPool.length)];
+        }
+        
+        // GRAPHICS SYNCHRONIZATION
+        const numSectors = wheelSectors.length;
+        const sectorDegrees = 360 / numSectors;
+        
+        let targetCenterAngle = (numSectors - targetSectorIndex - 1) * sectorDegrees + (sectorDegrees / 2);
+        let finalVisualStopAngle = 270 - targetCenterAngle; // UI Visual alignment fix
+        
+        let totalDegreesRotation = 3600 + finalVisualStopAngle; 
+        const wheelElement = document.getElementById('wheelCanvas');
+        
+        wheelElement.style.transition = 'none';
+        wheelElement.style.transform = `rotate(0deg)`;
+        
+        setTimeout(() => {
+            wheelElement.style.transition = 'transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)';
+            wheelElement.style.transform = `rotate(${totalDegreesRotation}deg)`;
+        }, 20);
+        
+        setTimeout(() => {
+            processSpinResultReward(wheelSectors[targetSectorIndex]);
+            document.getElementById('spin-start-btn').disabled = false;
+        }, 4100);
+    }
+
+    function processSpinResultReward(sectorObj) {
+        if (sectorObj.type === "try_again") {
+            alert("Better Next Time thala! Next time dynamic spin loops-la try panni paarunga.");
+        } 
+        else if (sectorObj.type === "cash") {
+            if (runtimeUser.schemes && runtimeUser.schemes.length > 0) {
+                let primarySch = runtimeUser.schemes[0];
+                primarySch.totalPaid += sectorObj.value;
+                primarySch.logs.push({
+                    timestamp: captureTimestamp(), 
+                    type: 'add',
+                    message: `Lucky Spin Wallet Cash Inflow: +₹${sectorObj.value}`
+                });
+                commitClusterMemory(); 
+                computeStatementProfileMetrics(); // Keep visual ledger layout updated
+            }
+            alert(`🎉 YOU WIN! 🎉\n\nCongratulations thala! Ungaluku "${sectorObj.label}" vilunthuruku. Cash direct-aa unga wallet ledger account-la upload aagidichu!`);
+        } 
+        else if (sectorObj.type === "dress" || sectorObj.type === "redeem") {
+            let userConfirmation = confirm(`🎉 YOU WIN! 🎉\n\nWow Super thala! Ungaluku "${sectorObj.label}" vilunthuruku!\n\nClick "OK" to claim instantly on WhatsApp terminal platform workspace.`);
+            if (userConfirmation) {
+                let msg = `Hello Admin, I won *${sectorObj.label}* on the Daily Lucky Wheel System!\nUser Profile Node Key: ${encodeURIComponent(runtimeUser.name)}\nUser Total Spin Count Metrics: ${runtimeUser.totalSpinsCount}`;
+                window.open(`https://wa.me/917845229384?text=${encodeURIComponent(msg)}`, '_blank');
+            }
+        }
+    }
 </script>
+
+    
 </body>
 </html>
