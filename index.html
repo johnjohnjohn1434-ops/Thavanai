@@ -1,620 +1,938 @@
 <!DOCTYPE html>
-<html lang="ta">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Multi-Ledger Engine V15</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>NexSphere - Advanced Social Network</title>
     <style>
-        
+        /* --- MODERN INSTAGRAM/MESSENGER DARK UI --- */
         :root {
-            --bg-main: #020613;
-            --panel-bg: #080e1b;
-            --card-bg: #10172a;
-            --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.25);
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --border: rgba(255, 255, 255, 0.06);
-            --input-bg: #040812;
+            --bg-dark: #000000;
+            --bg-surface: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --accent: #0095f6; /* Instagram Blue */
+            --accent-hover: #1877f2;
+            --danger: #ed4956;
+            --success: #00f2fe;
+            --border: #262626;
         }
 
-        /* LIGHT MODE REALM CRITICAL OVERRIDES */
-        body.light-theme {
-            --bg-main: #f0f2f5;
-            --panel-bg: #ffffff;
-            --card-bg: #f8fafc;
-            --primary: #4f46e5;
-            --primary-glow: rgba(79, 70, 229, 0.15);
-            --success: #16a34a;
-            --danger: #dc2626;
-            --warning: #d97706;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: rgba(0, 0, 0, 0.08);
-            --input-bg: #f1f5f9;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-main);
+            background-color: var(--bg-dark);
             color: var(--text-main);
-            margin: 0; padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- ROUTING SYSTEM VISIBILITY --- */
+        .app-screen {
+            display: none;
             min-height: 100vh;
-            display: flex; justify-content: center;
-            transition: background-color 0.3s ease;
+            padding-bottom: 70px; /* Space for bottom nav */
         }
 
-        .app-shell {
-            width: 100%; max-width: 460px;
-            background: var(--panel-bg); min-height: 100vh;
-            display: flex; flex-direction: column;
-            position: relative; padding-bottom: 90px;
-            box-sizing: border-box;
-            box-shadow: 0 0 60px rgba(0,0,0,0.15);
-            transition: background-color 0.3s ease;
+        .app-screen.active {
+            display: flex;
+            flex-direction: column;
         }
 
-        .header-bar {
-            padding: 20px; display: flex;
-            justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border);
-            background: var(--panel-bg);
-            position: sticky; top: 0; z-index: 100;
-        }
-
-        .logo {
-            font-size: 19px; font-weight: 900; letter-spacing: 0.5px;
-            background: linear-gradient(135deg, var(--primary), #818cf8);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .app-content { padding: 20px; flex: 1; }
-        .form-group { margin-bottom: 16px; }
-        
-        input, select {
-            width: 100%; padding: 14px 16px;
-            background: var(--input-bg); border: 1px solid var(--border);
-            border-radius: 14px; color: var(--text-main); font-size: 14px;
-            box-sizing: border-box; outline: none; transition: all 0.2s ease;
-        }
-
-        button {
-            width: 100%; padding: 14px;
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            border: none; border-radius: 14px; color: white;
-            font-size: 14px; font-weight: 700; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
-            transition: all 0.2s ease;
-        }
-
-        .banner-container-node {
-            position: relative;
-            width: 100%; height: 160px;
-            margin-bottom: 18px;
-            border-radius: 24px;
-            overflow: hidden;
+        /* --- AUTH SCREENS --- */
+        .auth-container {
+            max-width: 380px;
+            margin: 4rem auto;
+            padding: 2.5rem;
+            background: var(--bg-surface);
             border: 1px solid var(--border);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .auth-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        .banner-container-node:active { transform: scale(0.98); }
-
-        .pure-image-banner {
-            width: 100%; height: 100%;
-            background-size: cover; background-position: center;
+            transition: background 0.2s;
         }
 
-        .floating-scheme-badge {
-            position: absolute; bottom: 16px; left: 16px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 8px 16px; border-radius: 14px;
-            color: #0f172a; font-size: 13px; font-weight: 800;
-            display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        
-        body:not(.light-theme) .floating-scheme-badge {
-            background: rgba(8, 14, 27, 0.8);
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.1);
-        }
+        .btn:hover { background: var(--accent-hover); }
+        .btn-danger { background: var(--danger); }
+        .btn-secondary { background: #363636; }
 
-        .status-tag-indicator {
-            position: absolute; top: 16px; right: 16px;
-            padding: 5px 12px; border-radius: 10px; font-size: 11px; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .status-tag-indicator.active { background: var(--success); color: white; }
-        .status-tag-indicator.locked { background: var(--warning); color: white; }
-
-        .section-headline {
-            font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
-            color: var(--text-muted); margin: 28px 0 14px 0; font-weight: 800;
-            display: flex; align-items: center; gap: 6px;
-        }
-        .section-headline:first-of-type { margin-top: 5px; }
-
-        .statement-card {
-            background: var(--card-bg); border-radius: 24px;
-            padding: 22px; border: 1px solid var(--border);
-            margin-bottom: 20px;
-        }
-
-        .metric-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 13px 0; border-bottom: 1px solid var(--border); font-size: 14px;
-        }
-        .metric-row:last-child { border: none; }
-        .metric-row span { color: var(--text-muted); }
-
-        .timeline-stream { margin-top: 15px; }
-        .log-node {
-            border-left: 2px solid var(--primary); padding-left: 18px;
-            position: relative; padding-bottom: 20px; opacity: 0.85;
-        }
-        .log-node::before {
-            content: ''; position: absolute; left: -6px; top: 4px;
-            width: 10px; height: 10px; background: var(--primary); border-radius: 50%;
-        }
-
-        .bottom-dock {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            height: 78px; background: var(--panel-bg);
+        /* --- NAVIGATION --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: var(--bg-surface);
             border-top: 1px solid var(--border);
-            display: flex; justify-content: space-around; align-items: center; z-index: 100;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            z-index: 1000;
         }
 
-        .dock-item {
-            display: flex; flex-direction: column; align-items: center;
-            color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer;
-        }
-        .dock-item i { font-size: 19px; margin-bottom: 5px; }
-        .dock-item.active { color: var(--primary); }
-
-        .admin-card {
-            background: var(--card-bg); border-radius: 22px;
-            padding: 18px; margin-bottom: 18px; border: 1px solid var(--border);
+        .nav-item {
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            text-align: center;
+            flex: 1;
         }
 
-        /* THEME TOGGLE SWITCH CONTAINER */
-        .theme-switch-box {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--input-bg); padding: 14px 18px; border-radius: 16px;
-            margin-bottom: 20px; border: 1px solid var(--border);
+        .nav-item.active { color: var(--text-main); }
+
+        /* --- FEED ENGINE --- */
+        .feed-container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 1rem;
         }
+
+        .announcement-banner {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--success);
+        }
+
+        .post-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            gap: 0.8rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #444;
+        }
+
+        .post-username { font-weight: 600; font-size: 0.95rem; }
+        .post-media { width: 100%; max-height: 500px; object-fit: cover; background: #000; }
+        .post-actions { padding: 0.8rem; display: flex; gap: 1rem; font-size: 1.3rem; }
+        .action-icon { cursor: pointer; transition: transform 0.1s; }
+        .action-icon:hover { transform: scale(1.1); }
+        .post-details { padding: 0 0.8rem 0.8rem 0.8rem; }
+        .likes-count { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.3rem; }
+
+        /* --- MESSENGER ENGINE --- */
+        .messenger-container {
+            display: flex;
+            height: calc(100vh - 70px);
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .chat-sidebar {
+            width: 350px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-dark);
+        }
+
+        .search-bar-holder { padding: 1rem; border-bottom: 1px solid var(--border); }
+        .user-row {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            gap: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .user-row:hover { background: var(--bg-surface); }
+
+        .chat-history {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .msg-bubble {
+            max-width: 60%;
+            padding: 0.8rem 1rem;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .msg-sent {
+            background: var(--accent);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .msg-received {
+            background: var(--bg-card);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .msg-status {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: right;
+            margin-top: 0.2rem;
+        }
+
+        .chat-input-area {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        /* --- PROFILE SYSTEM --- */
+        .profile-header {
+            max-width: 600px;
+            margin: 2rem auto;
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .profile-img-big { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
+        .profile-stats { display: flex; gap: 2rem; margin: 1rem 0; }
+        .stat-box { text-align: center; }
+        .stat-num { font-weight: 700; font-size: 1.2rem; }
+        .stat-lbl { color: var(--text-muted); font-size: 0.85rem; }
+
+        /* --- ADMIN PANEL --- */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        .metric-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid var(--border);
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .data-table th { background: var(--bg-surface); }
     </style>
 </head>
 <body>
 
-<div class="app-shell">
-    
-    <div class="header-bar">
-        <div class="logo"><i class="fa-solid fa-layer-group"></i> MATRIX CHIT HUB</div>
-    </div>
-
-    <div class="app-content">
-        
-        <div id="view-login">
-            <h2 style="font-size: 26px; margin-bottom: 6px; font-weight: 800;">Identity Terminal</h2>
-            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 35px;">Log in to access your matrix slots instantly.</p>
-            
+    <div id="screen-login" class="app-screen active">
+        <div class="auth-container">
+            <div class="auth-logo">NexSphere</div>
             <div class="form-group">
-                <input type="text" id="auth-handle" placeholder="Enter Your Account Name...">
+                <label>Username</label>
+                <input type="text" id="login-username" placeholder="Enter username">
             </div>
-            <button onclick="executeAuthentication()">Establish Identity Instantly</button>
-        </div>
-
-        <div id="view-home" style="display: none;">
-            
-            <div class="section-headline"><i class="fa-solid fa-cubes"></i> Available Strategic Slots</div>
-            
-            <div id="dynamic-dual-slots-zone"></div>
-
-            <div class="section-headline"><i class="fa-brands fa-whatsapp"></i> WhatsApp Interaction Gateway</div>
-            <div class="banner-container-node" onclick="triggerWhatsAppRedirect()">
-                <div class="pure-image-banner" style="background-image: url('banner3.jpg');"></div>
-                <div class="floating-scheme-badge" style="color: #10b981;"><i class="fa-brands fa-whatsapp"></i> Chat With Owner To Activate</div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="login-password" placeholder="Enter password">
             </div>
-        </div>
-
-        <div id="view-details" style="display: none;">
-            <div id="multi-ledger-render-container"></div>
-        </div>
-
-        <div id="view-profile" style="display: none;">
-            <div class="section-headline"><i class="fa-solid fa-circle-user"></i> Certified Workspace Node</div>
-            <div class="statement-card" style="padding: 24px 18px; margin-bottom: 15px; text-align: center;">
-                <div style="width:70px; height:70px; background:var(--primary); border-radius:50%; margin:0 auto 12px auto; display:flex; align-items:center; justify-content:center;">
-                    <i class="fa-solid fa-user-astronaut" style="font-size:28px; color:#fff;"></i>
-                </div>
-                <h2 id="profile-user-title" style="margin: 0 0 5px 0; font-size: 22px; font-weight: 800;">Account Node</h2>
-                <p id="profile-schemes-count" style="color: var(--primary); font-size: 13px; margin: 0; font-weight:600;"></p>
-            </div>
-
-            <div class="theme-switch-box">
-                <span style="font-size: 14px; font-weight: 700;"><i class="fa-solid fa-palette"></i> Interface Theme look</span>
-                <div style="display: flex; gap: 6px;">
-                    <button id="theme-btn-dark" style="padding: 6px 12px; width:auto; font-size:11px; border-radius:8px; background:#0f172a; color:#fff;" onclick="applyInterfaceTheme('dark')">Dark</button>
-                    <button id="theme-btn-light" style="padding: 6px 12px; width:auto; font-size:11px; border-radius:8px; background:#e2e8f0; color:#0f172a;" onclick="applyInterfaceTheme('light')">Light</button>
-                </div>
-            </div>
-
-            <button style="background: var(--danger); box-shadow: none;" onclick="terminateSession()">Sign Out Account</button>
-        </div>
-
-        <div id="view-admin" style="display: none;">
-            <h3 style="margin-top:0; font-size: 20px; color:var(--warning);"><i class="fa-solid fa-terminal"></i> Controller Terminal</h3>
-            
-            <div class="admin-card">
-                <h4 style="font-size:13px; margin:0 0 15px 0; color:var(--primary); text-transform:uppercase;">Deploy New Client Frame</h4>
-                <div class="form-group"><input type="text" id="adm-user-name" placeholder="Enter Member Account Name"></div>
-                <button style="background:var(--success);" onclick="adminProvisionNewUserOnly()">Register Empty Workspace</button>
-            </div>
-
-            <div class="section-headline"><i class="fa-solid fa-folder-tree"></i> Active Cluster Database</div>
-            <div id="admin-directory-stack"></div>
-        </div>
-
-    </div>
-
-    <div class="bottom-dock" id="app-navigation-dock" style="display: none;">
-        <div class="dock-item active" id="dock-home" onclick="navigateToRoute('view-home')">
-            <i class="fa-solid fa-wallet"></i><span>Home</span>
-        </div>
-        <div class="dock-item" id="dock-details" onclick="navigateToRoute('view-details')">
-            <i class="fa-solid fa-chart-pie"></i><span>Ledger</span>
-        </div>
-        <div class="dock-item" id="dock-profile" onclick="navigateToRoute('view-profile')">
-            <i class="fa-solid fa-fingerprint"></i><span>Profile</span>
-        </div>
-        <div class="dock-item" id="dock-admin" style="display:none;" onclick="navigateToRoute('view-admin')">
-            <i class="fa-solid fa-unlock-keyhole"></i><span>Admin</span>
+            <button class="btn" onclick="Engine.auth.login()">Log In</button>
+            <p style="margin-top:1.5rem; font-size:0.9rem; color:var(--text-muted)">
+                Don't have an account? <span style="color:var(--accent); cursor:pointer;" onclick="Engine.router.go('register')">Sign Up</span>
+            </p>
+            <p style="margin-top:1rem; font-size:0.8rem; color:var(--text-muted); text-decoration: underline; cursor:pointer;" onclick="Engine.router.go('admin-login')">
+                Access Admin Terminal
+            </p>
         </div>
     </div>
 
-</div>
+    <div id="screen-register" class="app-screen">
+        <div class="auth-container">
+            <div class="auth-logo">Register</div>
+            <div class="form-group">
+                <label>Unique Username</label>
+                <input type="text" id="reg-username" placeholder="Create username">
+            </div>
+            <div class="form-group">
+                <label>Bio</label>
+                <textarea id="reg-bio" rows="2" placeholder="Tell us about yourself"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Profile Picture URL</label>
+                <input type="text" id="reg-avatar" placeholder="https://example.com/pic.jpg">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="reg-password" placeholder="Create password">
+            </div>
+            <button class="btn" onclick="Engine.auth.register()">Create Account</button>
+            <p style="margin-top:1.5rem; font-size:0.9rem; color:var(--text-muted)">
+                Already have an account? <span style="color:var(--accent); cursor:pointer;" onclick="Engine.router.go('login')">Log In</span>
+            </p>
+        </div>
+    </div>
 
+    <div id="screen-admin-login" class="app-screen">
+        <div class="auth-container" style="border-color: var(--danger)">
+            <div class="auth-logo" style="background: var(--danger); -webkit-background-clip: text;">Terminal Access</div>
+            <div class="form-group">
+                <label>System Administrator ID</label>
+                <input type="text" id="admin-user" placeholder="Root Username">
+            </div>
+            <div class="form-group">
+                <label>Secret Token Key</label>
+                <input type="password" id="admin-pass" placeholder="Root Password">
+            </div>
+            <button class="btn btn-danger" onclick="Engine.auth.adminLogin()">Verify Identity</button>
+            <button class="btn btn-secondary" style="margin-top:0.5rem;" onclick="Engine.router.go('login')">Back to Portal</button>
+        </div>
+    </div>
 
-           <script>
-    let datasetEngine = JSON.parse(localStorage.getItem('sys_matrix_v15_multichit')) || [];
-    let runtimeUser = null;
-    const terminalRootKey = "thivashthivash143@gmail.com";
+    <div id="app-nav-bar" class="bottom-nav" style="display: none;">
+        <div class="nav-item" onclick="Engine.router.go('feed')">🏠<div style="font-size:0.7rem">Feed</div></div>
+        <div class="nav-item" onclick="Engine.router.go('messenger')">💬<div style="font-size:0.7rem">Messages</div></div>
+        <div class="nav-item" onclick="Engine.router.go('search')">🔍<div style="font-size:0.7rem">Search</div></div>
+        <div class="nav-item" onclick="Engine.router.go('profile')">👤<div style="font-size:0.7rem">Profile</div></div>
+        <div class="nav-item" style="color:var(--danger)" onclick="Engine.auth.logout()">🚪<div style="font-size:0.7rem">Exit</div></div>
+    </div>
 
-    // FIXED CONFIGURATION MAP: Custom asset names targeted cleanly as per request
-    const assetUrls = {
-        "save_money": "banner1.jpg",
-        "target": "banner2.jpg"
-    };
-
-    window.addEventListener('load', () => {
-        let savedTheme = localStorage.getItem('matrix_theme_state') || 'dark';
-        applyInterfaceTheme(savedTheme);
-
-        let activeSessionKey = localStorage.getItem('sys_matrix_v15_session_lock');
-        if (activeSessionKey) {
-            if (activeSessionKey.toLowerCase() === terminalRootKey.toLowerCase()) { bootAdminSession(); } 
-            else {
-                let foundUser = datasetEngine.find(u => u.name.toLowerCase() === activeSessionKey.toLowerCase());
-                if (foundUser) { runtimeUser = foundUser; bootUserSession(foundUser.name); } 
-                else { localStorage.removeItem('sys_matrix_v15_session_lock'); }
-            }
-        }
-    });
-
-    function applyInterfaceTheme(mode) {
-        if(mode === 'light') {
-            document.body.classList.add('light-theme');
-            document.getElementById('theme-btn-light').style.border = "2px solid #4f46e5";
-            document.getElementById('theme-btn-dark').style.border = "none";
-        } else {
-            document.body.classList.remove('light-theme');
-            document.getElementById('theme-btn-dark').style.border = "2px solid #6366f1";
-            document.getElementById('theme-btn-light').style.border = "none";
-        }
-        localStorage.setItem('matrix_theme_state', mode);
-    }
-
-    function executeAuthentication() {
-        let fieldString = document.getElementById('auth-handle').value.trim();
-        if(fieldString === "") { alert("Enter proper validation target identifier."); return; }
-
-        if(fieldString.toLowerCase() === terminalRootKey.toLowerCase()) {
-            localStorage.setItem('sys_matrix_v15_session_lock', fieldString);
-            bootAdminSession(); return;
-        }
-
-        let userNodeMatch = datasetEngine.find(u => u.name.toLowerCase() === fieldString.toLowerCase());
-        if(!userNodeMatch) {
-            userNodeMatch = { name: fieldString, schemes: [] };
-            datasetEngine.push(userNodeMatch);
-            commitClusterMemory();
-        }
-
-        runtimeUser = userNodeMatch;
-        localStorage.setItem('sys_matrix_v15_session_lock', fieldString);
-        bootUserSession(userNodeMatch.name);
-    }
-
-    function bootAdminSession() {
-        document.getElementById('app-navigation-dock').style.display = 'flex';
-        document.getElementById('dock-admin').style.display = 'flex';
-        navigateToRoute('view-admin'); renderAdminDirectoryStack();
-    }
-
-    function bootUserSession(nameString) {
-        document.getElementById('app-navigation-dock').style.display = 'flex';
-        document.getElementById('dock-admin').style.display = 'none';
-        document.getElementById('profile-user-title').innerText = nameString;
-        document.getElementById('profile-schemes-count').innerText = runtimeUser ? `Activated Portfolios: ${runtimeUser.schemes.length}` : "No Activated Slots";
-        
-        buildDynamicDualSlots(); computeStatementProfileMetrics(); navigateToRoute('view-home');
-    }
-
-    function buildDynamicDualSlots() {
-        let slotsZone = document.getElementById('dynamic-dual-slots-zone');
-        slotsZone.innerHTML = "";
-
-        const standardTypes = [
-            { type: "save_money", label: "Save Money Portfolio", icon: "fa-piggy-bank" },
-            { type: "target", label: "Target Framework", icon: "fa-bullseye" }
-        ];
-
-        standardTypes.forEach(std => {
-            let activeInstance = runtimeUser ? runtimeUser.schemes.find(sch => sch.schemeType === std.type) : null;
+    <div id="screen-feed" class="app-screen">
+        <div class="feed-container">
+            <h2 style="margin-bottom:1.5rem;">Home Timeline</h2>
             
-            let statusBadge = `<span class="status-tag-indicator locked"><i class="fa-solid fa-lock"></i> Locked</span>`;
-            let clickAction = `alert('Intha scheme ungaluku active-la illai. Kela ulla WhatsApp button mela click panni admin-ta activation request anupunga!')`;
-            let displayBadgeLabel = std.label;
+            <div class="post-card" style="padding:1rem;">
+                <h4 style="margin-bottom:0.5rem;">Create Post / Video Frame</h4>
+                <input type="text" id="post-caption" placeholder="What's on your mind?" style="margin-bottom:0.5rem;">
+                <input type="text" id="post-url" placeholder="Image/Video Link URL" style="margin-bottom:0.5rem;">
+                <select id="post-type" style="margin-bottom:0.8rem;">
+                    <option value="image">Image Format</option>
+                    <option value="video">Video Format</option>
+                </select>
+                <button class="btn" onclick="Engine.features.createPost()">Publish Media</button>
+            </div>
 
-            if(activeInstance) {
-                statusBadge = `<span class="status-tag-indicator active"><i class="fa-solid fa-circle-check"></i> Active</span>`;
-                clickAction = `MapsToRoute('view-details')`;
-                if(std.type === "target") {
-                    displayBadgeLabel = `Target Value: ₹${activeInstance.totalAmount.toLocaleString('en-IN')}`;
-                }
-            }
+            <div id="timeline-feed-target"></div>
+        </div>
+    </div>
 
-            slotsZone.innerHTML += `
-                <div class="banner-container-node" onclick="${clickAction}">
-                    <div class="pure-image-banner" style="background-image: url('${assetUrls[std.type]}'); filter: ${activeInstance ? 'none' : 'grayscale(0.6) brightness(0.5)'};"></div>
-                    ${statusBadge}
-                    <div class="floating-scheme-badge">
-                        <i class="fa-solid ${std.icon}" style="color:var(--primary);"></i> ${displayBadgeLabel}
+    <div id="screen-messenger" class="app-screen">
+        <div class="messenger-container">
+            <div class="chat-sidebar">
+                <div class="search-bar-holder">
+                    <h3>Active Contacts</h3>
+                    <p style="font-size:0.8rem; color:var(--text-muted)">Must be mutual connections</p>
+                </div>
+                <div id="chat-sidebar-target" style="overflow-y:auto; flex:1;"></div>
+            </div>
+            <div class="chat-main" id="chat-window-fallback" style="display: flex; align-items:center; justify-content:center; color:var(--text-muted)">
+                Select a verified user to initiate secure end-to-end routing.
+            </div>
+            <div class="chat-main" id="chat-window-active" style="display: none;">
+                <div class="search-bar-holder" style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                        <img src="" id="active-chat-avatar" class="avatar">
+                        <span id="active-chat-username" style="font-weight:600"></span>
                     </div>
+                    <button class="btn btn-danger" style="width:auto; padding:0.4rem 0.8rem; font-size:0.8rem;" onclick="Engine.features.blockActiveUser()">Block & Report</button>
                 </div>
-            `;
-        });
-    }
+                <div class="chat-history" id="chat-msg-render-target"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input-field" placeholder="Write standard text message...">
+                    <button class="btn" style="width:auto;" onclick="Engine.features.sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    function computeStatementProfileMetrics() {
-        let container = document.getElementById('multi-ledger-render-container');
-        container.innerHTML = "";
+    <div id="screen-search" class="app-screen">
+        <div class="feed-container">
+            <h2>Global Node Search</h2>
+            <input type="text" id="search-input" placeholder="Type username to look up..." oninput="Engine.features.runSearch()" style="margin: 1rem 0;">
+            <div id="search-results-target"></div>
+        </div>
+    </div>
 
-        let activeSchemes = runtimeUser ? runtimeUser.schemes : [];
-        if(activeSchemes.length === 0) {
-            container.innerHTML = `<div class="section-headline">Ledger Engine</div><div class="statement-card"><p style="color:var(--text-muted); margin:0; font-size:13px;">Ungaluku entha sub-schemes-um innum active aagala. Admin ungaluku allocate panna udane dynamic statement inge theriya arambikkum.</p></div>`;
-            return;
-        }
+    <div id="screen-profile" class="app-screen">
+        <div class="profile-header">
+            <img src="" id="my-profile-img" class="profile-img-big">
+            <div>
+                <h2 id="my-profile-name"></h2>
+                <p id="my-profile-bio" style="color:var(--text-muted); margin:0.3rem 0;"></p>
+                <div class="profile-stats">
+                    <div class="stat-box"><div class="stat-num" id="my-stat-followers">0</div><div class="stat-lbl">Followers</div></div>
+                    <div class="stat-box"><div class="stat-num" id="my-stat-following">0</div><div class="stat-lbl">Following</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="feed-container">
+            <h3>Personal Submissions</h3>
+            <div id="my-posts-target" style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:1rem;"></div>
+        </div>
+    </div>
 
-        activeSchemes.forEach((sch, sIdx) => {
-            let displayLabel = sch.schemeType === "save_money" ? "Save Money Ledger" : "Target Balance Matrix";
-            let targetRowHTML = "";
-            
-            if(sch.schemeType === "target") {
-                let pendingCash = sch.totalAmount - sch.totalPaid;
-                targetRowHTML = `
-                    <div class="metric-row"><span>Target Setup Frame Cap</span><strong>₹${sch.totalAmount.toLocaleString('en-IN')}</strong></div>
-                    <div class="metric-row"><span>Outstanding Pending Gap</span><strong style="color:var(--danger);">₹${pendingCash.toLocaleString('en-IN')}</strong></div>
-                `;
+    <div id="screen-admin-dashboard" class="app-screen" style="padding:2rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+            <h2>Root Central Command Administration</h2>
+            <button class="btn btn-danger" style="width:auto;" onclick="Engine.router.go('login')">Exit Console</button>
+        </div>
+
+        <div class="admin-grid">
+            <div class="metric-card"><h1 id="adm-m-users">0</h1><p>Registered Nodes</p></div>
+            <div class="metric-card"><h1 id="adm-m-posts">0</h1><p>Global Media Objects</p></div>
+            <div class="metric-card"><h1 id="adm-m-reports">0</h1><p>Flagged Abuse Infractions</p></div>
+        </div>
+
+        <div class="feed-container" style="max-width:100%; background:var(--bg-surface); padding:1.5rem; border-radius:12px; margin-top:2rem;">
+            <h3>System Broadcaster (Publish Global Overrides)</h3>
+            <input type="text" id="adm-announcement" placeholder="Global Bulletin Notification Banner Text" style="margin:0.5rem 0;">
+            <button class="btn" onclick="Engine.admin.postAnnouncement()">Deploy Banner To Feed Stack</button>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Identity Frame</th>
+                    <th>Bio Schema</th>
+                    <th>Status Flags</th>
+                    <th>Operations Matrix</th>
+                </tr>
+            </thead>
+            <tbody id="adm-table-users"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // --- REAL STORAGE DATABASE ARCHITECTURE ---
+        const DB = {
+            get: (key) => JSON.parse(localStorage.getItem('ns_' + key)) || [],
+            set: (key, val) => localStorage.setItem('ns_' + key, JSON.stringify(val)),
+            init: () => {
+                // Generates database tables cleanly without injection vectors or fake initial data
+                if(!localStorage.getItem('ns_users')) DB.set('users', []);
+                if(!localStorage.getItem('ns_posts')) DB.set('posts', []);
+                if(!localStorage.getItem('ns_messages')) DB.set('messages', []);
+                if(!localStorage.getItem('ns_follows')) DB.set('follows', []);
+                if(!localStorage.getItem('ns_reports')) DB.set('reports', []);
+                if(!localStorage.getItem('ns_announcements')) DB.set('announcements', []);
             }
+        };
+        DB.init();
 
-            let section = document.createElement('div');
-            section.innerHTML = `
-                <div class="section-headline"><i class="fa-solid fa-receipt"></i> Active Profile: ${displayLabel}</div>
-                <div class="statement-card">
-                    ${targetRowHTML}
-                    <div class="metric-row"><span>Net Remitted Paid</span><strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>
-                    <div class="metric-row"><span>Today Cash Entry Update</span><strong style="color:var(--primary);">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
+        // --- GLOBAL APP APPLICATION CONTROLLER ---
+        const Engine = {
+            session: null,
+            activeChatTarget: null,
+
+            router: {
+                go: (screenId) => {
+                    document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+                    document.getElementById('screen-' + screenId).classList.add('active');
                     
-                    <div style="font-size:11px; color:var(--text-muted); margin-top:15px; font-weight:700; text-transform:uppercase;">Time Log Entry Updates</div>
-                    <div class="timeline-stream" id="logs-stream-sch-${sIdx}"></div>
-                </div>
-            `;
-            container.appendChild(section);
+                    // Manage global context view rules
+                    const nav = document.getElementById('app-nav-bar');
+                    if(['login', 'register', 'admin-login', 'admin-dashboard'].includes(screenId)) {
+                        nav.style.display = 'none';
+                    } else {
+                        nav.style.display = 'flex';
+                    }
 
-            let logsTimeline = document.getElementById(`logs-stream-sch-${sIdx}`);
-            let logsReversed = [...sch.logs].reverse();
-            logsReversed.forEach(log => {
-                logsTimeline.innerHTML += `
-                    <div class="log-node">
-                        <div style="font-size:11px; color:var(--text-muted); font-weight:600;"><i class="fa-regular fa-clock"></i> ${log.timestamp}</div>
-                        <div style="font-size:13px; margin-top:2px;">${log.message}</div>
-                    </div>
-                `;
-            });
-        });
-    }
-
-    function adminProvisionNewUserOnly() {
-        let name = document.getElementById('adm-user-name').value.trim();
-        if(name === "") { alert("Enter unique handle name."); return; }
-
-        let userMatch = datasetEngine.find(u => u.name.toLowerCase() === name.toLowerCase());
-        if(userMatch) { alert("User string key node already exists."); return; }
-
-        datasetEngine.push({ name: name, schemes: [] });
-        commitClusterMemory(); renderAdminDirectoryStack();
-        document.getElementById('adm-user-name').value = "";
-        alert(`Account created empty for: "${name}"`);
-    }
-
-    function toggleAdminAmountField(uIdx) {
-        let selectionType = document.getElementById(`adm-type-select-${uIdx}`).value;
-        let containerBlock = document.getElementById(`adm-target-amt-wrapper-${uIdx}`);
-        containerBlock.style.display = (selectionType === "target") ? "block" : "none";
-    }
-
-    function adminAddSchemeToExisting(uIdx) {
-        let typeSelected = document.getElementById(`adm-type-select-${uIdx}`).value;
-        let bannerImageAddress = assetUrls[typeSelected];
-        let calculatedTargetValue = 0;
-
-        let existCheck = datasetEngine[uIdx].schemes.find(s => s.schemeType === typeSelected);
-        if(existCheck) { alert("Intha user-ku intha configuration scheme already active-la thaan iruku!"); return; }
-
-        if(typeSelected === "target") {
-            calculatedTargetValue = parseFloat(document.getElementById(`adm-new-sch-amt-${uIdx}`).value);
-            if(isNaN(calculatedTargetValue) || calculatedTargetValue <= 0) { alert("Set proper target values."); return; }
-        }
-
-        let initializedLogMessage = typeSelected === "target" ? 
-            `Target tracking matrix deployed. Setup Target limit: ₹${calculatedTargetValue.toLocaleString('en-IN')}.` :
-            "Save Money database portfolio track initialized securely onto account node storage.";
-
-        datasetEngine[uIdx].schemes.push({
-            schemeType: typeSelected,
-            totalAmount: calculatedTargetValue,
-            totalPaid: 0, todayPaid: 0,
-            bannerImg: bannerImageAddress,
-            logs: [{ timestamp: captureTimestamp(), type: 'add', message: initializedLogMessage }]
-        });
-        
-        commitClusterMemory(); renderAdminDirectoryStack();
-    }
-
-    function adminUpdateCashFlow(uIdx, sIdx) {
-        let cash = parseFloat(document.getElementById(`adm-cash-${uIdx}-${sIdx}`).value);
-        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Standard Registry Remittance Varavu";
-        if(isNaN(cash) || cash <= 0) { alert("Configure positive numbers."); return; }
-
-        let targetSch = datasetEngine[uIdx].schemes[sIdx];
-        targetSch.todayPaid = cash; targetSch.totalPaid += cash;
-        targetSch.logs.push({ timestamp: captureTimestamp(), type: 'add', message: `Remittance Added Varavu: ₹${cash.toLocaleString('en-IN')}. [Remarks: ${reason}].` });
-
-        commitClusterMemory(); renderAdminDirectoryStack();
-    }
-
-    function adminDeductCashFlow(uIdx, sIdx) {
-        let cash = parseFloat(document.getElementById(`adm-cash-${uIdx}-${sIdx}`).value);
-        let reason = document.getElementById(`adm-reason-${uIdx}-${sIdx}`).value.trim() || "Operational Settlement Adjustment";
-        if(isNaN(cash) || cash <= 0) { alert("Configure genuine numbers."); return; }
-
-        let targetSch = datasetEngine[uIdx].schemes[sIdx];
-        if(targetSch.totalPaid < cash) { alert("Deduction overflow bounds error."); return; }
-
-        targetSch.totalPaid -= cash; targetSch.todayPaid = 0;
-        targetSch.logs.push({ timestamp: captureTimestamp(), type: 'sub', message: `Rollback executed: Deducted ₹${cash.toLocaleString('en-IN')}. [Reason: ${reason}].` });
-
-        commitClusterMemory(); renderAdminDirectoryStack();
-    }
-
-    function adminDeleteSpecificScheme(uIdx, sIdx) {
-        if(confirm("Intha active user module-ai mattum lock/delete pannelama? (Account safe-ah irukum)")) {
-            datasetEngine[uIdx].schemes.splice(sIdx, 1);
-            commitClusterMemory(); renderAdminDirectoryStack();
-        }
-    }
-
-    function renderAdminDirectoryStack() {
-        let stackArea = document.getElementById('admin-directory-stack'); stackArea.innerHTML = "";
-        
-        datasetEngine.forEach((user, uIdx) => {
-            let userCard = document.createElement('div'); userCard.className = 'admin-card';
-            let schemesHTML = "";
-
-            user.schemes.forEach((sch, sIdx) => {
-                let tagTitle = sch.schemeType === "save_money" ? "Save Money Slot" : "Target Slot Frame";
-                let descriptiveStats = `<div>Net Paid Cash: <strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>`;
-                
-                if(sch.schemeType === "target") {
-                    let pend = sch.totalAmount - sch.totalPaid;
-                    descriptiveStats = `
-                        <div>Target Limit: <strong>₹${sch.totalAmount.toLocaleString('en-IN')}</strong></div>
-                        <div>Net Paid Cash: <strong style="color:var(--success);">₹${sch.totalPaid.toLocaleString('en-IN')}</strong></div>
-                        <div>Outstanding Gap: <strong style="color:var(--danger);">₹${pend.toLocaleString('en-IN')}</strong></div>
-                    `;
+                    // Render triggers dynamically when pages are loaded
+                    if(screenId === 'feed') Engine.render.feed();
+                    if(screenId === 'messenger') Engine.render.messenger();
+                    if(screenId === 'profile') Engine.render.profile();
+                    if(screenId === 'admin-dashboard') Engine.admin.loadDashboard();
                 }
+            },
 
-                schemesHTML += `
-                    <div style="background:rgba(0,0,0,0.04); padding:12px; border-radius:14px; margin-top:12px; border:1px solid var(--border);">
-                        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; margin-bottom:8px;">
-                            <span>${tagTitle}</span>
-                            <button style="background:none; color:var(--danger); font-size:12px; padding:0; width:auto; box-shadow:none;" onclick="adminDeleteSpecificScheme(${uIdx}, ${sIdx})"><i class="fa-solid fa-lock"></i> Lock/Delete Slot</button>
-                        </div>
-                        <div style="font-size:12px; line-height:1.6; margin-bottom:10px;">
-                            ${descriptiveStats}
-                            <div>Today Input: <strong style="color:var(--primary);">₹${sch.todayPaid.toLocaleString('en-IN')}</strong></div>
-                        </div>
-                        <div style="display:flex; gap:6px; margin-bottom:8px;">
-                            <input type="number" id="adm-cash-${uIdx}-${sIdx}" placeholder="Amount (₹)" style="padding:8px; font-size:12px; flex:1;">
-                            <input type="text" id="adm-reason-${uIdx}-${sIdx}" placeholder="Remarks" style="padding:8px; font-size:12px; flex:1.2;">
-                        </div>
-                        <div style="display:flex; gap:6px;">
-                            <button style="padding:8px; font-size:11px; background:var(--success);" onclick="adminUpdateCashFlow(${uIdx}, ${sIdx})">+ Add Cash</button>
-                            <button style="padding:8px; font-size:11px; background:var(--warning);" onclick="adminDeductCashFlow(${uIdx}, ${sIdx})">- Rollback</button>
-                        </div>
-                    </div>
-                `;
-            });
+            auth: {
+                register: () => {
+                    const u = document.getElementById('reg-username').value.trim().toLowerCase();
+                    const b = document.getElementById('reg-bio').value.trim();
+                    const p = document.getElementById('reg-password').value;
+                    let av = document.getElementById('reg-avatar').value.trim();
 
-            userCard.innerHTML = `
-                <div style="font-size:16px; font-weight:800; border-bottom:1px solid var(--border); padding-bottom:6px; color:var(--primary);"><i class="fa-solid fa-id-badge"></i> Profile: ${user.name}</div>
-                ${schemesHTML || '<p style="font-size:12px; color:var(--text-muted); margin:10px 0;">No active assigned slots mapped inside user dashboard structure.</p>'}
-                
-                <div style="margin-top:15px; border-top:1px dashed var(--border); padding-top:12px;">
-                    <div style="font-size:11px; color:var(--text-muted); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Activate Strategic Core Slot</div>
-                    <div style="display:flex; gap:6px; margin-bottom: 8px;">
-                        <select id="adm-type-select-${uIdx}" onchange="toggleAdminAmountField(${uIdx})" style="padding:8px; font-size:12px; flex:1;">
-                            <option value="save_money">1. Save Money</option>
-                            <option value="target">2. Target</option>
-                        </select>
-                    </div>
-                    <div id="adm-target-amt-wrapper-${uIdx}" style="display:none; margin-bottom:8px;">
-                        <input type="number" id="adm-new-sch-amt-${uIdx}" placeholder="Set Target Amount (₹)" style="padding:8px; font-size:12px;">
-                    </div>
-                    <button style="padding:8px; font-size:12px; background:linear-gradient(135deg, #818cf8, #4f46e5);" onclick="adminAddSchemeToExisting(${uIdx})">+ Push & Activate Slot</button>
-                </div>
-            `;
-            stackArea.appendChild(userCard);
-        });
-    }
+                    if(!u || !p) return alert("Username and Password execution values required.");
+                    
+                    let users = DB.get('users');
+                    if(users.find(user => user.username === u)) return alert("Node constraint collision: Username taken.");
 
-    function triggerWhatsAppRedirect() {
-        let tag = runtimeUser ? runtimeUser.name : "Guest";
-        window.open(`https://wa.me/917845229384?text=Hello%20Admin%2C%20I%20want%20to%20activate%20a%20new%20ledger%20scheme%20for%20account%3A%20${encodeURIComponent(tag)}`, '_blank');
-    }
+                    if(!av) av = `https://api.dicebear.com/7.x/bottts/svg?seed=${u}`;
 
-    function navigateToRoute(targetViewId) {
-        const screens = ['view-login', 'view-home', 'view-details', 'view-profile', 'view-admin'];
-        screens.forEach(s => { document.getElementById(s).style.display = (s === targetViewId) ? 'block' : 'none'; });
+                    users.push({ username: u, password: btoa(p), bio: b, avatar: av, suspended: false });
+                    DB.set('users', users);
+                    alert("Account committed securely. Proceed to authorization verification matrix.");
+                    Engine.router.go('login');
+                },
 
-        const dockMappings = { 'view-home': 'dock-home', 'view-details': 'dock-details', 'view-profile': 'dock-profile', 'view-admin': 'dock-admin' };
-        Object.values(dockMappings).forEach(id => { let el = document.getElementById(id); if(el) el.classList.remove('active'); });
-        if(dockMappings[targetViewId]) document.getElementById(dockMappings[targetViewId]).classList.add('active');
-    }
+                login: () => {
+                    const u = document.getElementById('login-username').value.trim().toLowerCase();
+                    const p = document.getElementById('login-password').value;
 
-    function captureTimestamp() {
-        let d = new Date();
-        return d.toLocaleDateString('en-IN') + " | " + d.toLocaleTimeString('en-IN', {hour: '2-digit', minute:'2-digit'});
-    }
+                    const users = DB.get('users');
+                    const profile = users.find(user => user.username === u && user.password === btoa(p));
 
-    function commitClusterMemory() { localStorage.setItem('sys_matrix_v15_multichit', JSON.stringify(datasetEngine)); }
-    
-    function terminateSession() {
-        runtimeUser = null; localStorage.removeItem('sys_matrix_v15_session_lock');
-        document.getElementById('auth-handle').value = ""; document.getElementById('app-navigation-dock').style.display = 'none';
-        navigateToRoute('view-login');
-    }
+                    if(!profile) return alert("Security Error: Invalid credentials match array.");
+                    if(profile.suspended) return alert("Operational Restriction: Account state is suspended by Root Admin.");
 
-    
-</script>
+                    Engine.session = profile;
+                    Engine.router.go('profile');
+                },
 
-    
+                adminLogin: () => {
+                    const u = document.getElementById('admin-user').value;
+                    const p = document.getElementById('admin-pass').value;
+
+                    // Fixed isolated backend administrator account parameters
+                    if(u === "root" && p === "root123") {
+                        Engine.router.go('admin-dashboard');
+                    } else {
+                        alert("Access Denied: Faulty Authentication Identity Token.");
+                    }
+                },
+
+                logout: () => {
+                    Engine.session = null;
+                    Engine.router.go('login');
+                }
+            },
+
+            features: {
+                createPost: () => {
+                    const cap = document.getElementById('post-caption').value;
+                    const url = document.getElementById('post-url').value || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe";
+                    const type = document.getElementById('post-type').value;
+
+                    let posts = DB.get('posts');
+                    posts.unshift({
+                        id: Date.now(),
+                        author: Engine.session.username,
+                        caption: cap,
+                        media: url,
+                        type: type,
+                        likes: [],
+                        comments: [],
+                        pinned: false
+                    });
+                    DB.set('posts', posts);
+                    document.getElementById('post-caption').value = '';
+                    document.getElementById('post-url').value = '';
+                    Engine.render.feed();
+                },
+
+                toggleLike: (postId) => {
+                    let posts = DB.get('posts');
+                    let p = posts.find(x => x.id === postId);
+                    if(!p) return;
+
+                    let user = Engine.session.username;
+                    if(p.likes.includes(user)) {
+                        p.likes = p.likes.filter(x => x !== user);
+                    } else {
+                        p.likes.push(user);
+                    }
+                    DB.set('posts', posts);
+                    Engine.render.feed();
+                },
+
+                postComment: (postId, inputId) => {
+                    const txt = document.getElementById(inputId).value;
+                    if(!txt) return;
+
+                    let posts = DB.get('posts');
+                    let p = posts.find(x => x.id === postId);
+                    p.comments.push({ author: Engine.session.username, text: txt });
+                    
+                    DB.set('posts', posts);
+                    Engine.render.feed();
+                },
+
+                runSearch: () => {
+                    const term = document.getElementById('search-input').value.toLowerCase().trim();
+                    const target = document.getElementById('search-results-target');
+                    target.innerHTML = '';
+                    if(!term) return;
+
+                    const users = DB.get('users').filter(u => u.username.includes(term) && u.username !== Engine.session.username);
+                    const follows = DB.get('follows');
+
+                    users.forEach(u => {
+                        const isFollowing = follows.find(f => f.from === Engine.session.username && f.to === u.username);
+                        const btnText = isFollowing ? (isFollowing.accepted ? "Connected" : "Pending Approval") : "Send Direct Connection";
+
+                        target.innerHTML += `
+                            <div class="user-row" style="background:var(--bg-surface); border-radius:8px; margin-bottom:0.5rem;">
+                                <img src="${u.avatar}" class="avatar">
+                                <div style="flex:1;">
+                                    <div style="font-weight:600">${u.username}</div>
+                                    <div style="font-size:0.8rem; color:var(--text-muted)">${u.bio}</div>
+                                </div>
+                                <button class="btn" style="width:auto; padding:0.5rem 1rem; font-size:0.8rem;" 
+                                    onclick="Engine.features.requestConnection('${u.username}')" ${isFollowing?'disabled':''}>${btnText}</button>
+                            </div>
+                        `;
+                    });
+                },
+
+                requestConnection: (targetUser) => {
+                    let follows = DB.get('follows');
+                    follows.push({ from: Engine.session.username, to: targetUser, accepted: false });
+                    DB.set('follows', follows);
+                    Engine.features.runSearch();
+                },
+
+                sendMessage: () => {
+                    const txt = document.getElementById('chat-input-field').value;
+                    if(!txt) return;
+
+                    let msgs = DB.get('messages');
+                    msgs.push({
+                        id: Date.now(),
+                        from: Engine.session.username,
+                        to: Engine.activeChatTarget,
+                        body: txt,
+                        status: 'Delivered'
+                    });
+                    DB.set('messages', msgs);
+                    document.getElementById('chat-input-field').value = '';
+                    Engine.render.chatStream();
+                },
+
+                deleteMsg: (msgId) => {
+                    let msgs = DB.get('messages');
+                    msgs = msgs.filter(m => m.id !== msgId);
+                    DB.set('messages', msgs);
+                    Engine.render.chatStream();
+                },
+
+                blockActiveUser: () => {
+                    if(!confirm("Are you sure you want to lock connectivity mapping and dispatch an operational violation report?")) return;
+                    let reports = DB.get('reports');
+                    reports.push({ id: Date.now(), reporter: Engine.session.username, offender: Engine.activeChatTarget, reason: 'Direct communication harassment protocol triggered.' });
+                    DB.set('reports', reports);
+                    
+                    // Break connectivity map automatically
+                    let follows = DB.get('follows');
+                    follows = follows.filter(f => !((f.from === Engine.session.username && f.to === Engine.activeChatTarget) || (f.from === Engine.activeChatTarget && f.to === Engine.session.username)));
+                    DB.set('follows', follows);
+                    
+                    alert("Report dispatched. Node alignment decoupled.");
+                    Engine.router.go('messenger');
+                }
+            },
+
+            render: {
+                feed: () => {
+                    const target = document.getElementById('timeline-feed-target');
+                    target.innerHTML = '';
+
+                    // Load Global Bulletins first
+                    const banners = DB.get('announcements');
+                    banners.forEach(b => {
+                        target.innerHTML += `
+                            <div class="announcement-banner">
+                                <div style="font-size:0.75rem; text-transform:uppercase; font-weight:800; letter-spacing:1px; color:var(--success);">🌐 Global Root Broadcast Pinned Announcement</div>
+                                <div style="font-size:1.1rem; font-weight:600; margin-top:0.2rem;">${b.text}</div>
+                            </div>
+                        `;
+                    });
+
+                    // Sort posts (Pinned items bubble up automatically)
+                    let posts = DB.get('posts');
+                    posts.sort((a,b) => (b.pinned - a.pinned));
+
+                    if(posts.length === 0) {
+                        target.innerHTML += `<p style="text-align:center; color:var(--text-muted); margin-top:2rem;">Timeline void matrix. Create or publish media parameters above.</p>`;
+                    }
+
+                    posts.forEach(p => {
+                        const isLiked = p.likes.includes(Engine.session.username);
+                        let commentsHtml = p.comments.map(c => `<div style="font-size:0.85rem; margin-top:0.2rem;"><b style="color:var(--accent)">${c.author}:</b> ${c.text}</div>`).join('');
+                        
+                        let mediaTag = p.type === 'video' 
+                            ? `<video src="${p.media}" class="post-media" controls autoplay muted loop></video>` 
+                            : `<img src="${p.media}" class="post-media">`;
+
+                        target.innerHTML += `
+                            <div class="post-card" style="${p.pinned ? 'border-color: var(--success);' : ''}">
+                                <div class="post-header">
+                                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${p.author}" class="avatar">
+                                    <div style="flex:1;">
+                                        <div class="post-username">${p.author} ${p.pinned ? '<span style="color:var(--success); font-size:0.75rem;">📌 [SYSTEM PIN]</span>':''}</div>
+                                    </div>
+                                    <span style="cursor:pointer;" onclick="if(confirm('Flag object for removal evaluation?')){ let r=DB.get('reports'); r.push({id:Date.now(), reporter:Engine.session.username, offender: '${p.author}', reason:'Post object content violation'}); DB.set('reports',r); alert('Queued'); }">⚠️</span>
+                                </div>
+                                ${mediaTag}
+                                <div class="post-actions">
+                                    <span class="action-icon" onclick="Engine.features.toggleLike(${p.id})">${isLiked?'❤️':'🤍'}</span>
+                                    <span class="action-icon">💬</span>
+                                </div>
+                                <div class="post-details">
+                                    <div class="likes-count">${p.likes.length} verification signatures</div>
+                                    <div style="font-size:0.95rem;"><b style="margin-right:0.4rem;">${p.author}</b>${p.caption}</div>
+                                    <div style="margin-top:0.5rem; border-top:1px solid #222; padding-top:0.5rem;">${commentsHtml}</div>
+                                    <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+                                        <input type="text" id="comm-input-${p.id}" placeholder="Write a comment..." style="padding:0.4rem; font-size:0.8rem;">
+                                        <button class="btn" style="width:auto; padding:0.4rem 0.8rem; font-size:0.8rem;" onclick="Engine.features.postComment(${p.id}, 'comm-input-${p.id}')">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                },
+
+                messenger: () => {
+                    const listTarget = document.getElementById('chat-sidebar-target');
+                    listTarget.innerHTML = '';
+                    
+                    const follows = DB.get('follows');
+                    // Find nodes where connection conditions are established
+                    const connections = follows.filter(f => (f.from === Engine.session.username || f.to === Engine.session.username));
+
+                    let verifiedPeers = [];
+                    connections.forEach(c => {
+                        let peer = (c.from === Engine.session.username) ? c.to : c.from;
+                        if(!verifiedPeers.includes(peer)) verifiedPeers.push({username: peer, accepted: c.accepted, binding: c});
+                    });
+
+                    if(verifiedPeers.length === 0) {
+                        listTarget.innerHTML = `<p style="padding:1rem; text-align:center; font-size:0.8rem; color:var(--text-muted)">Establish mutual nodes inside search engine directory to clear communication paths.</p>`;
+                    }
+
+                    verifiedPeers.forEach(peer => {
+                        let profile = DB.get('users').find(u => u.username === peer.username) || {avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${peer.username}`, bio: 'Remote pipeline node'};
+                        
+                        let contextActionHtml = '';
+                        if(!peer.accepted) {
+                            if(peer.binding.to === Engine.session.username) {
+                                contextActionHtml = `<button class="btn" style="width:auto; padding:0.3rem 0.6rem; font-size:0.75rem;" onclick="Engine.render.acceptNode('${peer.binding.from}')">Accept Verification</button>`;
+                            } else {
+                                contextActionHtml = `<span style="font-size:0.75rem; color:var(--danger)">Approval Awaiting</span>`;
+                            }
+                        } else {
+                            contextActionHtml = `<span style="font-size:0.75rem; color:var(--success)">🔒 Secured Gateway Link</span>`;
+                        }
+
+                        listTarget.innerHTML += `
+                            <div class="user-row" onclick="if(${peer.accepted}){ Engine.render.openChat('${peer.username}') }">
+                                <img src="${profile.avatar}" class="avatar">
+                                <div style="flex:1;">
+                                    <div style="font-weight:600; display:flex; justify-content:space-between;">${peer.username}</div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted)">${profile.bio.substring(0,30)}</div>
+                                </div>
+                                <div>${contextActionHtml}</div>
+                            </div>
+                        `;
+                    });
+                },
+
+                acceptNode: (senderUsername) => {
+                    let follows = DB.get('follows');
+                    let targetNode = follows.find(f => f.from === senderUsername && f.to === Engine.session.username);
+                    if(targetNode) targetNode.accepted = true;
+                    DB.set('follows', follows);
+                    Engine.render.messenger();
+                },
+
+                openChat: (username) => {
+                    Engine.activeChatTarget = username;
+                    document.getElementById('chat-window-fallback').style.display = 'none';
+                    document.getElementById('chat-window-active').style.display = 'flex';
+                    
+                    let profile = DB.get('users').find(u => u.username === username);
+                    document.getElementById('active-chat-username').innerText = username;
+                    document.getElementById('active-chat-avatar').src = profile.avatar;
+                    
+                    Engine.render.chatStream();
+                },
+
+                chatStream: () => {
+                    const target = document.getElementById('chat-msg-render-target');
+                    target.innerHTML = '';
+
+                    const msgs = DB.get('messages').filter(m => 
+                        (m.from === Engine.session.username && m.to === Engine.activeChatTarget) || 
+                        (m.from === Engine.activeChatTarget && m.to === Engine.session.username)
+                    );
+
+                    msgs.forEach(m => {
+                        const isMe = m.from === Engine.session.username;
+                        target.innerHTML += `
+                            <div class="msg-bubble ${isMe ? 'msg-sent' : 'msg-received'}" onclick="if(${isMe} && confirm('Revoke transmission structural packets globally?')){ Engine.features.deleteMsg(${m.id}) }">
+                                <div>${m.body}</div>
+                                <div class="msg-status">${m.status} ${isMe ? '✕':''}</div>
+                            </div>
+                        `;
+                    });
+                    target.scrollTop = target.scrollHeight;
+                },
+
+                profile: () => {
+                    document.getElementById('my-profile-img').src = Engine.session.avatar;
+                    document.getElementById('my-profile-name').innerText = Engine.session.username;
+                    document.getElementById('my-profile-bio').innerText = Engine.session.bio || "No data attributes mapped to profile metadata container schema.";
+                    
+                    const follows = DB.get('follows');
+                    const followers = follows.filter(f => f.to === Engine.session.username && f.accepted).length;
+                    const following = follows.filter(f => f.from === Engine.session.username && f.accepted).length;
+                    
+                    document.getElementById('my-stat-followers').innerText = followers;
+                    document.getElementById('my-stat-following').innerText = following;
+
+                    const myPosts = DB.get('posts').filter(p => p.author === Engine.session.username);
+                    const target = document.getElementById('my-posts-target');
+                    target.innerHTML = '';
+                    
+                    myPosts.forEach(p => {
+                        target.innerHTML += p.type === 'video'
+                            ? `<video src="${p.media}" style="width:100%; height:150px; object-fit:cover; border-radius:6px;" muted autoplay loop></video>`
+                            : `<img src="${p.media}" style="width:100%; height:150px; object-fit:cover; border-radius:6px;">`;
+                    });
+                }
+            },
+
+            admin: {
+                loadDashboard: () => {
+                    const users = DB.get('users');
+                    const posts = DB.get('posts');
+                    const reports = DB.get('reports');
+
+                    document.getElementById('adm-m-users').innerText = users.length;
+                    document.getElementById('adm-m-posts').innerText = posts.length;
+                    document.getElementById('adm-m-reports').innerText = reports.length;
+
+                    const table = document.getElementById('adm-table-users');
+                    table.innerHTML = '';
+
+                    users.forEach(u => {
+                        table.innerHTML += `
+                            <tr>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                                        <img src="${u.avatar}" class="avatar">
+                                        <b>${u.username}</b>
+                                    </div>
+                                </td>
+                                <td>${u.bio || 'Null'}</td>
+                                <td><span style="color:${u.suspended ? 'var(--danger)':'var(--success)'}">${u.suspended ? 'SUSPENDED':'OPERATIONAL'}</span></td>
+                                <td>
+                                    <button class="btn" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin-right:0.3rem;" onclick="Engine.admin.toggleSuspend('${u.username}')">Toggle State</button>
+                                    <button class="btn btn-danger" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem;" onclick="Engine.admin.wipeUser('${u.username}')">Purge Node</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                },
+
+                toggleSuspend: (username) => {
+                    let users = DB.get('users');
+                    let u = users.find(x => x.username === username);
+                    u.suspended = !u.suspended;
+                    DB.set('users', users);
+                    Engine.admin.loadDashboard();
+                },
+
+                wipeUser: (username) => {
+                    if(!confirm("Purge system indices of target payload profile and structural posts elements permanently?")) return;
+                    let users = DB.get('users').filter(x => x.username !== username);
+                    let posts = DB.get('posts').filter(x => x.author !== username);
+                    DB.set('users', users);
+                    DB.set('posts', posts);
+                    Engine.admin.loadDashboard();
+                },
+
+                postAnnouncement: () => {
+                    const txt = document.getElementById('adm-announcement').value;
+                    if(!txt) return;
+
+                    let ann = DB.get('announcements');
+                    ann.push({id: Date.now(), text: txt});
+                    DB.set('announcements', ann);
+                    document.getElementById('adm-announcement').value = '';
+                    alert("System Bulletin injected into timeline.");
+                }
+            }
+        };
+    </script>
 </body>
 </html>
