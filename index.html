@@ -3,934 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexSphere - Advanced Social Network</title>
+    <title>NexGen Premium | File Upload Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- MODERN INSTAGRAM/MESSENGER DARK UI --- */
         :root {
-            --bg-dark: #000000;
-            --bg-surface: #121212;
-            --bg-card: #1e1e1e;
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --accent: #0095f6; /* Instagram Blue */
-            --accent-hover: #1877f2;
-            --danger: #ed4956;
-            --success: #00f2fe;
+            --primary: #0095f6;
+            --dark-bg: #000000;
+            --surface: #121212;
             --border: #262626;
+            --text: #ffffff;
+            --text-muted: #a8a8a8;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--dark-bg); color: var(--text); overflow-x: hidden; }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow-x: hidden;
-        }
+        /* --- UTILS --- */
+        .hidden { display: none !important; }
+        .app-screen { min-height: 100vh; width: 100%; display: none; }
+        .active { display: flex; flex-direction: column; }
 
-        /* --- ROUTING SYSTEM VISIBILITY --- */
-        .app-screen {
-            display: none;
-            min-height: 100vh;
-            padding-bottom: 70px; /* Space for bottom nav */
-        }
-
-        .app-screen.active {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* --- AUTH SCREENS --- */
-        .auth-container {
-            max-width: 380px;
-            margin: 4rem auto;
-            padding: 2.5rem;
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        /* --- AUTH & REGISTER --- */
+        .auth-card {
+            width: 90%; max-width: 400px; margin: auto; padding: 2.5rem;
+            background: var(--surface); border-radius: 20px; border: 1px solid var(--border);
             text-align: center;
         }
-
-        .auth-logo {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
+        h1 { font-size: 2.5rem; margin-bottom: 1.5rem; font-weight: 800; }
+        .input-group { margin-bottom: 1rem; text-align: left; }
+        input, textarea {
+            width: 100%; padding: 12px; background: #1e1e1e; border: 1px solid var(--border);
+            border-radius: 10px; color: white; outline: none;
         }
 
-        .form-group {
-            margin-bottom: 1.2rem;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 0.4rem;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: white;
-            font-size: 0.95rem;
-            transition: border 0.3s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
+        .file-label {
+            display: block; padding: 10px; background: #333; border-radius: 8px;
+            cursor: pointer; margin-top: 5px; font-size: 0.8rem;
         }
 
         .btn {
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
+            width: 100%; padding: 12px; background: var(--primary); border: none;
+            border-radius: 10px; color: white; font-weight: 700; cursor: pointer;
+            margin-top: 10px;
         }
 
-        .btn:hover { background: var(--accent-hover); }
-        .btn-danger { background: var(--danger); }
-        .btn-secondary { background: #363636; }
-
-        /* --- NAVIGATION --- */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: var(--bg-surface);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            padding: 0.8rem 0;
-            z-index: 1000;
+        /* --- NAV --- */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.9);
+            border-top: 1px solid var(--border); display: flex;
+            justify-content: space-around; padding: 15px 0; z-index: 1000;
         }
+        .nav-item { color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+        .active-nav { color: white; }
 
-        .nav-item {
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 1.2rem;
-            text-align: center;
-            flex: 1;
+        /* --- FEED & REELS --- */
+        .container { max-width: 500px; margin: 0 auto; padding: 15px; padding-bottom: 80px; }
+        .post-card { background: var(--surface); border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
+        .post-header { padding: 10px; display: flex; align-items: center; gap: 10px; }
+        .post-header img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
+        
+        .media-box { width: 100%; background: #000; position: relative; }
+        .media-box img, .media-box video { width: 100%; display: block; }
+
+        .reels-badge { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 20px; font-size: 0.7rem; }
+
+        /* --- REELS VIEWER --- */
+        #reels-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 3000; display: none;
         }
+        .reels-video-full { width: 100%; height: 100%; object-fit: contain; }
+        .close-reels { position: absolute; top: 20px; left: 20px; z-index: 3001; font-size: 1.5rem; }
 
-        .nav-item.active { color: var(--text-main); }
-
-        /* --- FEED ENGINE --- */
-        .feed-container {
-            max-width: 600px;
-            margin: 0 auto;
-            width: 100%;
-            padding: 1rem;
+        /* --- UPLOAD SECTION --- */
+        .admin-panel {
+            background: #1a1a1a; padding: 20px; border-radius: 15px; margin-bottom: 20px;
+            border: 1px solid #333;
         }
-
-        .announcement-banner {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border-left: 5px solid var(--success);
-        }
-
-        .post-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-        }
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            padding: 0.8rem;
-            gap: 0.8rem;
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            background: #444;
-        }
-
-        .post-username { font-weight: 600; font-size: 0.95rem; }
-        .post-media { width: 100%; max-height: 500px; object-fit: cover; background: #000; }
-        .post-actions { padding: 0.8rem; display: flex; gap: 1rem; font-size: 1.3rem; }
-        .action-icon { cursor: pointer; transition: transform 0.1s; }
-        .action-icon:hover { transform: scale(1.1); }
-        .post-details { padding: 0 0.8rem 0.8rem 0.8rem; }
-        .likes-count { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.3rem; }
-
-        /* --- MESSENGER ENGINE --- */
-        .messenger-container {
-            display: flex;
-            height: calc(100vh - 70px);
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .chat-sidebar {
-            width: 350px;
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--bg-dark);
-        }
-
-        .search-bar-holder { padding: 1rem; border-bottom: 1px solid var(--border); }
-        .user-row {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            gap: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .user-row:hover { background: var(--bg-surface); }
-
-        .chat-history {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .msg-bubble {
-            max-width: 60%;
-            padding: 0.8rem 1rem;
-            border-radius: 18px;
-            font-size: 0.95rem;
-            position: relative;
-            word-wrap: break-word;
-        }
-
-        .msg-sent {
-            background: var(--accent);
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        .msg-received {
-            background: var(--bg-card);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-
-        .msg-status {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-align: right;
-            margin-top: 0.2rem;
-        }
-
-        .chat-input-area {
-            padding: 1rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 0.8rem;
-        }
-
-        /* --- PROFILE SYSTEM --- */
-        .profile-header {
-            max-width: 600px;
-            margin: 2rem auto;
-            width: 100%;
-            padding: 1rem;
-            display: flex;
-            gap: 2.5rem;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .profile-img-big { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
-        .profile-stats { display: flex; gap: 2rem; margin: 1rem 0; }
-        .stat-box { text-align: center; }
-        .stat-num { font-weight: 700; font-size: 1.2rem; }
-        .stat-lbl { color: var(--text-muted); font-size: 0.85rem; }
-
-        /* --- ADMIN PANEL --- */
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            padding: 1rem;
-        }
-
-        .metric-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 2rem;
-        }
-
-        .data-table th, .data-table td {
-            border: 1px solid var(--border);
-            padding: 1rem;
-            text-align: left;
-        }
-
-        .data-table th { background: var(--bg-surface); }
     </style>
 </head>
 <body>
 
-    <div id="screen-login" class="app-screen active">
-        <div class="auth-container">
-            <div class="auth-logo">NexSphere</div>
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="login-username" placeholder="Enter username">
+    <!-- 1. LOGIN / REGISTER SCREEN -->
+    <div id="auth-screen" class="app-screen active">
+        <div class="auth-card">
+            <h1>NexGen</h1>
+            <div id="login-form">
+                <div class="input-group"><input type="text" id="log-user" placeholder="Email / Username"></div>
+                <div class="input-group"><input type="password" id="log-pass" placeholder="Password"></div>
+                <button class="btn" onclick="App.handleLogin()">Log In</button>
+                <p style="margin-top:15px; font-size:0.8rem; color:gray;" onclick="App.toggleAuth(false)">New here? Create Account</p>
             </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="login-password" placeholder="Enter password">
-            </div>
-            <button class="btn" onclick="Engine.auth.login()">Log In</button>
-            <p style="margin-top:1.5rem; font-size:0.9rem; color:var(--text-muted)">
-                Don't have an account? <span style="color:var(--accent); cursor:pointer;" onclick="Engine.router.go('register')">Sign Up</span>
-            </p>
-            <p style="margin-top:1rem; font-size:0.8rem; color:var(--text-muted); text-decoration: underline; cursor:pointer;" onclick="Engine.router.go('admin-login')">
-                Access Admin Terminal
-            </p>
-        </div>
-    </div>
-
-    <div id="screen-register" class="app-screen">
-        <div class="auth-container">
-            <div class="auth-logo">Register</div>
-            <div class="form-group">
-                <label>Unique Username</label>
-                <input type="text" id="reg-username" placeholder="Create username">
-            </div>
-            <div class="form-group">
-                <label>Bio</label>
-                <textarea id="reg-bio" rows="2" placeholder="Tell us about yourself"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Profile Picture URL</label>
-                <input type="text" id="reg-avatar" placeholder="https://example.com/pic.jpg">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="reg-password" placeholder="Create password">
-            </div>
-            <button class="btn" onclick="Engine.auth.register()">Create Account</button>
-            <p style="margin-top:1.5rem; font-size:0.9rem; color:var(--text-muted)">
-                Already have an account? <span style="color:var(--accent); cursor:pointer;" onclick="Engine.router.go('login')">Log In</span>
-            </p>
-        </div>
-    </div>
-
-    <div id="screen-admin-login" class="app-screen">
-        <div class="auth-container" style="border-color: var(--danger)">
-            <div class="auth-logo" style="background: var(--danger); -webkit-background-clip: text;">Terminal Access</div>
-            <div class="form-group">
-                <label>System Administrator ID</label>
-                <input type="text" id="admin-user" placeholder="Root Username">
-            </div>
-            <div class="form-group">
-                <label>Secret Token Key</label>
-                <input type="password" id="admin-pass" placeholder="Root Password">
-            </div>
-            <button class="btn btn-danger" onclick="Engine.auth.adminLogin()">Verify Identity</button>
-            <button class="btn btn-secondary" style="margin-top:0.5rem;" onclick="Engine.router.go('login')">Back to Portal</button>
-        </div>
-    </div>
-
-    <div id="app-nav-bar" class="bottom-nav" style="display: none;">
-        <div class="nav-item" onclick="Engine.router.go('feed')">🏠<div style="font-size:0.7rem">Feed</div></div>
-        <div class="nav-item" onclick="Engine.router.go('messenger')">💬<div style="font-size:0.7rem">Messages</div></div>
-        <div class="nav-item" onclick="Engine.router.go('search')">🔍<div style="font-size:0.7rem">Search</div></div>
-        <div class="nav-item" onclick="Engine.router.go('profile')">👤<div style="font-size:0.7rem">Profile</div></div>
-        <div class="nav-item" style="color:var(--danger)" onclick="Engine.auth.logout()">🚪<div style="font-size:0.7rem">Exit</div></div>
-    </div>
-
-    <div id="screen-feed" class="app-screen">
-        <div class="feed-container">
-            <h2 style="margin-bottom:1.5rem;">Home Timeline</h2>
-            
-            <div class="post-card" style="padding:1rem;">
-                <h4 style="margin-bottom:0.5rem;">Create Post / Video Frame</h4>
-                <input type="text" id="post-caption" placeholder="What's on your mind?" style="margin-bottom:0.5rem;">
-                <input type="text" id="post-url" placeholder="Image/Video Link URL" style="margin-bottom:0.5rem;">
-                <select id="post-type" style="margin-bottom:0.8rem;">
-                    <option value="image">Image Format</option>
-                    <option value="video">Video Format</option>
-                </select>
-                <button class="btn" onclick="Engine.features.createPost()">Publish Media</button>
-            </div>
-
-            <div id="timeline-feed-target"></div>
-        </div>
-    </div>
-
-    <div id="screen-messenger" class="app-screen">
-        <div class="messenger-container">
-            <div class="chat-sidebar">
-                <div class="search-bar-holder">
-                    <h3>Active Contacts</h3>
-                    <p style="font-size:0.8rem; color:var(--text-muted)">Must be mutual connections</p>
+            <div id="reg-form" class="hidden">
+                <div class="input-group"><input type="text" id="reg-name" placeholder="Full Name"></div>
+                <div class="input-group">
+                    <label class="file-label">Choose Profile Picture
+                        <input type="file" id="reg-avatar-file" accept="image/*" class="hidden">
+                    </label>
                 </div>
-                <div id="chat-sidebar-target" style="overflow-y:auto; flex:1;"></div>
-            </div>
-            <div class="chat-main" id="chat-window-fallback" style="display: flex; align-items:center; justify-content:center; color:var(--text-muted)">
-                Select a verified user to initiate secure end-to-end routing.
-            </div>
-            <div class="chat-main" id="chat-window-active" style="display: none;">
-                <div class="search-bar-holder" style="display:flex; justify-content:space-between; align-items:center;">
-                    <div style="display:flex; align-items:center; gap:0.5rem;">
-                        <img src="" id="active-chat-avatar" class="avatar">
-                        <span id="active-chat-username" style="font-weight:600"></span>
-                    </div>
-                    <button class="btn btn-danger" style="width:auto; padding:0.4rem 0.8rem; font-size:0.8rem;" onclick="Engine.features.blockActiveUser()">Block & Report</button>
-                </div>
-                <div class="chat-history" id="chat-msg-render-target"></div>
-                <div class="chat-input-area">
-                    <input type="text" id="chat-input-field" placeholder="Write standard text message...">
-                    <button class="btn" style="width:auto;" onclick="Engine.features.sendMessage()">Send</button>
-                </div>
+                <div class="input-group"><input type="password" id="reg-pass" placeholder="Password"></div>
+                <button class="btn" onclick="App.handleRegister()">Sign Up</button>
+                <p style="margin-top:15px; font-size:0.8rem; color:gray;" onclick="App.toggleAuth(true)">Back to Login</p>
             </div>
         </div>
     </div>
 
-    <div id="screen-search" class="app-screen">
-        <div class="feed-container">
-            <h2>Global Node Search</h2>
-            <input type="text" id="search-input" placeholder="Type username to look up..." oninput="Engine.features.runSearch()" style="margin: 1rem 0;">
-            <div id="search-results-target"></div>
-        </div>
-    </div>
-
-    <div id="screen-profile" class="app-screen">
-        <div class="profile-header">
-            <img src="" id="my-profile-img" class="profile-img-big">
-            <div>
-                <h2 id="my-profile-name"></h2>
-                <p id="my-profile-bio" style="color:var(--text-muted); margin:0.3rem 0;"></p>
-                <div class="profile-stats">
-                    <div class="stat-box"><div class="stat-num" id="my-stat-followers">0</div><div class="stat-lbl">Followers</div></div>
-                    <div class="stat-box"><div class="stat-num" id="my-stat-following">0</div><div class="stat-lbl">Following</div></div>
+    <!-- 2. MAIN APP -->
+    <div id="main-app" class="hidden">
+        <div id="feed-screen" class="app-screen active">
+            <div class="container">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h2 style="font-weight:800; font-size:1.8rem;">NexGen</h2>
+                    <i class="fa-regular fa-paper-plane" style="font-size:1.4rem;"></i>
                 </div>
+
+                <!-- ADMIN UPLOAD AREA -->
+                <div id="admin-area" class="admin-panel hidden">
+                    <p style="color:var(--primary); font-weight:700; font-size:0.8rem; margin-bottom:10px;">ADMIN CONSOLE</p>
+                    <input type="text" id="post-cap" placeholder="Write a caption..." style="margin-bottom:10px;">
+                    <label class="file-label" id="file-status">Select Image or Video File
+                        <input type="file" id="post-file" accept="image/*,video/*" class="hidden" onchange="document.getElementById('file-status').innerText='File Selected ✅'">
+                    </label>
+                    <button class="btn" onclick="App.uploadPost()">Publish to Network</button>
+                </div>
+
+                <div id="feed-target"></div>
             </div>
         </div>
-        <div class="feed-container">
-            <h3>Personal Submissions</h3>
-            <div id="my-posts-target" style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:1rem;"></div>
-        </div>
+
+        <!-- NAVIGATION -->
+        <nav class="nav-bar">
+            <i class="fa-solid fa-house nav-item active-nav"></i>
+            <i class="fa-solid fa-magnifying-glass nav-item"></i>
+            <i class="fa-solid fa-clapperboard nav-item"></i>
+            <i class="fa-solid fa-message nav-item"></i>
+            <i class="fa-solid fa-circle-user nav-item"></i>
+        </nav>
     </div>
 
-    <div id="screen-admin-dashboard" class="app-screen" style="padding:2rem;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
-            <h2>Root Central Command Administration</h2>
-            <button class="btn btn-danger" style="width:auto;" onclick="Engine.router.go('login')">Exit Console</button>
-        </div>
-
-        <div class="admin-grid">
-            <div class="metric-card"><h1 id="adm-m-users">0</h1><p>Registered Nodes</p></div>
-            <div class="metric-card"><h1 id="adm-m-posts">0</h1><p>Global Media Objects</p></div>
-            <div class="metric-card"><h1 id="adm-m-reports">0</h1><p>Flagged Abuse Infractions</p></div>
-        </div>
-
-        <div class="feed-container" style="max-width:100%; background:var(--bg-surface); padding:1.5rem; border-radius:12px; margin-top:2rem;">
-            <h3>System Broadcaster (Publish Global Overrides)</h3>
-            <input type="text" id="adm-announcement" placeholder="Global Bulletin Notification Banner Text" style="margin:0.5rem 0;">
-            <button class="btn" onclick="Engine.admin.postAnnouncement()">Deploy Banner To Feed Stack</button>
-        </div>
-
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Identity Frame</th>
-                    <th>Bio Schema</th>
-                    <th>Status Flags</th>
-                    <th>Operations Matrix</th>
-                </tr>
-            </thead>
-            <tbody id="adm-table-users"></tbody>
-        </table>
+    <!-- REELS VIEWER -->
+    <div id="reels-modal">
+        <div class="close-reels" onclick="App.closeReels()"><i class="fa-solid fa-arrow-left"></i></div>
+        <video id="reels-player" class="reels-video-full" controls autoplay loop></video>
     </div>
 
     <script>
-        // --- REAL STORAGE DATABASE ARCHITECTURE ---
-        const DB = {
-            get: (key) => JSON.parse(localStorage.getItem('ns_' + key)) || [],
-            set: (key, val) => localStorage.setItem('ns_' + key, JSON.stringify(val)),
-            init: () => {
-                // Generates database tables cleanly without injection vectors or fake initial data
-                if(!localStorage.getItem('ns_users')) DB.set('users', []);
-                if(!localStorage.getItem('ns_posts')) DB.set('posts', []);
-                if(!localStorage.getItem('ns_messages')) DB.set('messages', []);
-                if(!localStorage.getItem('ns_follows')) DB.set('follows', []);
-                if(!localStorage.getItem('ns_reports')) DB.set('reports', []);
-                if(!localStorage.getItem('ns_announcements')) DB.set('announcements', []);
-            }
-        };
-        DB.init();
+        const App = {
+            user: null,
+            adminEmail: "thivashthivash143@gmail.com",
+            adminPass: "thivash2009",
 
-        // --- GLOBAL APP APPLICATION CONTROLLER ---
-        const Engine = {
-            session: null,
-            activeChatTarget: null,
-
-            router: {
-                go: (screenId) => {
-                    document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
-                    document.getElementById('screen-' + screenId).classList.add('active');
-                    
-                    // Manage global context view rules
-                    const nav = document.getElementById('app-nav-bar');
-                    if(['login', 'register', 'admin-login', 'admin-dashboard'].includes(screenId)) {
-                        nav.style.display = 'none';
-                    } else {
-                        nav.style.display = 'flex';
-                    }
-
-                    // Render triggers dynamically when pages are loaded
-                    if(screenId === 'feed') Engine.render.feed();
-                    if(screenId === 'messenger') Engine.render.messenger();
-                    if(screenId === 'profile') Engine.render.profile();
-                    if(screenId === 'admin-dashboard') Engine.admin.loadDashboard();
-                }
+            toggleAuth: (showLogin) => {
+                document.getElementById('login-form').classList.toggle('hidden', !showLogin);
+                document.getElementById('reg-form').classList.toggle('hidden', showLogin);
             },
 
-            auth: {
-                register: () => {
-                    const u = document.getElementById('reg-username').value.trim().toLowerCase();
-                    const b = document.getElementById('reg-bio').value.trim();
-                    const p = document.getElementById('reg-password').value;
-                    let av = document.getElementById('reg-avatar').value.trim();
+            // Convert File to Base64 to store in localStorage (Real DB thirupathiku ithu thaan orey vazhi single file-la)
+            fileToBase64: (file) => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            }),
 
-                    if(!u || !p) return alert("Username and Password execution values required.");
-                    
-                    let users = DB.get('users');
-                    if(users.find(user => user.username === u)) return alert("Node constraint collision: Username taken.");
+            handleRegister: async () => {
+                const name = document.getElementById('reg-name').value;
+                const pass = document.getElementById('reg-pass').value;
+                const avatarFile = document.getElementById('reg-avatar-file').files[0];
 
-                    if(!av) av = `https://api.dicebear.com/7.x/bottts/svg?seed=${u}`;
+                if(!name || !pass || !avatarFile) return alert("Fill all fields and pick a photo!");
 
-                    users.push({ username: u, password: btoa(p), bio: b, avatar: av, suspended: false });
-                    DB.set('users', users);
-                    alert("Account committed securely. Proceed to authorization verification matrix.");
-                    Engine.router.go('login');
-                },
+                const avatarBase64 = await App.fileToBase64(avatarFile);
+                let users = JSON.parse(localStorage.getItem('nx_users')) || [];
+                users.push({ name, pass, avatar: avatarBase64 });
+                localStorage.setItem('nx_users', JSON.stringify(users));
 
-                login: () => {
-                    const u = document.getElementById('login-username').value.trim().toLowerCase();
-                    const p = document.getElementById('login-password').value;
-
-                    const users = DB.get('users');
-                    const profile = users.find(user => user.username === u && user.password === btoa(p));
-
-                    if(!profile) return alert("Security Error: Invalid credentials match array.");
-                    if(profile.suspended) return alert("Operational Restriction: Account state is suspended by Root Admin.");
-
-                    Engine.session = profile;
-                    Engine.router.go('profile');
-                },
-
-                adminLogin: () => {
-                    const u = document.getElementById('admin-user').value;
-                    const p = document.getElementById('admin-pass').value;
-
-                    // Fixed isolated backend administrator account parameters
-                    if(u === "root" && p === "root123") {
-                        Engine.router.go('admin-dashboard');
-                    } else {
-                        alert("Access Denied: Faulty Authentication Identity Token.");
-                    }
-                },
-
-                logout: () => {
-                    Engine.session = null;
-                    Engine.router.go('login');
-                }
+                alert("Account Created! Please Login.");
+                App.toggleAuth(true);
             },
 
-            features: {
-                createPost: () => {
-                    const cap = document.getElementById('post-caption').value;
-                    const url = document.getElementById('post-url').value || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe";
-                    const type = document.getElementById('post-type').value;
+            handleLogin: () => {
+                const userVal = document.getElementById('log-user').value;
+                const passVal = document.getElementById('log-pass').value;
 
-                    let posts = DB.get('posts');
-                    posts.unshift({
-                        id: Date.now(),
-                        author: Engine.session.username,
-                        caption: cap,
-                        media: url,
-                        type: type,
-                        likes: [],
-                        comments: [],
-                        pinned: false
-                    });
-                    DB.set('posts', posts);
-                    document.getElementById('post-caption').value = '';
-                    document.getElementById('post-url').value = '';
-                    Engine.render.feed();
-                },
-
-                toggleLike: (postId) => {
-                    let posts = DB.get('posts');
-                    let p = posts.find(x => x.id === postId);
-                    if(!p) return;
-
-                    let user = Engine.session.username;
-                    if(p.likes.includes(user)) {
-                        p.likes = p.likes.filter(x => x !== user);
-                    } else {
-                        p.likes.push(user);
-                    }
-                    DB.set('posts', posts);
-                    Engine.render.feed();
-                },
-
-                postComment: (postId, inputId) => {
-                    const txt = document.getElementById(inputId).value;
-                    if(!txt) return;
-
-                    let posts = DB.get('posts');
-                    let p = posts.find(x => x.id === postId);
-                    p.comments.push({ author: Engine.session.username, text: txt });
-                    
-                    DB.set('posts', posts);
-                    Engine.render.feed();
-                },
-
-                runSearch: () => {
-                    const term = document.getElementById('search-input').value.toLowerCase().trim();
-                    const target = document.getElementById('search-results-target');
-                    target.innerHTML = '';
-                    if(!term) return;
-
-                    const users = DB.get('users').filter(u => u.username.includes(term) && u.username !== Engine.session.username);
-                    const follows = DB.get('follows');
-
-                    users.forEach(u => {
-                        const isFollowing = follows.find(f => f.from === Engine.session.username && f.to === u.username);
-                        const btnText = isFollowing ? (isFollowing.accepted ? "Connected" : "Pending Approval") : "Send Direct Connection";
-
-                        target.innerHTML += `
-                            <div class="user-row" style="background:var(--bg-surface); border-radius:8px; margin-bottom:0.5rem;">
-                                <img src="${u.avatar}" class="avatar">
-                                <div style="flex:1;">
-                                    <div style="font-weight:600">${u.username}</div>
-                                    <div style="font-size:0.8rem; color:var(--text-muted)">${u.bio}</div>
-                                </div>
-                                <button class="btn" style="width:auto; padding:0.5rem 1rem; font-size:0.8rem;" 
-                                    onclick="Engine.features.requestConnection('${u.username}')" ${isFollowing?'disabled':''}>${btnText}</button>
-                            </div>
-                        `;
-                    });
-                },
-
-                requestConnection: (targetUser) => {
-                    let follows = DB.get('follows');
-                    follows.push({ from: Engine.session.username, to: targetUser, accepted: false });
-                    DB.set('follows', follows);
-                    Engine.features.runSearch();
-                },
-
-                sendMessage: () => {
-                    const txt = document.getElementById('chat-input-field').value;
-                    if(!txt) return;
-
-                    let msgs = DB.get('messages');
-                    msgs.push({
-                        id: Date.now(),
-                        from: Engine.session.username,
-                        to: Engine.activeChatTarget,
-                        body: txt,
-                        status: 'Delivered'
-                    });
-                    DB.set('messages', msgs);
-                    document.getElementById('chat-input-field').value = '';
-                    Engine.render.chatStream();
-                },
-
-                deleteMsg: (msgId) => {
-                    let msgs = DB.get('messages');
-                    msgs = msgs.filter(m => m.id !== msgId);
-                    DB.set('messages', msgs);
-                    Engine.render.chatStream();
-                },
-
-                blockActiveUser: () => {
-                    if(!confirm("Are you sure you want to lock connectivity mapping and dispatch an operational violation report?")) return;
-                    let reports = DB.get('reports');
-                    reports.push({ id: Date.now(), reporter: Engine.session.username, offender: Engine.activeChatTarget, reason: 'Direct communication harassment protocol triggered.' });
-                    DB.set('reports', reports);
-                    
-                    // Break connectivity map automatically
-                    let follows = DB.get('follows');
-                    follows = follows.filter(f => !((f.from === Engine.session.username && f.to === Engine.activeChatTarget) || (f.from === Engine.activeChatTarget && f.to === Engine.session.username)));
-                    DB.set('follows', follows);
-                    
-                    alert("Report dispatched. Node alignment decoupled.");
-                    Engine.router.go('messenger');
+                if(userVal === App.adminEmail && passVal === App.adminPass) {
+                    App.user = { name: "Admin Thivash", isAdmin: true, avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Admin" };
+                } else {
+                    let users = JSON.parse(localStorage.getItem('nx_users')) || [];
+                    let found = users.find(u => u.name === userVal && u.pass === passVal);
+                    if(!found) return alert("Wrong credentials!");
+                    App.user = { ...found, isAdmin: false };
                 }
+
+                document.getElementById('auth-screen').classList.remove('active');
+                document.getElementById('main-app').classList.remove('hidden');
+                
+                if(App.user.isAdmin) document.getElementById('admin-area').classList.remove('hidden');
+                App.renderFeed();
             },
 
-            render: {
-                feed: () => {
-                    const target = document.getElementById('timeline-feed-target');
-                    target.innerHTML = '';
+            uploadPost: async () => {
+                const cap = document.getElementById('post-cap').value;
+                const file = document.getElementById('post-file').files[0];
 
-                    // Load Global Bulletins first
-                    const banners = DB.get('announcements');
-                    banners.forEach(b => {
-                        target.innerHTML += `
-                            <div class="announcement-banner">
-                                <div style="font-size:0.75rem; text-transform:uppercase; font-weight:800; letter-spacing:1px; color:var(--success);">🌐 Global Root Broadcast Pinned Announcement</div>
-                                <div style="font-size:1.1rem; font-weight:600; margin-top:0.2rem;">${b.text}</div>
-                            </div>
-                        `;
-                    });
+                if(!file) return alert("Select a file first!");
 
-                    // Sort posts (Pinned items bubble up automatically)
-                    let posts = DB.get('posts');
-                    posts.sort((a,b) => (b.pinned - a.pinned));
+                const fileData = await App.fileToBase64(file);
+                const isVideo = file.type.startsWith('video');
 
-                    if(posts.length === 0) {
-                        target.innerHTML += `<p style="text-align:center; color:var(--text-muted); margin-top:2rem;">Timeline void matrix. Create or publish media parameters above.</p>`;
-                    }
+                let posts = JSON.parse(localStorage.getItem('nx_posts')) || [];
+                posts.unshift({
+                    id: Date.now(),
+                    author: App.user.name,
+                    avatar: App.user.avatar,
+                    caption: cap,
+                    media: fileData,
+                    type: isVideo ? 'video' : 'image'
+                });
 
-                    posts.forEach(p => {
-                        const isLiked = p.likes.includes(Engine.session.username);
-                        let commentsHtml = p.comments.map(c => `<div style="font-size:0.85rem; margin-top:0.2rem;"><b style="color:var(--accent)">${c.author}:</b> ${c.text}</div>`).join('');
-                        
-                        let mediaTag = p.type === 'video' 
-                            ? `<video src="${p.media}" class="post-media" controls autoplay muted loop></video>` 
-                            : `<img src="${p.media}" class="post-media">`;
-
-                        target.innerHTML += `
-                            <div class="post-card" style="${p.pinned ? 'border-color: var(--success);' : ''}">
-                                <div class="post-header">
-                                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${p.author}" class="avatar">
-                                    <div style="flex:1;">
-                                        <div class="post-username">${p.author} ${p.pinned ? '<span style="color:var(--success); font-size:0.75rem;">📌 [SYSTEM PIN]</span>':''}</div>
-                                    </div>
-                                    <span style="cursor:pointer;" onclick="if(confirm('Flag object for removal evaluation?')){ let r=DB.get('reports'); r.push({id:Date.now(), reporter:Engine.session.username, offender: '${p.author}', reason:'Post object content violation'}); DB.set('reports',r); alert('Queued'); }">⚠️</span>
-                                </div>
-                                ${mediaTag}
-                                <div class="post-actions">
-                                    <span class="action-icon" onclick="Engine.features.toggleLike(${p.id})">${isLiked?'❤️':'🤍'}</span>
-                                    <span class="action-icon">💬</span>
-                                </div>
-                                <div class="post-details">
-                                    <div class="likes-count">${p.likes.length} verification signatures</div>
-                                    <div style="font-size:0.95rem;"><b style="margin-right:0.4rem;">${p.author}</b>${p.caption}</div>
-                                    <div style="margin-top:0.5rem; border-top:1px solid #222; padding-top:0.5rem;">${commentsHtml}</div>
-                                    <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
-                                        <input type="text" id="comm-input-${p.id}" placeholder="Write a comment..." style="padding:0.4rem; font-size:0.8rem;">
-                                        <button class="btn" style="width:auto; padding:0.4rem 0.8rem; font-size:0.8rem;" onclick="Engine.features.postComment(${p.id}, 'comm-input-${p.id}')">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                },
-
-                messenger: () => {
-                    const listTarget = document.getElementById('chat-sidebar-target');
-                    listTarget.innerHTML = '';
-                    
-                    const follows = DB.get('follows');
-                    // Find nodes where connection conditions are established
-                    const connections = follows.filter(f => (f.from === Engine.session.username || f.to === Engine.session.username));
-
-                    let verifiedPeers = [];
-                    connections.forEach(c => {
-                        let peer = (c.from === Engine.session.username) ? c.to : c.from;
-                        if(!verifiedPeers.includes(peer)) verifiedPeers.push({username: peer, accepted: c.accepted, binding: c});
-                    });
-
-                    if(verifiedPeers.length === 0) {
-                        listTarget.innerHTML = `<p style="padding:1rem; text-align:center; font-size:0.8rem; color:var(--text-muted)">Establish mutual nodes inside search engine directory to clear communication paths.</p>`;
-                    }
-
-                    verifiedPeers.forEach(peer => {
-                        let profile = DB.get('users').find(u => u.username === peer.username) || {avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${peer.username}`, bio: 'Remote pipeline node'};
-                        
-                        let contextActionHtml = '';
-                        if(!peer.accepted) {
-                            if(peer.binding.to === Engine.session.username) {
-                                contextActionHtml = `<button class="btn" style="width:auto; padding:0.3rem 0.6rem; font-size:0.75rem;" onclick="Engine.render.acceptNode('${peer.binding.from}')">Accept Verification</button>`;
-                            } else {
-                                contextActionHtml = `<span style="font-size:0.75rem; color:var(--danger)">Approval Awaiting</span>`;
-                            }
-                        } else {
-                            contextActionHtml = `<span style="font-size:0.75rem; color:var(--success)">🔒 Secured Gateway Link</span>`;
-                        }
-
-                        listTarget.innerHTML += `
-                            <div class="user-row" onclick="if(${peer.accepted}){ Engine.render.openChat('${peer.username}') }">
-                                <img src="${profile.avatar}" class="avatar">
-                                <div style="flex:1;">
-                                    <div style="font-weight:600; display:flex; justify-content:space-between;">${peer.username}</div>
-                                    <div style="font-size:0.75rem; color:var(--text-muted)">${profile.bio.substring(0,30)}</div>
-                                </div>
-                                <div>${contextActionHtml}</div>
-                            </div>
-                        `;
-                    });
-                },
-
-                acceptNode: (senderUsername) => {
-                    let follows = DB.get('follows');
-                    let targetNode = follows.find(f => f.from === senderUsername && f.to === Engine.session.username);
-                    if(targetNode) targetNode.accepted = true;
-                    DB.set('follows', follows);
-                    Engine.render.messenger();
-                },
-
-                openChat: (username) => {
-                    Engine.activeChatTarget = username;
-                    document.getElementById('chat-window-fallback').style.display = 'none';
-                    document.getElementById('chat-window-active').style.display = 'flex';
-                    
-                    let profile = DB.get('users').find(u => u.username === username);
-                    document.getElementById('active-chat-username').innerText = username;
-                    document.getElementById('active-chat-avatar').src = profile.avatar;
-                    
-                    Engine.render.chatStream();
-                },
-
-                chatStream: () => {
-                    const target = document.getElementById('chat-msg-render-target');
-                    target.innerHTML = '';
-
-                    const msgs = DB.get('messages').filter(m => 
-                        (m.from === Engine.session.username && m.to === Engine.activeChatTarget) || 
-                        (m.from === Engine.activeChatTarget && m.to === Engine.session.username)
-                    );
-
-                    msgs.forEach(m => {
-                        const isMe = m.from === Engine.session.username;
-                        target.innerHTML += `
-                            <div class="msg-bubble ${isMe ? 'msg-sent' : 'msg-received'}" onclick="if(${isMe} && confirm('Revoke transmission structural packets globally?')){ Engine.features.deleteMsg(${m.id}) }">
-                                <div>${m.body}</div>
-                                <div class="msg-status">${m.status} ${isMe ? '✕':''}</div>
-                            </div>
-                        `;
-                    });
-                    target.scrollTop = target.scrollHeight;
-                },
-
-                profile: () => {
-                    document.getElementById('my-profile-img').src = Engine.session.avatar;
-                    document.getElementById('my-profile-name').innerText = Engine.session.username;
-                    document.getElementById('my-profile-bio').innerText = Engine.session.bio || "No data attributes mapped to profile metadata container schema.";
-                    
-                    const follows = DB.get('follows');
-                    const followers = follows.filter(f => f.to === Engine.session.username && f.accepted).length;
-                    const following = follows.filter(f => f.from === Engine.session.username && f.accepted).length;
-                    
-                    document.getElementById('my-stat-followers').innerText = followers;
-                    document.getElementById('my-stat-following').innerText = following;
-
-                    const myPosts = DB.get('posts').filter(p => p.author === Engine.session.username);
-                    const target = document.getElementById('my-posts-target');
-                    target.innerHTML = '';
-                    
-                    myPosts.forEach(p => {
-                        target.innerHTML += p.type === 'video'
-                            ? `<video src="${p.media}" style="width:100%; height:150px; object-fit:cover; border-radius:6px;" muted autoplay loop></video>`
-                            : `<img src="${p.media}" style="width:100%; height:150px; object-fit:cover; border-radius:6px;">`;
-                    });
-                }
+                localStorage.setItem('nx_posts', JSON.stringify(posts));
+                document.getElementById('post-cap').value = "";
+                document.getElementById('file-status').innerText = "Select Image or Video File";
+                App.renderFeed();
             },
 
-            admin: {
-                loadDashboard: () => {
-                    const users = DB.get('users');
-                    const posts = DB.get('posts');
-                    const reports = DB.get('reports');
+            renderFeed: () => {
+                const target = document.getElementById('feed-target');
+                const posts = JSON.parse(localStorage.getItem('nx_posts')) || [];
+                target.innerHTML = "";
 
-                    document.getElementById('adm-m-users').innerText = users.length;
-                    document.getElementById('adm-m-posts').innerText = posts.length;
-                    document.getElementById('adm-m-reports').innerText = reports.length;
+                posts.forEach(p => {
+                    const mediaTag = p.type === 'video' 
+                        ? `<div class="media-box" onclick="App.openReels('${p.media}')">
+                             <video src="${p.media}"></video>
+                             <div class="reels-badge"><i class="fa-solid fa-play"></i> REELS</div>
+                           </div>`
+                        : `<div class="media-box"><img src="${p.media}"></div>`;
 
-                    const table = document.getElementById('adm-table-users');
-                    table.innerHTML = '';
+                    target.innerHTML += `
+                        <div class="post-card">
+                            <div class="post-header">
+                                <img src="${p.avatar}">
+                                <span style="font-weight:700;">${p.author}</span>
+                            </div>
+                            ${mediaTag}
+                            <div style="padding:12px;">
+                                <div style="display:flex; gap:15px; font-size:1.4rem; margin-bottom:8px;">
+                                    <i class="fa-regular fa-heart" onclick="this.className='fa-solid fa-heart'; this.style.color='red'"></i>
+                                    <i class="fa-regular fa-comment"></i>
+                                    <i class="fa-regular fa-paper-plane"></i>
+                                </div>
+                                <div style="font-size:0.9rem;"><b>${p.author}</b> ${p.caption}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            },
 
-                    users.forEach(u => {
-                        table.innerHTML += `
-                            <tr>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:0.5rem;">
-                                        <img src="${u.avatar}" class="avatar">
-                                        <b>${u.username}</b>
-                                    </div>
-                                </td>
-                                <td>${u.bio || 'Null'}</td>
-                                <td><span style="color:${u.suspended ? 'var(--danger)':'var(--success)'}">${u.suspended ? 'SUSPENDED':'OPERATIONAL'}</span></td>
-                                <td>
-                                    <button class="btn" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem; margin-right:0.3rem;" onclick="Engine.admin.toggleSuspend('${u.username}')">Toggle State</button>
-                                    <button class="btn btn-danger" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem;" onclick="Engine.admin.wipeUser('${u.username}')">Purge Node</button>
-                                </td>
-                            </tr>
-                        `;
-                    });
-                },
+            openReels: (src) => {
+                const modal = document.getElementById('reels-modal');
+                const player = document.getElementById('reels-player');
+                player.src = src;
+                modal.style.display = 'block';
+            },
 
-                toggleSuspend: (username) => {
-                    let users = DB.get('users');
-                    let u = users.find(x => x.username === username);
-                    u.suspended = !u.suspended;
-                    DB.set('users', users);
-                    Engine.admin.loadDashboard();
-                },
-
-                wipeUser: (username) => {
-                    if(!confirm("Purge system indices of target payload profile and structural posts elements permanently?")) return;
-                    let users = DB.get('users').filter(x => x.username !== username);
-                    let posts = DB.get('posts').filter(x => x.author !== username);
-                    DB.set('users', users);
-                    DB.set('posts', posts);
-                    Engine.admin.loadDashboard();
-                },
-
-                postAnnouncement: () => {
-                    const txt = document.getElementById('adm-announcement').value;
-                    if(!txt) return;
-
-                    let ann = DB.get('announcements');
-                    ann.push({id: Date.now(), text: txt});
-                    DB.set('announcements', ann);
-                    document.getElementById('adm-announcement').value = '';
-                    alert("System Bulletin injected into timeline.");
-                }
+            closeReels: () => {
+                const modal = document.getElementById('reels-modal');
+                const player = document.getElementById('reels-player');
+                player.pause();
+                modal.style.display = 'none';
             }
         };
     </script>
